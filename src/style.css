@@ -902,9 +902,7 @@ button, input, select {
   position: sticky;
   top: 110px;
   width: 100%;
-  height: calc(100vh - 160px);
-  min-height: 460px;
-  max-height: 680px;
+  aspect-ratio: 1 / 1; /* Match the square 1024x1024 image aspect ratio perfectly */
   border-radius: var(--radius-lg);
   overflow: hidden;
   background-color: var(--bg-secondary);
@@ -1087,10 +1085,10 @@ button, input, select {
   .scrolly-visual-container {
     position: relative;
     top: 0;
-    height: auto;
-    aspect-ratio: 16 / 10;
-    min-height: unset;
-    max-height: 400px;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    max-width: 500px;
+    margin: 0 auto;
   }
 }
 
