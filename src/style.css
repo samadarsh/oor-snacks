@@ -873,41 +873,38 @@ button, input, select {
 }
 
 /* -------------------------------------------------------------
- * Pinned Scrollytelling Section ("From Dough to Crunch")
+ * Split Grid Craft Section ("From Dough to Crunch")
  * ------------------------------------------------------------- */
 .scrolly-section {
-  position: relative;
+  padding: var(--space-2xl) 0;
   background-color: var(--bg-primary);
   border-bottom: 1px solid var(--border-color);
   width: 100%;
 }
 
-/* Pinned view container */
-.scrolly-sticky-wrap {
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  overflow: hidden;
-}
-
-.scrolly-grid {
-  display: grid;
-  grid-template-columns: 1.2fr 1fr;
+.scrolly-container {
   width: 100%;
   max-width: var(--container-width);
   margin: 0 auto;
   padding: 0 var(--space-md);
-  align-items: center;
-  gap: var(--space-xl);
 }
 
-/* Left Panel: Overlapping Visuals */
-.scrolly-visual-container {
-  position: relative;
+.scrolly-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.8fr;
   width: 100%;
-  aspect-ratio: 4 / 3;
+  align-items: start;
+  gap: clamp(1.5rem, 3vw, 2.8rem);
+}
+
+/* Left Column: Sticky Editorial Centerpiece */
+.scrolly-visual-container {
+  position: sticky;
+  top: 110px;
+  width: 100%;
+  height: calc(100vh - 160px);
+  min-height: 460px;
+  max-height: 680px;
   border-radius: var(--radius-lg);
   overflow: hidden;
   background-color: var(--bg-secondary);
@@ -920,62 +917,188 @@ button, input, select {
   width: 100%;
   height: 100%;
   overflow: hidden;
-  background-color: var(--bg-secondary);
 }
 
-.cooking-img {
+/* Stable image with very slow, continuous cinematic zoom */
+.cooking-img.bg-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
+  transform-origin: 62% 45%;
+  animation: cinematicBreath 24s ease-in-out infinite alternate;
+  will-change: transform;
 }
 
-/* Right Panel: Narrative Cards */
+@keyframes cinematicBreath {
+  0% {
+    transform: scale(1.0);
+  }
+  100% {
+    transform: scale(1.05);
+  }
+}
+
+/* Subconscious Warmth Hearth Glow (slow breathing warm air, very soft) */
+.warmth-glow {
+  position: absolute;
+  right: 12%; bottom: 22%;
+  width: 28%; height: 30%;
+  background: radial-gradient(ellipse, rgba(255,140,30,0.06) 0%, transparent 70%);
+  animation: glowPulse 5s ease-in-out infinite alternate;
+  pointer-events: none;
+  z-index: 1;
+}
+
+@keyframes glowPulse {
+  0%   { opacity: 0.4; transform: scale(0.97); }
+  100% { opacity: 0.8; transform: scale(1.03); }
+}
+
+/* Soft Steam container */
+.steam-container {
+  position: absolute;
+  right: 15%; bottom: 30%;
+  width: 22%; height: 55%;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Soft Volumetric Steam Wisps (3 Max, warm tinted) */
+.steam-wisp {
+  position: absolute;
+  bottom: 0;
+  border-radius: 50% 50% 30% 30%;
+  background: rgba(255,255,255,0.0);
+  animation-timing-function: ease-out;
+  animation-iteration-count: infinite;
+  will-change: transform, opacity;
+}
+
+.w1 {
+  left: 30%; width: 28%; height: 70%;
+  animation: riseWisp1 5.5s 0s infinite ease-out;
+}
+.w2 {
+  left: 45%; width: 22%; height: 60%;
+  animation: riseWisp2 6.5s 1.8s infinite ease-out;
+}
+.w3 {
+  left: 18%; width: 25%; height: 55%;
+  animation: riseWisp3 7.0s 3.5s infinite ease-out;
+}
+
+@keyframes riseWisp1 {
+  0%   { transform: translateY(0%) translateX(0%) scaleX(1); opacity: 0; filter: blur(5px); background: rgba(240,220,200,0.0); }
+  8%   { opacity: 0; }
+  18%  { transform: translateY(-12%) translateX(2%) scaleX(1.04); opacity: 0.15; background: rgba(240,220,200,0.45); filter: blur(6px); }
+  40%  { transform: translateY(-38%) translateX(-4%) scaleX(1.12); opacity: 0.22; background: rgba(240,220,200,0.35); filter: blur(8px); }
+  65%  { transform: translateY(-65%) translateX(5%) scaleX(1.22); opacity: 0.15; background: rgba(240,220,200,0.22); filter: blur(10px); }
+  100% { transform: translateY(-100%) translateX(-2%) scaleX(1.4); opacity: 0; background: rgba(240,220,200,0.0); filter: blur(14px); }
+}
+
+@keyframes riseWisp2 {
+  0%   { transform: translateY(0%) translateX(0%) scaleX(1); opacity: 0; filter: blur(4px); background: rgba(235,215,195,0.0); }
+  12%  { opacity: 0; }
+  22%  { transform: translateY(-10%) translateX(-3%) scaleX(1.02); opacity: 0.12; background: rgba(235,215,195,0.4); filter: blur(5px); }
+  45%  { transform: translateY(-40%) translateX(4%) scaleX(1.15); opacity: 0.20; background: rgba(235,215,195,0.3); filter: blur(8px); }
+  70%  { transform: translateY(-68%) translateX(-4%) scaleX(1.25); opacity: 0.12; background: rgba(235,215,195,0.18); filter: blur(11px); }
+  100% { transform: translateY(-100%) translateX(3%) scaleX(1.45); opacity: 0; background: rgba(235,215,195,0.0); filter: blur(15px); }
+}
+
+@keyframes riseWisp3 {
+  0%   { transform: translateY(0%) translateX(0%) scaleX(1); opacity: 0; filter: blur(5px); background: rgba(245,225,205,0.0); }
+  10%  { opacity: 0; }
+  20%  { transform: translateY(-8%) translateX(3%) scaleX(1.03); opacity: 0.14; background: rgba(245,225,205,0.42); filter: blur(6px); }
+  42%  { transform: translateY(-35%) translateX(-5%) scaleX(1.1); opacity: 0.22; background: rgba(245,225,205,0.32); filter: blur(9px); }
+  68%  { transform: translateY(-66%) translateX(4%) scaleX(1.22); opacity: 0.12; background: rgba(245,225,205,0.18); filter: blur(12px); }
+  100% { transform: translateY(-100%) translateX(-2%) scaleX(1.42); opacity: 0; background: rgba(245,225,205,0.0); filter: blur(15px); }
+}
+
+/* Right Column: 2x3 Grid of narrative cards */
 .scrolly-text-container {
-  position: relative;
   display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: 1fr;
-  align-items: center;
-  height: 100%;
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(1.2rem, 2vw, 2.2rem);
 }
 
 .scrolly-card {
-  grid-column: 1;
-  grid-row: 1;
-  padding: var(--space-md) 0;
-  opacity: 0;
-  transform: translateY(30px) scale(0.98);
-  will-change: opacity, transform;
+  padding: var(--space-md) var(--space-lg);
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-medium);
+  display: flex;
+  flex-direction: column;
 }
 
-.scrolly-card.active {
-  opacity: 1;
-  transform: translateY(0) scale(1);
+.scrolly-card:hover {
+  border-color: rgba(139, 30, 30, 0.2);
+  box-shadow: 0 8px 24px rgba(45, 24, 16, 0.04);
+  transform: translateY(-2px);
 }
 
 .scrolly-step-num {
   font-family: var(--font-header);
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.15em;
   color: var(--accent-maroon);
   display: block;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
 }
 
 .scrolly-card h3 {
-  font-size: 26px;
+  font-size: 20px;
   font-weight: 600;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
   color: var(--text-primary);
 }
 
 .scrolly-card p {
-  font-size: 15px;
+  font-size: 14px;
   color: var(--text-secondary);
-  line-height: 1.6;
+  line-height: 1.65; /* Editorial spacing */
+  max-width: 36ch;  /* Apple-style restrained width */
+}
+
+/* Subtly different statement card to break visual repetition */
+.craft-statement-card {
+  background-color: #fdfaf7; /* Warmer sand tone */
+  border: 1px dashed rgba(139, 30, 30, 0.2); /* Softer border */
+}
+
+.craft-statement-card h3 {
+  color: var(--accent-maroon);
+}
+
+.statement-icon {
+  font-size: 22px;
+  margin-bottom: 8px;
+  display: block;
+}
+
+@media (max-width: 992px) {
+  .scrolly-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
+  }
+  .scrolly-visual-container {
+    position: relative;
+    top: 0;
+    height: auto;
+    aspect-ratio: 16 / 10;
+    min-height: unset;
+    max-height: 400px;
+  }
+}
+
+@media (max-width: 768px) {
+  .scrolly-text-container {
+    grid-template-columns: 1fr;
+    gap: var(--space-md);
+  }
 }
 
 /* -------------------------------------------------------------

@@ -485,68 +485,6 @@ if (!prefersReducedMotion) {
   // 3. Showcase Section: The Aroma Lock Pouch (Static picture - no animations or tilts)
   // No JS animations required for static picture.
 
-  // 4. Pinned Scrollytelling & Scroll Compression ("From Dough to Crunch")
-  const scrollySection = document.querySelector('.scrolly-section')
-  if (scrollySection && window.innerWidth > 768) {
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: '.scrolly-section',
-        start: 'top top',
-        end: '+=300%', // 3 viewports scrolling distance
-        pin: true,
-        scrub: 1,
-        // Mild scroll compression (0.88x speed compression, slightly slower and heavier smoothing)
-        onEnter: () => {
-          if (lenis) {
-            gsap.to(lenis.options, { wheelMultiplier: 0.88, duration: 1.25, overwrite: 'auto' })
-          }
-        },
-        onLeave: () => {
-          if (lenis) {
-            gsap.to(lenis.options, { wheelMultiplier: 1.0, duration: 1.0, overwrite: 'auto' })
-          }
-        },
-        onEnterBack: () => {
-          if (lenis) {
-            gsap.to(lenis.options, { wheelMultiplier: 0.88, duration: 1.25, overwrite: 'auto' })
-          }
-        },
-        onLeaveBack: () => {
-          if (lenis) {
-            gsap.to(lenis.options, { wheelMultiplier: 1.0, duration: 1.0, overwrite: 'auto' })
-          }
-        }
-      }
-    })
-
-
-    // Stage 1 -> Stage 2 (Standardized easing power3.out, no blurs)
-    tl.to('.scrolly-card[data-step="1"]', { opacity: 0, y: -25, duration: 1, ease: 'power3.out' }, 'stage-1')
-      .to('.scrolly-card[data-step="2"]', { opacity: 1, y: 0, scale: 1, duration: 1, ease: 'power3.out', onStart: () => activateStep(2), onReverseComplete: () => activateStep(1) }, 'stage-1')
-
-    // Stage 2 -> Stage 3
-    tl.to('.scrolly-card[data-step="2"]', { opacity: 0, y: -25, duration: 1, ease: 'power3.out' }, 'stage-2')
-      .to('.scrolly-card[data-step="3"]', { opacity: 1, y: 0, scale: 1, duration: 1, ease: 'power3.out', onStart: () => activateStep(3), onReverseComplete: () => activateStep(2) }, 'stage-2')
-
-    // Stage 3 -> Stage 4
-    tl.to('.scrolly-card[data-step="3"]', { opacity: 0, y: -25, duration: 1, ease: 'power3.out' }, 'stage-3')
-      .to('.scrolly-card[data-step="4"]', { opacity: 1, y: 0, scale: 1, duration: 1, ease: 'power3.out', onStart: () => activateStep(4), onReverseComplete: () => activateStep(3) }, 'stage-3')
-
-    // Stage 4 -> Stage 5
-    tl.to('.scrolly-card[data-step="4"]', { opacity: 0, y: -25, duration: 1, ease: 'power3.out' }, 'stage-4')
-      .to('.scrolly-card[data-step="5"]', { opacity: 1, y: 0, scale: 1, duration: 1, ease: 'power3.out', onStart: () => activateStep(5), onReverseComplete: () => activateStep(4) }, 'stage-4')
-
-    function activateStep(stepNum) {
-      document.querySelectorAll('.scrolly-card').forEach(card => {
-        if (parseInt(card.getAttribute('data-step')) === stepNum) {
-          card.classList.add('active')
-        } else {
-          card.classList.remove('active')
-        }
-      })
-    }
-  }
-
   // 5. Viewport scroll reveals (fast cards)
   const reveals = document.querySelectorAll('.scroll-reveal')
   reveals.forEach(element => {

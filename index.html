@@ -354,54 +354,73 @@
         </div>
       </section>
 
-      <!-- 5. Pinned Scrollytelling Section: From Dough to Crunch -->
+      <!-- 5. Editorial Craft Section: From Dough to Crunch -->
       <section class="scrolly-section" id="dough-crunch" aria-label="Our Craft: From Dough to Crunch">
-        <!-- Sticky Scroller Container -->
-        <div class="scrolly-sticky-wrap">
+        <div class="scrolly-container">
+          
+          <div class="section-header text-center scroll-reveal">
+            <p class="section-tag">Our Craft</p>
+            <h2 class="section-title">From Dough to Crunch</h2>
+            <p class="section-subtitle">A step-by-step glimpse into traditional Tamil snack preparation.</p>
+          </div>
+
           <div class="scrolly-grid">
             
-            <!-- Left Side: Visual Sequence Frame -->
+            <!-- Left Side: Sticky Visual Frame (spans full height of grid) -->
             <div class="scrolly-visual-container">
               <div class="cooking-visual-wrap">
-                <img src="/src/assets/traditional_prep.webp" alt="Traditional Murukku Cooking" class="cooking-img" />
+                <img src="/src/assets/traditional_prep.webp" alt="Traditional Murukku Cooking" class="cooking-img bg-img" />
+                <div class="warmth-glow"></div>
+                <div class="steam-container">
+                  <div class="steam-wisp w1"></div>
+                  <div class="steam-wisp w2"></div>
+                  <div class="steam-wisp w3"></div>
+                </div>
               </div>
             </div>
             
-            <!-- Right Side: Narrative Cards -->
+            <!-- Right Side: Narrative Cards 2x3 Grid -->
             <div class="scrolly-text-container">
               <!-- Step Card 1 -->
-              <div class="scrolly-card active" data-step="1">
+              <div class="scrolly-card scroll-reveal" data-step="1">
                 <span class="scrolly-step-num">Step 01</span>
                 <h3>The Ponni Rice</h3>
                 <p>We begin with raw Ponni rice and roasted urad dal, stone-ground in village mills to preserve natural starches and ensure a dry, crispy texture with minimal oil retention.</p>
               </div>
               
               <!-- Step Card 2 -->
-              <div class="scrolly-card" data-step="2">
+              <div class="scrolly-card scroll-reveal" data-step="2">
                 <span class="scrolly-step-num">Step 02</span>
                 <h3>Hand-Rolled Craft</h3>
                 <p>Our experienced local homemakers coil and twist the fresh dough by hand, ring-by-ring, on clean wooden boards. This gentle handling lets the dough breathe for the perfect density.</p>
               </div>
               
               <!-- Step Card 3 -->
-              <div class="scrolly-card" data-step="3">
+              <div class="scrolly-card scroll-reveal" data-step="3">
                 <span class="scrolly-step-num">Step 03</span>
                 <h3>Wood-Fired Hearth</h3>
                 <p>The dough rings are dropped gently into boiling wood-pressed groundnut oil, heating in vintage brass cauldrons over firewood coals to produce deep, wood-fired caramelization.</p>
               </div>
               
               <!-- Step Card 4 -->
-              <div class="scrolly-card" data-step="4">
+              <div class="scrolly-card scroll-reveal" data-step="4">
                 <span class="scrolly-step-num">Step 04</span>
                 <h3>The Fresh Crunch</h3>
                 <p>Emerging golden-crisp, seasoned with fresh butter, black cumin, and sea salt, each batch is tasted to ensure a clean, crunching bite with zero heavy aftertaste.</p>
               </div>
               
               <!-- Step Card 5 -->
-              <div class="scrolly-card" data-step="5">
+              <div class="scrolly-card scroll-reveal" data-step="5">
                 <span class="scrolly-step-num">Step 05</span>
                 <h3>Sealed for You</h3>
                 <p>Packed immediately into our premium double-walled nitrogen-flushed pouches, shielding the crisp freshness from light and moisture until you open it.</p>
+              </div>
+
+              <!-- Brand Commitment Card to Balance the Grid (subtly different) -->
+              <div class="scrolly-card craft-statement-card scroll-reveal">
+                <span class="statement-icon">👵</span>
+                <h3>Our Standard</h3>
+                <p>"We reject modern industrial short-cuts, hydrogenated fats, and chemical preservatives to protect the authentic taste of traditional Tamil snack preparation."</p>
               </div>
             </div>
             
