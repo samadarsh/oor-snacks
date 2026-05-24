@@ -1,0 +1,505 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- SEO Meta Tags -->
+    <title>Ignis | Wood-Fired Fine Dining Restaurant</title>
+    <meta name="description" content="Experience Ignis, where fire, smoke, and culinary precision meet. Indulge in our dry-aged steaks, artisan wood-fired mains, and premium wine pairings." />
+    
+    <!-- OpenGraph Meta Tags (SEO) -->
+    <meta property="og:title" content="Ignis | Wood-Fired Fine Dining" />
+    <meta property="og:description" content="A sensory dining journey crafted over flame. Explore our seasonal wood-fired menu and book your table tonight." />
+    <meta property="og:type" content="restaurant" />
+    <meta property="og:url" content="https://ignis-dining.com" />
+    <meta property="og:image" content="/src/assets/hero_bg.png" />
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔥</text></svg>" />
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- JSON-LD Local Business Structured Data for SEO -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Restaurant",
+        "name": "Ignis",
+        "image": "https://ignis-dining.com/src/assets/hero_bg.png",
+        "acceptsReservations": "true",
+        "priceRange": "$$$$",
+        "telephone": "+1-555-0199",
+        "servesCuisine": "Wood-fired Fine Dining",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "742 Live Oak Boulevard",
+          "addressLocality": "San Francisco",
+          "addressRegion": "CA",
+          "postalCode": "94102",
+          "addressCountry": "US"
+        },
+        "openingHoursSpecification": [
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": ["Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+            "opens": "17:00",
+            "closes": "23:00"
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body>
+    <!-- Floating Header -->
+    <header class="main-header" id="navbar" role="banner">
+      <div class="header-container">
+        <a href="#" class="logo" aria-label="Ignis Home">IGNIS</a>
+        
+        <nav class="nav-menu" role="navigation" aria-label="Main Navigation">
+          <ul>
+            <li><a href="#signature" class="nav-link">Signature</a></li>
+            <li><a href="#philosophy" class="nav-link">Philosophy</a></li>
+            <li><a href="#menu" class="nav-link">Menu</a></li>
+            <li><a href="#gallery" class="nav-link">Gallery</a></li>
+            <li><a href="#chef" class="nav-link">Chef</a></li>
+            <li><a href="#reservation" class="nav-link">Reservations</a></li>
+          </ul>
+        </nav>
+        
+        <div class="header-cta">
+          <a href="#reservation" class="btn btn-primary btn-sm">Book Table</a>
+        </div>
+        
+        <!-- Mobile Menu Trigger -->
+        <button class="mobile-nav-toggle" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation menu">
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </button>
+      </div>
+    </header>
+
+    <main id="main-content">
+      <!-- 1. Cinematic Hero Section -->
+      <section class="hero-section" id="hero" aria-label="Welcome to Ignis">
+        <div class="hero-bg-container">
+          <img src="/src/assets/hero_bg.png" alt="Wood fired kitchen background" class="hero-bg-image" fetchpriority="high" />
+          <div class="hero-overlay"></div>
+          <div class="hero-vignette"></div>
+          <div class="hero-noise"></div>
+        </div>
+        
+        <div class="hero-content">
+          <p class="hero-pretitle text-reveal">Wood-Fired Gastronomy</p>
+          <h1 class="hero-title text-reveal">Fire. Smoke.<br>Precision.</h1>
+          <p class="hero-subtitle text-reveal">A sensory journey crafted over live oak flames.</p>
+          <div class="hero-ctas text-reveal">
+            <a href="#reservation" class="btn btn-primary">Reserve Table</a>
+            <a href="#menu" class="btn btn-secondary">Explore Menu</a>
+          </div>
+        </div>
+        
+        <div class="scroll-indicator" aria-hidden="true">
+          <span class="scroll-dot"></span>
+          <span class="scroll-text">Scroll to experience</span>
+        </div>
+      </section>
+
+      <!-- 2. Signature Experience Section -->
+      <section class="signature-section" id="signature" aria-label="Signature Dish">
+        <div class="section-container">
+          <div class="signature-grid">
+            <div class="signature-media-wrap scroll-reveal">
+              <img src="/src/assets/signature_dish.png" alt="Ignis wood-fired bone-in ribeye steak" class="signature-image" loading="lazy" />
+            </div>
+            <div class="signature-content-wrap scroll-reveal">
+              <p class="section-tag">Signature Cut</p>
+              <h2 class="section-title">The Ignis Ribeye</h2>
+              <p class="section-desc">
+                45-day dry-aged bone-in ribeye, seared over live red oak coals at 800 degrees, basted with wild herb bone marrow butter, and finished with flakes of smoked cherrywood sea salt. 
+              </p>
+              <p class="section-desc-sub">
+                A masterpiece of temperature control, showcasing the depth of caramelization and tender wood-smoked infusion.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. Culinary Philosophy Section -->
+      <section class="philosophy-section" id="philosophy" aria-label="Culinary Philosophy">
+        <div class="section-container">
+          <div class="philosophy-grid">
+            <div class="philosophy-text scroll-reveal">
+              <p class="section-tag">Our Craft</p>
+              <h2 class="section-title font-serif">The Element of Fire</h2>
+              <blockquote class="philosophy-quote">
+                &ldquo;Fire is not merely a heat source. It is an active ingredient, a volatile partner, and the ultimate arbiter of flavor.&rdquo;
+              </blockquote>
+              <p class="section-desc">
+                At Ignis, we return to the primal origins of cooking, refined through modern culinary gastronomy. We harvest local oak, hickory, and fruitwood to orchestrate distinct temperature zones, matching each timber's smoke profile to the specific protein or vegetable it kisses.
+              </p>
+            </div>
+            <div class="philosophy-image-wrap scroll-reveal">
+              <img src="/src/assets/ambience.png" alt="Luxurious dining room ambience" class="philosophy-image" loading="lazy" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4. Featured Dishes / Menu Section -->
+      <section class="menu-section" id="menu" aria-label="Culinary Menu">
+        <div class="section-container">
+          <div class="menu-header scroll-reveal">
+            <p class="section-tag">Seasonal Offerings</p>
+            <h2 class="section-title">The Culinary Menu</h2>
+            <p class="section-subtitle">Dishes driven by seasonal harvest and wood-fire extraction.</p>
+          </div>
+          
+          <!-- Category Tabs (Desktop) -->
+          <div class="menu-tabs-wrapper scroll-reveal" role="tablist" aria-label="Menu Categories">
+            <button class="menu-tab active" role="tab" aria-selected="true" aria-controls="starters-panel" id="tab-starters">Starters</button>
+            <button class="menu-tab" role="tab" aria-selected="false" aria-controls="mains-panel" id="tab-mains">Mains</button>
+            <button class="menu-tab" role="tab" aria-selected="false" aria-controls="desserts-panel" id="tab-desserts">Desserts</button>
+            <button class="menu-tab" role="tab" aria-selected="false" aria-controls="pairings-panel" id="tab-pairings">Curated Pairings</button>
+          </div>
+
+          <!-- Menu Content Panels -->
+          <div class="menu-content scroll-reveal">
+            
+            <!-- Starters Panel -->
+            <div class="menu-panel active" id="starters-panel" role="tabpanel" aria-labelledby="tab-starters" tabindex="0">
+              <div class="menu-grid-items">
+                <div class="menu-card">
+                  <div class="menu-card-body">
+                    <div class="menu-item-header">
+                      <h3 class="menu-item-title">Charred Octopus</h3>
+                      <span class="menu-item-price">$28</span>
+                    </div>
+                    <p class="menu-item-desc">Fennel pollen, smoked potato emulsion, black garlic vinaigrette, fresh citrus garden greens.</p>
+                  </div>
+                </div>
+                <div class="menu-card">
+                  <div class="menu-card-body">
+                    <div class="menu-item-header">
+                      <h3 class="menu-item-title">Fire-Roasted Bone Marrow</h3>
+                      <span class="menu-item-price">$26</span>
+                    </div>
+                    <p class="menu-item-desc">Sourdough toast, caramelized shallot jam, parsley caper salad, pickled mustard seed.</p>
+                  </div>
+                </div>
+                <div class="menu-card">
+                  <div class="menu-card-body">
+                    <div class="menu-item-header">
+                      <h3 class="menu-item-title">Coal-Roasted Beet Salad</h3>
+                      <span class="menu-item-price">$22</span>
+                    </div>
+                    <p class="menu-item-desc">Whipped goat cheese, walnut praline, blood orange reduction, smoked olive oil spray.</p>
+                  </div>
+                </div>
+                <div class="menu-card">
+                  <div class="menu-card-body">
+                    <div class="menu-item-header">
+                      <h3 class="menu-item-title">Ash-Baked Heirloom Carrots</h3>
+                      <span class="menu-item-price">$20</span>
+                    </div>
+                    <p class="menu-item-desc">Spiced macadamia cream, wild honey glaze, carrot top pesto, toasted coriander seeds.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Mains Panel -->
+            <div class="menu-panel" id="mains-panel" role="tabpanel" aria-labelledby="tab-mains" tabindex="0" hidden>
+              <div class="menu-grid-items">
+                <div class="menu-card">
+                  <div class="menu-card-body">
+                    <div class="menu-item-header">
+                      <h3 class="menu-item-title">Ignis Dry-Aged Ribeye</h3>
+                      <span class="menu-item-price">$74</span>
+                    </div>
+                    <p class="menu-item-desc">45-day dry-aged bone-in ribeye, smoked salt flakes, live-oak charred marrow butter sauce.</p>
+                  </div>
+                </div>
+                <div class="menu-card">
+                  <div class="menu-card-body">
+                    <div class="menu-item-header">
+                      <h3 class="menu-item-title">Hickory-Smoked Black Cod</h3>
+                      <span class="menu-item-price">$58</span>
+                    </div>
+                    <p class="menu-item-desc">Charred baby bok choy, ginger-shiitake dashi broth, scallion oil, fermented red chili glaze.</p>
+                  </div>
+                </div>
+                <div class="menu-card">
+                  <div class="menu-card-body">
+                    <div class="menu-item-header">
+                      <h3 class="menu-item-title">Ember-Roasted Duck Breast</h3>
+                      <span class="menu-item-price">$52</span>
+                    </div>
+                    <p class="menu-item-desc">Spiced plum jus, wood-fired parsnip puree, charred chicory salad, honey-lavender glaze.</p>
+                  </div>
+                </div>
+                <div class="menu-card">
+                  <div class="menu-card-body">
+                    <div class="menu-item-header">
+                      <h3 class="menu-item-title">Wood-Fired Cauliflower Steak</h3>
+                      <span class="menu-item-price">$38</span>
+                    </div>
+                    <p class="menu-item-desc">Smoked almond romesco, roasted chickpea crunch, herb oil drizzle, pickled red onions.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Desserts Panel -->
+            <div class="menu-panel" id="desserts-panel" role="tabpanel" aria-labelledby="tab-desserts" tabindex="0" hidden>
+              <div class="menu-grid-items">
+                <div class="menu-card">
+                  <div class="menu-card-body">
+                    <div class="menu-item-header">
+                      <h3 class="menu-item-title">Smoked Dark Chocolate Tart</h3>
+                      <span class="menu-item-price">$18</span>
+                    </div>
+                    <p class="menu-item-desc">Valrhona single-origin chocolate, sea salt flakes, charred rosemary ice cream.</p>
+                  </div>
+                </div>
+                <div class="menu-card">
+                  <div class="menu-card-body">
+                    <div class="menu-item-header">
+                      <h3 class="menu-item-title">Ember-Baked Apple Galette</h3>
+                      <span class="menu-item-price">$16</span>
+                    </div>
+                    <p class="menu-item-desc">Flaky rye crust, wood-fire baked apples, salted caramel sauce, vanilla bean gelato.</p>
+                  </div>
+                </div>
+                <div class="menu-card">
+                  <div class="menu-card-body">
+                    <div class="menu-item-header">
+                      <h3 class="menu-item-title">Burnt Fig Crème Brûlée</h3>
+                      <span class="menu-item-price">$17</span>
+                    </div>
+                    <p class="menu-item-desc">Ember-charred mission figs, bourbon vanilla custard, caramelized demerara sugar crust.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Pairings Panel -->
+            <div class="menu-panel" id="pairings-panel" role="tabpanel" aria-labelledby="tab-pairings" tabindex="0" hidden>
+              <div class="menu-grid-items">
+                <div class="menu-card">
+                  <div class="menu-card-body">
+                    <div class="menu-item-header">
+                      <h3 class="menu-item-title">The Grand Cru Flight</h3>
+                      <span class="menu-item-price">$65</span>
+                    </div>
+                    <p class="menu-item-desc">Three sommelier-curated Bordeaux pours, hand-selected to pair with our dry-aged steak cuts.</p>
+                  </div>
+                </div>
+                <div class="menu-card">
+                  <div class="menu-card-body">
+                    <div class="menu-item-header">
+                      <h3 class="menu-item-title">Smoke & Oak Cocktail</h3>
+                      <span class="menu-item-price">$22</span>
+                    </div>
+                    <p class="menu-item-desc">Double-oaked bourbon, maple syrup smoked on-site with cherrywood, angostura bitters.</p>
+                  </div>
+                </div>
+                <div class="menu-card">
+                  <div class="menu-card-body">
+                    <div class="menu-item-header">
+                      <h3 class="menu-item-title">Volcanic White Wine Pair</h3>
+                      <span class="menu-item-price">$24</span>
+                    </div>
+                    <p class="menu-item-desc">Etna Bianco Superiore. Crisp minerality and ash undertones, pairing perfectly with charred cod.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- 5. Ambience Gallery Section -->
+      <section class="gallery-section" id="gallery" aria-label="Restaurant Gallery">
+        <div class="section-container">
+          <div class="gallery-header scroll-reveal">
+            <p class="section-tag">Visual Atmosphere</p>
+            <h2 class="section-title">The Space</h2>
+            <p class="section-subtitle">A sensory atmosphere of stone, timber, steel, and shadow.</p>
+          </div>
+          
+          <div class="gallery-grid">
+            <div class="gallery-item item-large scroll-reveal">
+              <img src="/src/assets/hero_bg.png" alt="Open wood hearth kitchen space" class="gallery-img" loading="lazy" />
+              <div class="gallery-item-caption">The Hearth</div>
+            </div>
+            <div class="gallery-item scroll-reveal">
+              <img src="/src/assets/ambience.png" alt="Luxurious dim-lit dining table" class="gallery-img" loading="lazy" />
+              <div class="gallery-item-caption">The Dining Room</div>
+            </div>
+            <div class="gallery-item scroll-reveal">
+              <img src="/src/assets/chef.png" alt="Chef plating details" class="gallery-img" loading="lazy" />
+              <div class="gallery-item-caption">The Pass</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 6. Chef's Story Section -->
+      <section class="chef-section" id="chef" aria-label="Meet Chef Marcus Vance">
+        <div class="section-container">
+          <div class="chef-grid">
+            <div class="chef-image-wrap scroll-reveal">
+              <img src="/src/assets/chef.png" alt="Head Chef Marcus Vance arranging micro herbs on a plate" class="chef-image" loading="lazy" />
+            </div>
+            <div class="chef-content scroll-reveal">
+              <p class="section-tag">The Visionary</p>
+              <h2 class="section-title">Chef Marcus Vance</h2>
+              <p class="section-desc">
+                With over two decades spent in wood-fired hearth cooking across the Mediterranean and Northern California, Chef Marcus Vance co-founded Ignis to push the boundaries of elemental cuisine. 
+              </p>
+              <p class="section-desc">
+                &ldquo;Fire is unpredictable. Controlling it requires an intimate dialogue between the chef, the logs, the air, and the pan. We are not just cooking; we are staging a performance of precision and temperature.&rdquo;
+              </p>
+              <div class="chef-awards">
+                <span class="chef-award">Michelin Star Recipient</span>
+                <span class="chef-award">Best New Chef — Culinary Review</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 7. Testimonials Section -->
+      <section class="testimonials-section" id="testimonials" aria-label="Guest Testimonials">
+        <div class="section-container">
+          <div class="testimonial-slider scroll-reveal">
+            <div class="testimonial-item">
+              <p class="testimonial-quote">&ldquo;An absolute masterclass in flavor extraction. The wood-fire notes are incredibly delicate, never overwhelming, framing the ingredients with unmatched precision.&rdquo;</p>
+              <cite class="testimonial-author">Sarah Jenkins, San Francisco Chronicle</cite>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 8. Reservation System Section -->
+      <section class="reservation-section" id="reservation" aria-label="Book a Table">
+        <div class="section-container">
+          <div class="reservation-wrap scroll-reveal">
+            <div class="reservation-header">
+              <p class="section-tag">Reserve</p>
+              <h2 class="section-title">The Culinary Table</h2>
+              <p class="section-subtitle">Reservations are open 30 days in advance. Walks-ins are accommodated at the hearth bar based on availability.</p>
+            </div>
+            
+            <form id="reservation-form" class="reservation-form" novalidate>
+              <div class="form-grid">
+                <div class="form-group">
+                  <label for="res-name">Full Name</label>
+                  <input type="text" id="res-name" name="name" placeholder="John Doe" required aria-required="true" />
+                  <span class="error-msg" id="name-error" role="alert">Please enter your name.</span>
+                </div>
+                <div class="form-group">
+                  <label for="res-phone">Phone Number</label>
+                  <input type="tel" id="res-phone" name="phone" placeholder="(555) 000-0000" required aria-required="true" />
+                  <span class="error-msg" id="phone-error" role="alert">Please enter a valid phone number.</span>
+                </div>
+                <div class="form-group">
+                  <label for="res-date">Date</label>
+                  <input type="date" id="res-date" name="date" required aria-required="true" />
+                  <span class="error-msg" id="date-error" role="alert">Please select a valid future date.</span>
+                </div>
+                <div class="form-group">
+                  <label for="res-time">Time</label>
+                  <select id="res-time" name="time" required aria-required="true">
+                    <option value="" disabled selected>Select dining time</option>
+                    <option value="17:00">5:00 PM</option>
+                    <option value="17:30">5:30 PM</option>
+                    <option value="18:00">6:00 PM</option>
+                    <option value="18:30">6:30 PM</option>
+                    <option value="19:00">7:00 PM</option>
+                    <option value="19:30">7:30 PM</option>
+                    <option value="20:00">8:00 PM</option>
+                    <option value="20:30">8:30 PM</option>
+                    <option value="21:00">9:00 PM</option>
+                    <option value="21:30">9:30 PM</option>
+                  </select>
+                  <span class="error-msg" id="time-error" role="alert">Please select a dining time.</span>
+                </div>
+                <div class="form-group form-full-width">
+                  <label for="res-guests">Guests</label>
+                  <select id="res-guests" name="guests" required aria-required="true">
+                    <option value="" disabled selected>Number of guests</option>
+                    <option value="1">1 Guest</option>
+                    <option value="2">2 Guests</option>
+                    <option value="3">3 Guests</option>
+                    <option value="4">4 Guests</option>
+                    <option value="5">5 Guests</option>
+                    <option value="6">6 Guests</option>
+                    <option value="7">7+ Guests (Requires private lounge inquiry)</option>
+                  </select>
+                  <span class="error-msg" id="guests-error" role="alert">Please select guest count.</span>
+                </div>
+              </div>
+              
+              <div class="form-submit">
+                <button type="submit" class="btn btn-primary btn-block">Confirm Reservation</button>
+              </div>
+            </form>
+            
+            <div id="form-success" class="form-success-message" role="status" aria-hidden="true" hidden>
+              <div class="success-icon">✓</div>
+              <h3>Reservation Requested</h3>
+              <p>Your table request at Ignis has been submitted. A confirmation SMS and email will be sent shortly.</p>
+              <button class="btn btn-secondary btn-sm success-reset">Book Another Table</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer Section -->
+    <footer class="main-footer" role="contentinfo">
+      <div class="section-container">
+        <div class="footer-grid">
+          <div class="footer-brand">
+            <a href="#" class="footer-logo">IGNIS</a>
+            <p class="footer-tagline">Fire. Smoke. Precision.</p>
+          </div>
+          <div class="footer-col">
+            <h4>Hours</h4>
+            <p>Tuesday — Sunday<br>5:00 PM — 11:00 PM</p>
+            <p>Kitchen closes at 10:00 PM</p>
+          </div>
+          <div class="footer-col">
+            <h4>Contact</h4>
+            <p>742 Live Oak Boulevard<br>San Francisco, CA 94102</p>
+            <p><a href="tel:+15550199">+1 (555) 0199</a><br><a href="mailto:reservations@ignis-dining.com">reservations@ignis-dining.com</a></p>
+          </div>
+          <div class="footer-col">
+            <h4>Follow</h4>
+            <ul class="footer-social">
+              <li><a href="#" target="_blank" rel="noopener noreferrer">Instagram</a></li>
+              <li><a href="#" target="_blank" rel="noopener noreferrer">Facebook</a></li>
+            </ul>
+          </div>
+        </div>
+        
+        <div class="footer-bottom">
+          <p class="copyright">&copy; 2026 Ignis Dining LLC. All rights reserved.</p>
+          <div class="footer-links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
