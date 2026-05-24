@@ -6,25 +6,23 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 // Register GSAP plugins
 gsap.registerPlugin(ScrollTrigger)
 
-// Check accessibility settings (Reduced Motion)
+// Accessibility check
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
 /* -------------------------------------------------------------
  * Smooth Momentum Scrolling (Lenis)
  * ------------------------------------------------------------- */
-let lenis;
+let lenis
 if (!prefersReducedMotion) {
   lenis = new Lenis({
-    duration: 1.2,
-    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Custom physics easing
+    duration: 1.0, // Light and responsive scrolling
+    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
     orientation: 'vertical',
     gestureOrientation: 'vertical',
     smoothWheel: true,
-    wheelMultiplier: 1.0,
     smoothTouch: false,
   })
 
-  // Synchronize ScrollTrigger with Lenis
   lenis.on('scroll', ScrollTrigger.update)
 
   gsap.ticker.add((time) => {
@@ -46,7 +44,7 @@ const checkNavbarScroll = () => {
   }
 }
 window.addEventListener('scroll', checkNavbarScroll)
-checkNavbarScroll() // Run once on startup
+checkNavbarScroll()
 
 /* -------------------------------------------------------------
  * Mobile Hamburger Menu Toggle
@@ -61,13 +59,9 @@ mobileToggle.addEventListener('click', () => {
   mobileToggle.classList.toggle('open')
   navMenu.classList.toggle('open')
   
-  // Prevent scrolling when mobile nav is open
   if (lenis) {
-    if (!isExpanded) {
-      lenis.stop()
-    } else {
-      lenis.start()
-    }
+    if (!isExpanded) lenis.stop()
+    else lenis.start()
   }
 })
 
@@ -76,13 +70,11 @@ navLinks.forEach(link => {
     e.preventDefault()
     const targetId = link.getAttribute('href')
     
-    // Close mobile nav if open
     mobileToggle.setAttribute('aria-expanded', 'false')
     mobileToggle.classList.remove('open')
     navMenu.classList.remove('open')
     if (lenis) lenis.start()
 
-    // Smooth scroll to element
     const targetEl = document.querySelector(targetId)
     if (targetEl) {
       if (lenis) {
@@ -95,94 +87,379 @@ navLinks.forEach(link => {
 })
 
 /* -------------------------------------------------------------
- * Menu Category Navigation (Tabs & Accordions)
+ * E-commerce Shopping Cart Logic (State Management)
  * ------------------------------------------------------------- */
-const tabs = document.querySelectorAll('.menu-tab')
-const panels = document.querySelectorAll('.menu-panel')
+let cart = JSON.parse(localStorage.getItem('oor_cart') || '[]')
 
-tabs.forEach(tab => {
-  tab.addEventListener('click', () => {
-    const isMobile = window.innerWidth <= 768
-    const targetPanelId = tab.getAttribute('aria-controls')
-    const targetPanel = document.getElementById(targetPanelId)
-    
-    if (isMobile) {
-      // Toggle accordion panel on mobile
-      const isActive = tab.classList.contains('active')
-      
-      if (isActive) {
-        tab.classList.remove('active')
-        tab.setAttribute('aria-selected', 'false')
-        targetPanel.classList.remove('active')
-      } else {
-        // Close other panels
-        tabs.forEach(t => {
-          t.classList.remove('active')
-          t.setAttribute('aria-selected', 'false')
-        })
-        panels.forEach(p => p.classList.remove('active'))
-        
-        tab.classList.add('active')
-        tab.setAttribute('aria-selected', 'true')
-        targetPanel.classList.add('active')
-        
-        // Scroll into view on mobile accordion opening
-        setTimeout(() => {
-          tab.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
-        }, 300)
-      }
+const updateCartStorage = () => {
+  localStorage.setItem('oor_cart', JSON.stringify(cart))
+  syncCartUI()
+}
+
+// Add Item to Cart
+const addToCart = (id, name, weight, price, img) => {
+  const existingItemIndex = cart.findIndex(item => item.id === id && item.weight === weight)
+  
+  if (existingItemIndex > -1) {
+    cart[existingItemIndex].qty += 1
+  } else {
+    cart.push({ id, name, weight, price, qty: 1, img })
+  }
+  
+  updateCartStorage()
+  openCartDrawer()
+}
+
+// Update quantity
+const updateQty = (id, weight, change) => {
+  const index = cart.findIndex(item => item.id === id && item.weight === weight)
+  if (index === -1) return
+  
+  cart[index].qty += change
+  if (cart[index].qty <= 0) {
+    cart.splice(index, 1)
+  }
+  
+  updateCartStorage()
+}
+
+// Calculate totals
+const getCartCount = () => cart.reduce((total, item) => total + item.qty, 0)
+const getCartSubtotal = () => cart.reduce((total, item) => total + (item.price * item.qty), 0)
+
+// Sync UI Elements
+const syncCartUI = () => {
+  const count = getCartCount()
+  const subtotal = getCartSubtotal()
+  const isMobile = window.innerWidth <= 768
+  
+  // 1. Badge count
+  document.getElementById('cart-badge-count').textContent = count
+  
+  // 2. Empty state toggle
+  const emptyState = document.getElementById('cart-empty-state')
+  const itemsList = document.getElementById('cart-items-list')
+  const summarySection = document.getElementById('cart-summary-section')
+  
+  if (count === 0) {
+    emptyState.style.display = 'flex'
+    itemsList.setAttribute('hidden', 'true')
+    summarySection.setAttribute('hidden', 'true')
+  } else {
+    emptyState.style.display = 'none'
+    itemsList.removeAttribute('hidden')
+    summarySection.removeAttribute('hidden')
+  }
+
+  // 3. Subtotal
+  document.getElementById('cart-subtotal-amount').textContent = `₹${subtotal}`
+
+  // 4. Render Cart Items List
+  itemsList.innerHTML = cart.map(item => `
+    <div class="cart-item">
+      <img src="${item.img}" alt="${item.name}" class="cart-item-img" />
+      <div class="cart-item-info">
+        <h4 class="cart-item-title">${item.name}</h4>
+        <span class="cart-item-meta">${item.weight} &bull; ₹${item.price}</span>
+        <div class="cart-item-qty-row">
+          <div class="qty-control">
+            <button class="qty-btn dec-btn" data-id="${item.id}" data-weight="${item.weight}">&minus;</button>
+            <span class="qty-number">${item.qty}</span>
+            <button class="qty-btn inc-btn" data-id="${item.id}" data-weight="${item.weight}">+</button>
+          </div>
+        </div>
+      </div>
+      <strong class="cart-item-price">₹${item.price * item.qty}</strong>
+    </div>
+  `).join('')
+
+  // 5. Quantity adjust listeners
+  itemsList.querySelectorAll('.dec-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      updateQty(btn.getAttribute('data-id'), btn.getAttribute('data-weight'), -1)
+    })
+  })
+  
+  itemsList.querySelectorAll('.inc-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      updateQty(btn.getAttribute('data-id'), btn.getAttribute('data-weight'), 1)
+    })
+  })
+
+  // 6. Mobile sticky cart bar toggle
+  const stickyCartBar = document.getElementById('mobile-sticky-cart')
+  if (stickyCartBar) {
+    if (count > 0 && isMobile) {
+      stickyCartBar.classList.add('active')
+      stickyCartBar.removeAttribute('hidden')
+      stickyCartBar.setAttribute('aria-hidden', 'false')
+      document.getElementById('mobile-cart-item-count').textContent = `${count} Item${count > 1 ? 's' : ''}`
+      document.getElementById('mobile-cart-total-amount').textContent = `₹${subtotal}`
     } else {
-      // Desktop Tab styling
-      tabs.forEach(t => {
-        t.classList.remove('active')
-        t.setAttribute('aria-selected', 'false')
-      })
-      panels.forEach(p => p.classList.remove('active'))
-
-      tab.classList.add('active')
-      tab.setAttribute('aria-selected', 'true')
-      targetPanel.classList.add('active')
+      stickyCartBar.classList.remove('active')
+      stickyCartBar.setAttribute('hidden', 'true')
+      stickyCartBar.setAttribute('aria-hidden', 'true')
     }
+  }
+}
+
+/* -------------------------------------------------------------
+ * Shopping Cart Drawer UI Toggle
+ * ------------------------------------------------------------- */
+const cartDrawer = document.getElementById('cart-drawer')
+const cartToggle = document.getElementById('cart-toggle')
+const cartClose = document.getElementById('cart-close')
+const cartShopNow = document.getElementById('cart-shop-now')
+const mobileViewCartBtn = document.getElementById('mobile-view-cart-btn')
+
+const openCartDrawer = () => {
+  cartDrawer.classList.add('open')
+  cartDrawer.setAttribute('aria-hidden', 'false')
+  if (lenis) lenis.stop()
+}
+
+const closeCartDrawer = () => {
+  cartDrawer.classList.remove('open')
+  cartDrawer.setAttribute('aria-hidden', 'true')
+  if (lenis) lenis.start()
+}
+
+if (cartToggle && cartDrawer) {
+  cartToggle.addEventListener('click', openCartDrawer)
+  cartClose.addEventListener('click', closeCartDrawer)
+  cartDrawer.querySelector('.cart-drawer-overlay').addEventListener('click', closeCartDrawer)
+  
+  if (cartShopNow) {
+    cartShopNow.addEventListener('click', () => {
+      closeCartDrawer()
+      const shopEl = document.getElementById('best-sellers')
+      if (shopEl) {
+        if (lenis) lenis.scrollTo(shopEl, { offset: -70 })
+        else shopEl.scrollIntoView({ behavior: 'smooth' })
+      }
+    })
+  }
+
+  if (mobileViewCartBtn) {
+    mobileViewCartBtn.addEventListener('click', openCartDrawer)
+  }
+}
+
+// Adjust cart bar visibility on viewport resize
+window.addEventListener('resize', syncCartUI)
+
+/* -------------------------------------------------------------
+ * Cart triggers on Product Cards (Add to Cart)
+ * ------------------------------------------------------------- */
+const productCards = document.querySelectorAll('.product-card')
+productCards.forEach(card => {
+  const addBtn = card.querySelector('.add-to-cart-btn')
+  if (!addBtn) return
+  
+  addBtn.addEventListener('click', () => {
+    const id = card.getAttribute('data-id')
+    const name = card.getAttribute('data-name')
+    const basePrice = parseInt(card.getAttribute('data-base-price'))
+    const img = card.querySelector('.product-img').getAttribute('src')
+    
+    // Check if there's a weight selector, otherwise default to weightless combo price
+    const select = card.querySelector('.weight-select')
+    let weight = 'Pack'
+    let price = basePrice
+    
+    if (select) {
+      const option = select.options[select.selectedIndex]
+      weight = option.value
+      const multiplier = parseFloat(option.getAttribute('data-multiplier') || '1.0')
+      price = Math.round(basePrice * multiplier)
+    }
+    
+    addToCart(id, name, weight, price, img)
   })
 })
 
-// Correct menu layout states on screen width resize
-window.addEventListener('resize', () => {
-  const isMobile = window.innerWidth <= 768
-  const activeTab = document.querySelector('.menu-tab.active')
+/* -------------------------------------------------------------
+ * Checkout Form Handling (WhatsApp Compiler & Order Ledger Log)
+ * ------------------------------------------------------------- */
+const checkoutForm = document.getElementById('cart-checkout-form')
+
+checkoutForm.addEventListener('submit', (e) => {
+  e.preventDefault()
   
-  if (!isMobile) {
-    if (!activeTab) {
-      tabs[0].classList.add('active')
-      tabs[0].setAttribute('aria-selected', 'true')
-      panels[0].classList.add('active')
-    } else {
-      const targetPanelId = activeTab.getAttribute('aria-controls')
-      panels.forEach(p => {
-        if (p.id === targetPanelId) {
-          p.classList.add('active')
-        } else {
-          p.classList.remove('active')
-        }
-      })
-    }
-  }
+  const name = document.getElementById('cust-name').value
+  const address = document.getElementById('cust-address').value
+  
+  if (!name || !address) return
+  
+  const subtotal = getCartSubtotal()
+  const shipping = subtotal >= 500 ? 0 : 60
+  const total = subtotal + shipping
+  
+  // 1. Format order text for WhatsApp
+  const itemsText = cart.map(item => `- ${item.qty}x ${item.name} (${item.weight}) - ₹${item.price * item.qty}`).join('\n')
+  
+  const whatsappMsg = `Hello Oor Snacks! I'd like to place an order:
+
+*Customer Details*
+Name: ${name}
+Delivery Address: ${address}
+
+*Order Items*
+${itemsText}
+
+*Summary*
+Subtotal: ₹${subtotal}
+Shipping: ${shipping === 0 ? 'FREE' : `₹${shipping}`}
+*Total Amount: ₹${total}*
+
+Thank you!`
+
+  // 2. Log order to Local Storage (Simulating backend ledger queue)
+  const incomingOrders = JSON.parse(localStorage.getItem('oor_orders') || '[]')
+  incomingOrders.push({
+    id: Date.now(),
+    name,
+    address,
+    items: cart.map(item => ({ name: item.name, weight: item.weight, qty: item.qty, total: item.price * item.qty })),
+    subtotal,
+    shipping,
+    total
+  })
+  localStorage.setItem('oor_orders', JSON.stringify(incomingOrders))
+  
+  // 3. Clear cart memory
+  cart = []
+  updateCartStorage()
+  closeCartDrawer()
+  
+  // 4. Fire WhatsApp API redirect
+  const encodedMsg = encodeURIComponent(whatsappMsg)
+  const whatsappUrl = `https://api.whatsapp.com/send?phone=919876543210&text=${encodedMsg}`
+  
+  window.open(whatsappUrl, '_blank')
 })
 
 /* -------------------------------------------------------------
- * GSAP ScrollTrigger Animations
+ * Incoming Orders Dashboard Drawer (Admin FOH Portal)
+ * ------------------------------------------------------------- */
+const fohTrigger = document.getElementById('foh-portal-trigger')
+const fohPortal = document.getElementById('foh-portal')
+const fohClose = document.querySelector('.foh-portal-close')
+const fohClear = document.querySelector('.foh-clear-all')
+
+const deleteOrder = (id) => {
+  let orders = JSON.parse(localStorage.getItem('oor_orders') || '[]')
+  orders = orders.filter(o => o.id !== id)
+  localStorage.setItem('oor_orders', JSON.stringify(orders))
+  renderOrdersLedger()
+}
+
+const clearAllOrders = () => {
+  localStorage.removeItem('oor_orders')
+  renderOrdersLedger()
+}
+
+const renderOrdersLedger = () => {
+  const listEl = document.getElementById('foh-ledger-list')
+  if (!listEl) return
+  
+  const orders = JSON.parse(localStorage.getItem('oor_orders') || '[]')
+  
+  if (orders.length === 0) {
+    listEl.innerHTML = `
+      <div class="foh-empty-state">
+        <p>No customer order requests found.</p>
+      </div>
+    `
+    return
+  }
+  
+  // Sort reverse-chronological (newest first)
+  orders.sort((a, b) => b.id - a.id)
+  
+  listEl.innerHTML = orders.map(ord => {
+    const timeStr = new Date(ord.id).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })
+    const dateStr = new Date(ord.id).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+    
+    return `
+      <div class="foh-ledger-card">
+        <div class="foh-card-header">
+          <strong>${ord.name}</strong>
+          <span class="foh-card-tag">Pending Dispatch</span>
+        </div>
+        <div class="foh-card-details">
+          <p><span>Address:</span> ${ord.address}</p>
+          <p><span>Time:</span> ${dateStr} at ${timeStr}</p>
+          <div class="foh-order-items">
+            ${ord.items.map(i => `
+              <div class="foh-order-item">
+                <span>${i.qty}x ${i.name} (${i.weight})</span>
+                <span>₹${i.total}</span>
+              </div>
+            `).join('')}
+          </div>
+          <div class="foh-order-total-row">
+            <span>Total Bill:</span>
+            <span>₹${ord.total}</span>
+          </div>
+        </div>
+        <button class="foh-delete-btn" data-id="${ord.id}">Fulfill Order</button>
+      </div>
+    `
+  }).join('')
+
+  listEl.querySelectorAll('.foh-delete-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const id = parseInt(btn.getAttribute('data-id'))
+      if (confirm('Mark this customer order as Fulfilled and Dispatch?')) {
+        deleteOrder(id)
+      }
+    })
+  })
+}
+
+if (fohTrigger && fohPortal) {
+  fohTrigger.addEventListener('click', (e) => {
+    e.preventDefault()
+    fohPortal.classList.add('open')
+    fohPortal.setAttribute('aria-hidden', 'false')
+    renderOrdersLedger()
+    if (lenis) lenis.stop()
+  })
+  
+  const closeFoh = () => {
+    fohPortal.classList.remove('open')
+    fohPortal.setAttribute('aria-hidden', 'true')
+    if (lenis) lenis.start()
+  }
+  
+  fohClose.addEventListener('click', closeFoh)
+  fohPortal.querySelector('.foh-portal-overlay').addEventListener('click', closeFoh)
+  if (fohClear) {
+    fohClear.addEventListener('click', () => {
+      if (confirm('Clear the entire incoming orders dashboard queue?')) {
+        clearAllOrders()
+      }
+    })
+  }
+}
+
+/* -------------------------------------------------------------
+ * GSAP ScrollTrigger reveals
  * ------------------------------------------------------------- */
 if (!prefersReducedMotion) {
-  // 1. Hero Load Entry Animation
+  // 1. Hero Load Entry Animation (Slow immersive flatlay zoom & text reveals)
   window.addEventListener('load', () => {
     const tl = gsap.timeline()
+    
     tl.from('.hero-bg-image', {
-      scale: 1.15,
-      duration: 2.2,
+      scale: 1.08,
+      opacity: 0,
+      duration: 2.5, /* Very slow camera breathing zoom */
       ease: 'power3.out'
     })
     .from('.text-reveal', {
-      y: 30,
+      y: 25,
       opacity: 0,
       stagger: 0.15,
       duration: 1.2,
@@ -190,150 +467,102 @@ if (!prefersReducedMotion) {
     }, '-=1.8')
     .from('.scroll-indicator', {
       opacity: 0,
-      duration: 1,
-      ease: 'power3.out'
-    }, '-=0.5')
+      duration: 0.8
+    }, '-=0.4')
   })
 
-  // 2. Signature Dish Zoom & Reveal
-  gsap.to('.signature-image', {
-    scale: 1.0,
-    filter: 'blur(0px)',
+  // 2. Hero Scroll Parallax (Immersive background slow translation)
+  gsap.timeline({
     scrollTrigger: {
-      trigger: '.signature-section',
-      start: 'top bottom', // Start animating as soon as section bottom enters viewport
-      end: 'center center',  // Stop animating when section is centered
-      scrub: 1,            // Smooth animation linked to scroll
+      trigger: '#hero',
+      start: 'top top',
+      end: 'bottom top',
+      scrub: true
     }
   })
+  .to('.hero-bg-image', { yPercent: 8, ease: 'none' }, 0)
 
-  // 3. Viewport Scroll Reveals (General fade-in-up)
+  // 3. Showcase Section: The Aroma Lock Pouch (Static picture - no animations or tilts)
+  // No JS animations required for static picture.
+
+  // 4. Pinned Scrollytelling & Scroll Compression ("From Dough to Crunch")
+  const scrollySection = document.querySelector('.scrolly-section')
+  if (scrollySection && window.innerWidth > 768) {
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: '.scrolly-section',
+        start: 'top top',
+        end: '+=300%', // 3 viewports scrolling distance
+        pin: true,
+        scrub: 1,
+        // Mild scroll compression (0.88x speed compression, slightly slower and heavier smoothing)
+        onEnter: () => {
+          if (lenis) {
+            gsap.to(lenis.options, { wheelMultiplier: 0.88, duration: 1.25, overwrite: 'auto' })
+          }
+        },
+        onLeave: () => {
+          if (lenis) {
+            gsap.to(lenis.options, { wheelMultiplier: 1.0, duration: 1.0, overwrite: 'auto' })
+          }
+        },
+        onEnterBack: () => {
+          if (lenis) {
+            gsap.to(lenis.options, { wheelMultiplier: 0.88, duration: 1.25, overwrite: 'auto' })
+          }
+        },
+        onLeaveBack: () => {
+          if (lenis) {
+            gsap.to(lenis.options, { wheelMultiplier: 1.0, duration: 1.0, overwrite: 'auto' })
+          }
+        }
+      }
+    })
+
+
+    // Stage 1 -> Stage 2 (Standardized easing power3.out, no blurs)
+    tl.to('.scrolly-card[data-step="1"]', { opacity: 0, y: -25, duration: 1, ease: 'power3.out' }, 'stage-1')
+      .to('.scrolly-card[data-step="2"]', { opacity: 1, y: 0, scale: 1, duration: 1, ease: 'power3.out', onStart: () => activateStep(2), onReverseComplete: () => activateStep(1) }, 'stage-1')
+
+    // Stage 2 -> Stage 3
+    tl.to('.scrolly-card[data-step="2"]', { opacity: 0, y: -25, duration: 1, ease: 'power3.out' }, 'stage-2')
+      .to('.scrolly-card[data-step="3"]', { opacity: 1, y: 0, scale: 1, duration: 1, ease: 'power3.out', onStart: () => activateStep(3), onReverseComplete: () => activateStep(2) }, 'stage-2')
+
+    // Stage 3 -> Stage 4
+    tl.to('.scrolly-card[data-step="3"]', { opacity: 0, y: -25, duration: 1, ease: 'power3.out' }, 'stage-3')
+      .to('.scrolly-card[data-step="4"]', { opacity: 1, y: 0, scale: 1, duration: 1, ease: 'power3.out', onStart: () => activateStep(4), onReverseComplete: () => activateStep(3) }, 'stage-3')
+
+    // Stage 4 -> Stage 5
+    tl.to('.scrolly-card[data-step="4"]', { opacity: 0, y: -25, duration: 1, ease: 'power3.out' }, 'stage-4')
+      .to('.scrolly-card[data-step="5"]', { opacity: 1, y: 0, scale: 1, duration: 1, ease: 'power3.out', onStart: () => activateStep(5), onReverseComplete: () => activateStep(4) }, 'stage-4')
+
+    function activateStep(stepNum) {
+      document.querySelectorAll('.scrolly-card').forEach(card => {
+        if (parseInt(card.getAttribute('data-step')) === stepNum) {
+          card.classList.add('active')
+        } else {
+          card.classList.remove('active')
+        }
+      })
+    }
+  }
+
+  // 5. Viewport scroll reveals (fast cards)
   const reveals = document.querySelectorAll('.scroll-reveal')
   reveals.forEach(element => {
     gsap.from(element, {
-      y: 40,
+      y: 25,
       opacity: 0,
-      duration: 1.2,
+      duration: 1.0,
       ease: 'power3.out',
       scrollTrigger: {
         trigger: element,
-        start: 'top 85%', // Trigger when top of element hits 85% of viewport height
-        toggleActions: 'play none none none', // Play once, don't reverse
+        start: 'top 90%',
+        toggleActions: 'play none none none'
       }
     })
   })
 }
 
-/* -------------------------------------------------------------
- * Reservation Form Client Validation & Interaction
- * ------------------------------------------------------------- */
-const reservationForm = document.getElementById('reservation-form')
-const formSuccess = document.getElementById('form-success')
-const resetBtn = document.querySelector('.success-reset')
-const dateInput = document.getElementById('res-date')
-
-// Restrict reservation date to today or later
-if (dateInput) {
-  const today = new Date().toISOString().split('T')[0]
-  dateInput.min = today
-}
-
-const validateField = (input) => {
-  const group = input.parentElement
-  let isValid = true
-
-  // Standard checks
-  if (!input.value || (input.tagName === 'SELECT' && input.value === '')) {
-    isValid = false
-  }
-
-  // Custom phone format check
-  if (input.id === 'res-phone' && input.value) {
-    const phoneRegex = /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/im
-    if (!phoneRegex.test(input.value)) {
-      isValid = false
-    }
-  }
-
-  // Custom date validation (must be today or in the future)
-  if (input.id === 'res-date' && input.value) {
-    const selectedDate = new Date(input.value)
-    const today = new Date()
-    today.setHours(0,0,0,0)
-    selectedDate.setHours(0,0,0,0)
-    
-    if (selectedDate < today) {
-      isValid = false
-    }
-  }
-
-  if (isValid) {
-    group.classList.remove('invalid')
-    input.setAttribute('aria-invalid', 'false')
-  } else {
-    group.classList.add('invalid')
-    input.setAttribute('aria-invalid', 'true')
-  }
-
-  return isValid
-}
-
-// Attach real-time blur/change check for inputs
-const inputsToValidate = reservationForm.querySelectorAll('input, select')
-inputsToValidate.forEach(input => {
-  input.addEventListener('blur', () => validateField(input))
-  input.addEventListener('change', () => validateField(input))
-})
-
-// Handle Form Submission
-reservationForm.addEventListener('submit', (e) => {
-  e.preventDefault()
-
-  let isFormValid = true
-
-  inputsToValidate.forEach(input => {
-    const isThisFieldValid = validateField(input)
-    if (!isThisFieldValid) {
-      isFormValid = false
-    }
-  })
-
-  if (isFormValid) {
-    // Elegant transition overlay effect
-    reservationForm.style.opacity = '0'
-    
-    setTimeout(() => {
-      reservationForm.style.display = 'none'
-      formSuccess.removeAttribute('hidden')
-      formSuccess.setAttribute('aria-hidden', 'false')
-      
-      // Focus on the success dialog for accessibility
-      formSuccess.focus()
-      
-      // Smooth scroll if needed
-      if (lenis) {
-        lenis.scrollTo(formSuccess, { offset: -100 })
-      } else {
-        formSuccess.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
-      }
-    }, 400)
-  }
-})
-
-// Reset form
-resetBtn.addEventListener('click', () => {
-  formSuccess.setAttribute('hidden', 'true')
-  formSuccess.setAttribute('aria-hidden', 'true')
-  reservationForm.reset()
-  
-  // Clear any validation visual elements
-  inputsToValidate.forEach(input => {
-    input.parentElement.classList.remove('invalid')
-    input.setAttribute('aria-invalid', 'false')
-  })
-  
-  reservationForm.style.display = 'block'
-  setTimeout(() => {
-    reservationForm.style.opacity = '1'
-  }, 50)
-})
+// Initial Sync
+syncCartUI()

@@ -5,76 +5,101 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     
     <!-- SEO Meta Tags -->
-    <title>Ignis | Wood-Fired Fine Dining Restaurant</title>
-    <meta name="description" content="Experience Ignis, where fire, smoke, and culinary precision meet. Indulge in our dry-aged steaks, artisan wood-fired mains, and premium wine pairings." />
+    <title>Oor | Premium Traditional Tamil Nadu Snacks Brand</title>
+    <meta name="description" content="Discover Oor, where traditional Tamil Nadu snacks are crafted with premium ingredients and cold-pressed oils. Hand-rolled, small-batch, and palm-oil free." />
     
     <!-- OpenGraph Meta Tags (SEO) -->
-    <meta property="og:title" content="Ignis | Wood-Fired Fine Dining" />
-    <meta property="og:description" content="A sensory dining journey crafted over flame. Explore our seasonal wood-fired menu and book your table tonight." />
-    <meta property="og:type" content="restaurant" />
-    <meta property="og:url" content="https://ignis-dining.com" />
-    <meta property="og:image" content="/src/assets/hero_bg.png" />
+    <meta property="og:title" content="Oor Snacks | Traditional Tamil Taste" />
+    <meta property="og:description" content="Authentic Tamil Nadu snacks made fresh with cold-pressed oils. Experience the traditional taste of Murukku, Mixture, and Thattai in premium packaging." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://oorsnacks.com" />
+    <meta property="og:image" content="/src/assets/hero_snacks.webp" />
     
     <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔥</text></svg>" />
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌾</text></svg>" />
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Catamaran:wght@400;500;700&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- JSON-LD Local Business Structured Data for SEO -->
+    <!-- Preload Critical Hero Assets -->
+    <link rel="preload" href="/src/assets/hero_snacks.webp" as="image" fetchpriority="high" />
+    
+    <!-- JSON-LD Local Business & Product Structured Data for SEO -->
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
-        "@type": "Restaurant",
-        "name": "Ignis",
-        "image": "https://ignis-dining.com/src/assets/hero_bg.png",
-        "acceptsReservations": "true",
-        "priceRange": "$$$$",
-        "telephone": "+1-555-0199",
-        "servesCuisine": "Wood-fired Fine Dining",
+        "@type": "FoodBusiness",
+        "name": "Oor Snacks",
+        "image": "https://oorsnacks.com/src/assets/hero_snacks.webp",
+        "description": "Premium traditional Tamil Nadu snacks made with cold-pressed oils and organic rice flour.",
+        "telephone": "+91-98765-43210",
         "address": {
           "@type": "PostalAddress",
-          "streetAddress": "742 Live Oak Boulevard",
-          "addressLocality": "San Francisco",
-          "addressRegion": "CA",
-          "postalCode": "94102",
-          "addressCountry": "US"
+          "streetAddress": "45 Temple Road, Mylapore",
+          "addressLocality": "Chennai",
+          "addressRegion": "TN",
+          "postalCode": "600004",
+          "addressCountry": "IN"
         },
-        "openingHoursSpecification": [
+        "priceRange": "$$"
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "ItemList",
+        "itemListElement": [
           {
-            "@type": "OpeningHoursSpecification",
-            "dayOfWeek": ["Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
-            "opens": "17:00",
-            "closes": "23:00"
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Traditional Kai Murukku",
+            "description": "Authentic hand-twisted crispy rice flour rings made with cold-pressed groundnut oil."
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Madras Mixture",
+            "description": "A classic savory blend of crisp chickpea flour noodles, roasted nuts, and aromatic curry leaves."
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "Ember-Baked Thattai",
+            "description": "Crispy and spicy hand-pressed rice flour discs."
           }
         ]
       }
     </script>
   </head>
   <body>
-    <!-- Floating Header -->
+    <!-- Floating Navigation Header -->
     <header class="main-header" id="navbar" role="banner">
       <div class="header-container">
-        <a href="#" class="logo" aria-label="Ignis Home">IGNIS</a>
+        <a href="#" class="logo-wrapper" aria-label="Oor Home">
+          <span class="logo">OOR</span>
+          <span class="logo-sub">பாரம்பரிய சுவை</span>
+        </a>
         
-        <nav class="nav-menu" role="navigation" aria-label="Main Navigation">
+        <nav class="nav-menu" role="navigation" aria-label="Snack Menu Navigation">
           <ul>
-            <li><a href="#signature" class="nav-link">Signature</a></li>
-            <li><a href="#philosophy" class="nav-link">Philosophy</a></li>
-            <li><a href="#menu" class="nav-link">Menu</a></li>
-            <li><a href="#gallery" class="nav-link">Gallery</a></li>
-            <li><a href="#chef" class="nav-link">Chef</a></li>
-            <li><a href="#reservation" class="nav-link">Reservations</a></li>
+            <li><a href="#best-sellers" class="nav-link">Best Sellers</a></li>
+            <li><a href="#categories" class="nav-link">Categories</a></li>
+            <li><a href="#why-oor" class="nav-link">Our Standards</a></li>
+            <li><a href="#heritage" class="nav-link">Craft</a></li>
+            <li><a href="#combos" class="nav-link">Combos</a></li>
           </ul>
         </nav>
         
-        <div class="header-cta">
-          <a href="#reservation" class="btn btn-primary btn-sm">Book Table</a>
+        <div class="header-actions">
+          <button class="cart-trigger-btn" id="cart-toggle" aria-label="View Shopping Cart">
+            <span class="cart-icon">🛒</span>
+            <span class="cart-count-badge" id="cart-badge-count">0</span>
+          </button>
         </div>
         
-        <!-- Mobile Menu Trigger -->
+        <!-- Mobile Navigation Hamburger Toggle -->
         <button class="mobile-nav-toggle" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation menu">
           <span class="bar"></span>
           <span class="bar"></span>
@@ -83,380 +108,404 @@
     </header>
 
     <main id="main-content">
-      <!-- 1. Cinematic Hero Section -->
-      <section class="hero-section" id="hero" aria-label="Welcome to Ignis">
+      <!-- 1. Cinematic D2C Hero Section -->
+      <section class="hero-section" id="hero" aria-label="Welcome to Oor Snacks">
+        <!-- Layered Parallax Scene -->
         <div class="hero-bg-container">
-          <img src="/src/assets/hero_bg.png" alt="Wood fired kitchen background" class="hero-bg-image" fetchpriority="high" />
+          <img src="/src/assets/hero_snacks.webp" alt="Authentic South Indian Snacks Flatlay" class="hero-bg-image" fetchpriority="high" />
           <div class="hero-overlay"></div>
           <div class="hero-vignette"></div>
           <div class="hero-noise"></div>
         </div>
         
         <div class="hero-content">
-          <p class="hero-pretitle text-reveal">Wood-Fired Gastronomy</p>
-          <h1 class="hero-title text-reveal">Fire. Smoke.<br>Precision.</h1>
-          <p class="hero-subtitle text-reveal">A sensory journey crafted over live oak flames.</p>
+          <p class="hero-pretitle text-reveal">கைமுறை தயாரிப்பு &bull; HANDMADE PREPARATION</p>
+          <h1 class="hero-title text-reveal">Tradition in<br>every crunch.</h1>
+          <p class="hero-subtitle text-reveal">Authentic Tamil Nadu snacks, handmade fresh with cold-pressed oils and packed daily.</p>
           <div class="hero-ctas text-reveal">
-            <a href="#reservation" class="btn btn-primary">Reserve Table</a>
-            <a href="#menu" class="btn btn-secondary">Explore Menu</a>
+            <a href="#best-sellers" class="btn btn-primary">Shop Best Sellers</a>
+            <a href="#categories" class="btn btn-secondary">Explore Menu</a>
           </div>
         </div>
         
         <div class="scroll-indicator" aria-hidden="true">
           <span class="scroll-dot"></span>
-          <span class="scroll-text">Scroll to experience</span>
+          <span class="scroll-text">Scroll to explore</span>
         </div>
       </section>
 
-      <!-- 2. Signature Experience Section -->
-      <section class="signature-section" id="signature" aria-label="Signature Dish">
+      <!-- 2. Best Sellers (Product Catalog Grid) -->
+      <section class="best-sellers-section" id="best-sellers" aria-label="Best Selling Snacks">
         <div class="section-container">
-          <div class="signature-grid">
-            <div class="signature-media-wrap scroll-reveal">
-              <img src="/src/assets/signature_dish.png" alt="Ignis wood-fired bone-in ribeye steak" class="signature-image" loading="lazy" />
-            </div>
-            <div class="signature-content-wrap scroll-reveal">
-              <p class="section-tag">Signature Cut</p>
-              <h2 class="section-title">The Ignis Ribeye</h2>
-              <p class="section-desc">
-                45-day dry-aged bone-in ribeye, seared over live red oak coals at 800 degrees, basted with wild herb bone marrow butter, and finished with flakes of smoked cherrywood sea salt. 
-              </p>
-              <p class="section-desc-sub">
-                A masterpiece of temperature control, showcasing the depth of caramelization and tender wood-smoked infusion.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- 3. Culinary Philosophy Section -->
-      <section class="philosophy-section" id="philosophy" aria-label="Culinary Philosophy">
-        <div class="section-container">
-          <div class="philosophy-grid">
-            <div class="philosophy-text scroll-reveal">
-              <p class="section-tag">Our Craft</p>
-              <h2 class="section-title font-serif">The Element of Fire</h2>
-              <blockquote class="philosophy-quote">
-                &ldquo;Fire is not merely a heat source. It is an active ingredient, a volatile partner, and the ultimate arbiter of flavor.&rdquo;
-              </blockquote>
-              <p class="section-desc">
-                At Ignis, we return to the primal origins of cooking, refined through modern culinary gastronomy. We harvest local oak, hickory, and fruitwood to orchestrate distinct temperature zones, matching each timber's smoke profile to the specific protein or vegetable it kisses.
-              </p>
-            </div>
-            <div class="philosophy-image-wrap scroll-reveal">
-              <img src="/src/assets/ambience.png" alt="Luxurious dining room ambience" class="philosophy-image" loading="lazy" />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- 4. Featured Dishes / Menu Section -->
-      <section class="menu-section" id="menu" aria-label="Culinary Menu">
-        <div class="section-container">
-          <div class="menu-header scroll-reveal">
-            <p class="section-tag">Seasonal Offerings</p>
-            <h2 class="section-title">The Culinary Menu</h2>
-            <p class="section-subtitle">Dishes driven by seasonal harvest and wood-fire extraction.</p>
+          <div class="section-header scroll-reveal">
+            <p class="section-tag">Popular Choices</p>
+            <h2 class="section-title">Our Best Sellers</h2>
+            <p class="section-subtitle">Freshly fried in small batches, shipped straight to your doorstep.</p>
           </div>
           
-          <!-- Category Tabs (Desktop) -->
-          <div class="menu-tabs-wrapper scroll-reveal" role="tablist" aria-label="Menu Categories">
-            <button class="menu-tab active" role="tab" aria-selected="true" aria-controls="starters-panel" id="tab-starters">Starters</button>
-            <button class="menu-tab" role="tab" aria-selected="false" aria-controls="mains-panel" id="tab-mains">Mains</button>
-            <button class="menu-tab" role="tab" aria-selected="false" aria-controls="desserts-panel" id="tab-desserts">Desserts</button>
-            <button class="menu-tab" role="tab" aria-selected="false" aria-controls="pairings-panel" id="tab-pairings">Curated Pairings</button>
-          </div>
-
-          <!-- Menu Content Panels -->
-          <div class="menu-content scroll-reveal">
-            
-            <!-- Starters Panel -->
-            <div class="menu-panel active" id="starters-panel" role="tabpanel" aria-labelledby="tab-starters" tabindex="0">
-              <div class="menu-grid-items">
-                <div class="menu-card">
-                  <div class="menu-card-body">
-                    <div class="menu-item-header">
-                      <h3 class="menu-item-title">Charred Octopus</h3>
-                      <span class="menu-item-price">$28</span>
-                    </div>
-                    <p class="menu-item-desc">Fennel pollen, smoked potato emulsion, black garlic vinaigrette, fresh citrus garden greens.</p>
-                  </div>
+          <div class="products-grid">
+            <!-- Product Card 1 -->
+            <div class="product-card scroll-reveal" data-id="p1" data-name="Kai Murukku" data-base-price="140">
+              <div class="product-media">
+                <img src="/src/assets/hero_snacks.webp" alt="Traditional Kai Murukku" class="product-img" loading="lazy" />
+                <span class="product-badge">Best Seller</span>
+              </div>
+              <div class="product-details">
+                <h3 class="product-name">Traditional Kai Murukku</h3>
+                <p class="product-desc">Golden, hand-twisted rice flour coils. Exquisite crunch with butter and cumin notes.</p>
+                <div class="product-trust-tags">
+                  <span class="trust-tag">No Palm Oil</span>
+                  <span class="trust-tag">Handmade</span>
                 </div>
-                <div class="menu-card">
-                  <div class="menu-card-body">
-                    <div class="menu-item-header">
-                      <h3 class="menu-item-title">Fire-Roasted Bone Marrow</h3>
-                      <span class="menu-item-price">$26</span>
-                    </div>
-                    <p class="menu-item-desc">Sourdough toast, caramelized shallot jam, parsley caper salad, pickled mustard seed.</p>
+                <div class="product-purchase-row">
+                  <div class="weight-selector-wrap">
+                    <select class="weight-select" aria-label="Select Package Weight">
+                      <option value="250g" data-multiplier="1.0">250g — ₹140</option>
+                      <option value="500g" data-multiplier="1.8">500g — ₹252</option>
+                    </select>
                   </div>
-                </div>
-                <div class="menu-card">
-                  <div class="menu-card-body">
-                    <div class="menu-item-header">
-                      <h3 class="menu-item-title">Coal-Roasted Beet Salad</h3>
-                      <span class="menu-item-price">$22</span>
-                    </div>
-                    <p class="menu-item-desc">Whipped goat cheese, walnut praline, blood orange reduction, smoked olive oil spray.</p>
-                  </div>
-                </div>
-                <div class="menu-card">
-                  <div class="menu-card-body">
-                    <div class="menu-item-header">
-                      <h3 class="menu-item-title">Ash-Baked Heirloom Carrots</h3>
-                      <span class="menu-item-price">$20</span>
-                    </div>
-                    <p class="menu-item-desc">Spiced macadamia cream, wild honey glaze, carrot top pesto, toasted coriander seeds.</p>
-                  </div>
+                  <button class="btn btn-primary btn-sm add-to-cart-btn">Add to Cart</button>
                 </div>
               </div>
             </div>
 
-            <!-- Mains Panel -->
-            <div class="menu-panel" id="mains-panel" role="tabpanel" aria-labelledby="tab-mains" tabindex="0" hidden>
-              <div class="menu-grid-items">
-                <div class="menu-card">
-                  <div class="menu-card-body">
-                    <div class="menu-item-header">
-                      <h3 class="menu-item-title">Ignis Dry-Aged Ribeye</h3>
-                      <span class="menu-item-price">$74</span>
-                    </div>
-                    <p class="menu-item-desc">45-day dry-aged bone-in ribeye, smoked salt flakes, live-oak charred marrow butter sauce.</p>
-                  </div>
+            <!-- Product Card 2 -->
+            <div class="product-card scroll-reveal" data-id="p2" data-name="Madras Mixture" data-base-price="130">
+              <div class="product-media">
+                <img src="/src/assets/hero_snacks.webp" alt="Classic Madras Mixture" class="product-img" loading="lazy" />
+                <span class="product-badge combo-badge">Tea-Time Favorite</span>
+              </div>
+              <div class="product-details">
+                <h3 class="product-name">Classic Madras Mixture</h3>
+                <p class="product-desc">Savory mix of omapodi, boondi, ribbon pakoda, cashews, and crispy fried curry leaves.</p>
+                <div class="product-trust-tags">
+                  <span class="trust-tag">Cold-Pressed Peanut Oil</span>
                 </div>
-                <div class="menu-card">
-                  <div class="menu-card-body">
-                    <div class="menu-item-header">
-                      <h3 class="menu-item-title">Hickory-Smoked Black Cod</h3>
-                      <span class="menu-item-price">$58</span>
-                    </div>
-                    <p class="menu-item-desc">Charred baby bok choy, ginger-shiitake dashi broth, scallion oil, fermented red chili glaze.</p>
+                <div class="product-purchase-row">
+                  <div class="weight-selector-wrap">
+                    <select class="weight-select" aria-label="Select Package Weight">
+                      <option value="250g" data-multiplier="1.0">250g — ₹130</option>
+                      <option value="500g" data-multiplier="1.8">500g — ₹234</option>
+                    </select>
                   </div>
-                </div>
-                <div class="menu-card">
-                  <div class="menu-card-body">
-                    <div class="menu-item-header">
-                      <h3 class="menu-item-title">Ember-Roasted Duck Breast</h3>
-                      <span class="menu-item-price">$52</span>
-                    </div>
-                    <p class="menu-item-desc">Spiced plum jus, wood-fired parsnip puree, charred chicory salad, honey-lavender glaze.</p>
-                  </div>
-                </div>
-                <div class="menu-card">
-                  <div class="menu-card-body">
-                    <div class="menu-item-header">
-                      <h3 class="menu-item-title">Wood-Fired Cauliflower Steak</h3>
-                      <span class="menu-item-price">$38</span>
-                    </div>
-                    <p class="menu-item-desc">Smoked almond romesco, roasted chickpea crunch, herb oil drizzle, pickled red onions.</p>
-                  </div>
+                  <button class="btn btn-primary btn-sm add-to-cart-btn">Add to Cart</button>
                 </div>
               </div>
             </div>
 
-            <!-- Desserts Panel -->
-            <div class="menu-panel" id="desserts-panel" role="tabpanel" aria-labelledby="tab-desserts" tabindex="0" hidden>
-              <div class="menu-grid-items">
-                <div class="menu-card">
-                  <div class="menu-card-body">
-                    <div class="menu-item-header">
-                      <h3 class="menu-item-title">Smoked Dark Chocolate Tart</h3>
-                      <span class="menu-item-price">$18</span>
-                    </div>
-                    <p class="menu-item-desc">Valrhona single-origin chocolate, sea salt flakes, charred rosemary ice cream.</p>
-                  </div>
+            <!-- Product Card 3 -->
+            <div class="product-card scroll-reveal" data-id="p3" data-name="Pepper Banana Chips" data-base-price="110">
+              <div class="product-media">
+                <img src="/src/assets/banana_chips.webp" alt="Pepper Banana Chips" class="product-img" loading="lazy" />
+                <span class="product-badge">Made Fresh</span>
+              </div>
+              <div class="product-details">
+                <h3 class="product-name">Pepper Banana Chips</h3>
+                <p class="product-desc">Wafer-thin Nendran banana slices fried in wood-pressed coconut oil, dusted with black pepper.</p>
+                <div class="product-trust-tags">
+                  <span class="trust-tag">Coconut Oil</span>
+                  <span class="trust-tag">Wafer Thin</span>
                 </div>
-                <div class="menu-card">
-                  <div class="menu-card-body">
-                    <div class="menu-item-header">
-                      <h3 class="menu-item-title">Ember-Baked Apple Galette</h3>
-                      <span class="menu-item-price">$16</span>
-                    </div>
-                    <p class="menu-item-desc">Flaky rye crust, wood-fire baked apples, salted caramel sauce, vanilla bean gelato.</p>
+                <div class="product-purchase-row">
+                  <div class="weight-selector-wrap">
+                    <select class="weight-select" aria-label="Select Package Weight">
+                      <option value="150g" data-multiplier="1.0">150g — ₹110</option>
+                      <option value="300g" data-multiplier="1.8">300g — ₹198</option>
+                    </select>
                   </div>
-                </div>
-                <div class="menu-card">
-                  <div class="menu-card-body">
-                    <div class="menu-item-header">
-                      <h3 class="menu-item-title">Burnt Fig Crème Brûlée</h3>
-                      <span class="menu-item-price">$17</span>
-                    </div>
-                    <p class="menu-item-desc">Ember-charred mission figs, bourbon vanilla custard, caramelized demerara sugar crust.</p>
-                  </div>
+                  <button class="btn btn-primary btn-sm add-to-cart-btn">Add to Cart</button>
                 </div>
               </div>
             </div>
 
-            <!-- Pairings Panel -->
-            <div class="menu-panel" id="pairings-panel" role="tabpanel" aria-labelledby="tab-pairings" tabindex="0" hidden>
-              <div class="menu-grid-items">
-                <div class="menu-card">
-                  <div class="menu-card-body">
-                    <div class="menu-item-header">
-                      <h3 class="menu-item-title">The Grand Cru Flight</h3>
-                      <span class="menu-item-price">$65</span>
-                    </div>
-                    <p class="menu-item-desc">Three sommelier-curated Bordeaux pours, hand-selected to pair with our dry-aged steak cuts.</p>
-                  </div>
+            <!-- Product Card 4 -->
+            <div class="product-card scroll-reveal" data-id="p4" data-name="Garlic Karasev" data-base-price="120">
+              <div class="product-media">
+                <img src="/src/assets/hero_snacks.webp" alt="Spicy Garlic Karasev" class="product-img" loading="lazy" />
+                <span class="product-badge festival-badge">Fresh Batch</span>
+              </div>
+              <div class="product-details">
+                <h3 class="product-name">Spicy Garlic Karasev</h3>
+                <p class="product-desc">Crispy chickpea flour sticks laced with coarse pepper, hot spices, and freshly crushed garlic.</p>
+                <div class="product-trust-tags">
+                  <span class="trust-tag">Small Batch</span>
                 </div>
-                <div class="menu-card">
-                  <div class="menu-card-body">
-                    <div class="menu-item-header">
-                      <h3 class="menu-item-title">Smoke & Oak Cocktail</h3>
-                      <span class="menu-item-price">$22</span>
-                    </div>
-                    <p class="menu-item-desc">Double-oaked bourbon, maple syrup smoked on-site with cherrywood, angostura bitters.</p>
+                <div class="product-purchase-row">
+                  <div class="weight-selector-wrap">
+                    <select class="weight-select" aria-label="Select Package Weight">
+                      <option value="250g" data-multiplier="1.0">250g — ₹120</option>
+                      <option value="500g" data-multiplier="1.8">500g — ₹216</option>
+                    </select>
                   </div>
-                </div>
-                <div class="menu-card">
-                  <div class="menu-card-body">
-                    <div class="menu-item-header">
-                      <h3 class="menu-item-title">Volcanic White Wine Pair</h3>
-                      <span class="menu-item-price">$24</span>
-                    </div>
-                    <p class="menu-item-desc">Etna Bianco Superiore. Crisp minerality and ash undertones, pairing perfectly with charred cod.</p>
-                  </div>
+                  <button class="btn btn-primary btn-sm add-to-cart-btn">Add to Cart</button>
                 </div>
               </div>
             </div>
-
           </div>
         </div>
       </section>
 
-      <!-- 5. Ambience Gallery Section -->
-      <section class="gallery-section" id="gallery" aria-label="Restaurant Gallery">
+      <!-- 3. Categories Section -->
+      <section class="categories-section" id="categories" aria-label="Snack Categories">
         <div class="section-container">
-          <div class="gallery-header scroll-reveal">
-            <p class="section-tag">Visual Atmosphere</p>
-            <h2 class="section-title">The Space</h2>
-            <p class="section-subtitle">A sensory atmosphere of stone, timber, steel, and shadow.</p>
+          <div class="section-header text-center scroll-reveal">
+            <p class="section-tag">Taste Profile</p>
+            <h2 class="section-title">Explore by Category</h2>
+            <p class="section-subtitle">From crispy savories to traditional festive sweets.</p>
           </div>
           
-          <div class="gallery-grid">
-            <div class="gallery-item item-large scroll-reveal">
-              <img src="/src/assets/hero_bg.png" alt="Open wood hearth kitchen space" class="gallery-img" loading="lazy" />
-              <div class="gallery-item-caption">The Hearth</div>
+          <div class="categories-grid">
+            <div class="category-card scroll-reveal">
+              <img src="/src/assets/hero_snacks.webp" alt="Murukku Category" class="category-img" loading="lazy" />
+              <div class="category-overlay">
+                <h3>Murukkus</h3>
+                <p>Traditional hand-coiled rice rings</p>
+              </div>
             </div>
-            <div class="gallery-item scroll-reveal">
-              <img src="/src/assets/ambience.png" alt="Luxurious dim-lit dining table" class="gallery-img" loading="lazy" />
-              <div class="gallery-item-caption">The Dining Room</div>
+            <div class="category-card scroll-reveal">
+              <img src="/src/assets/hero_snacks.webp" alt="Mixture Category" class="category-img" loading="lazy" />
+              <div class="category-overlay">
+                <h3>Savory Mixtures</h3>
+                <p>Curry leaf & spice blends</p>
+              </div>
             </div>
-            <div class="gallery-item scroll-reveal">
-              <img src="/src/assets/chef.png" alt="Chef plating details" class="gallery-img" loading="lazy" />
-              <div class="gallery-item-caption">The Pass</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- 6. Chef's Story Section -->
-      <section class="chef-section" id="chef" aria-label="Meet Chef Marcus Vance">
-        <div class="section-container">
-          <div class="chef-grid">
-            <div class="chef-image-wrap scroll-reveal">
-              <img src="/src/assets/chef.png" alt="Head Chef Marcus Vance arranging micro herbs on a plate" class="chef-image" loading="lazy" />
-            </div>
-            <div class="chef-content scroll-reveal">
-              <p class="section-tag">The Visionary</p>
-              <h2 class="section-title">Chef Marcus Vance</h2>
-              <p class="section-desc">
-                With over two decades spent in wood-fired hearth cooking across the Mediterranean and Northern California, Chef Marcus Vance co-founded Ignis to push the boundaries of elemental cuisine. 
-              </p>
-              <p class="section-desc">
-                &ldquo;Fire is unpredictable. Controlling it requires an intimate dialogue between the chef, the logs, the air, and the pan. We are not just cooking; we are staging a performance of precision and temperature.&rdquo;
-              </p>
-              <div class="chef-awards">
-                <span class="chef-award">Michelin Star Recipient</span>
-                <span class="chef-award">Best New Chef — Culinary Review</span>
+            <div class="category-card scroll-reveal">
+              <img src="/src/assets/banana_chips.webp" alt="Banana Chips Category" class="category-img" loading="lazy" />
+              <div class="category-overlay">
+                <h3>Banana Chips</h3>
+                <p>Wafer-thin coconut oil fried</p>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- 7. Testimonials Section -->
-      <section class="testimonials-section" id="testimonials" aria-label="Guest Testimonials">
+      <!-- 4. Why Oor Snacks (Spotlight Trust) -->
+      <section class="why-oor-section" id="why-oor" aria-label="Why Oor Snacks">
         <div class="section-container">
-          <div class="testimonial-slider scroll-reveal">
-            <div class="testimonial-item">
-              <p class="testimonial-quote">&ldquo;An absolute masterclass in flavor extraction. The wood-fire notes are incredibly delicate, never overwhelming, framing the ingredients with unmatched precision.&rdquo;</p>
-              <cite class="testimonial-author">Sarah Jenkins, San Francisco Chronicle</cite>
+          <div class="section-header text-center scroll-reveal">
+            <p class="section-tag">Our Standards</p>
+            <h2 class="section-title">Clean. Authentic. Fresh.</h2>
+            <p class="section-subtitle">We reject modern industrial short-cuts to protect the traditional Tamil flavor profile.</p>
+          </div>
+          
+          <div class="why-grid">
+            <div class="why-card scroll-reveal">
+              <div class="why-icon">🫗</div>
+              <h3>Cold-Pressed Oils</h3>
+              <p>We fry exclusively in single-origin cold-pressed groundnut oil and wood-pressed coconut oil. Zero palm oil, zero reheating cycles.</p>
+            </div>
+            <div class="why-card scroll-reveal">
+              <div class="why-icon">🌾</div>
+              <h3>Stone-Ground Flours</h3>
+              <p>Our raw Ponni rice and roasted urad dal are stone-ground to guarantee optimal dough texture. No industrial processing or bleaches.</p>
+            </div>
+            <div class="why-card scroll-reveal">
+              <div class="why-icon">👵</div>
+              <h3>Traditional Small Batches</h3>
+              <p>No artificial preservatives, colors, or MSG. Hygienically hand-packed daily using traditional recipes for maximum freshness.</p>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- 8. Reservation System Section -->
-      <section class="reservation-section" id="reservation" aria-label="Book a Table">
+      <!-- New Showcase Section: The Aroma Lock Pouch -->
+      <section class="pouch-section" id="pouch-showcase" aria-label="Preserving the Crunch: Our Signature Packaging">
         <div class="section-container">
-          <div class="reservation-wrap scroll-reveal">
-            <div class="reservation-header">
-              <p class="section-tag">Reserve</p>
-              <h2 class="section-title">The Culinary Table</h2>
-              <p class="section-subtitle">Reservations are open 30 days in advance. Walks-ins are accommodated at the hearth bar based on availability.</p>
+          <div class="pouch-grid">
+            
+            <!-- Left Side: Editorial Storytelling -->
+            <div class="pouch-content scroll-reveal">
+              <p class="section-tag">Freshness Engineering</p>
+              <h2 class="section-title">The Aroma Lock Pouch</h2>
+              <p class="pouch-lead">We reject chemical preservatives, coloring, and artificial flavor enhancers. Instead, we use advanced barrier science to shield the authentic village flavor.</p>
+              
+              <div class="pouch-feature-list">
+                <div class="pouch-feature-item">
+                  <span class="pouch-feature-icon">🛡️</span>
+                  <div class="pouch-feature-text">
+                    <h4>Triple-Layer Protection</h4>
+                    <p>Double-walled aluminum foil blocks 100% of ambient light and oxygen, preventing wood-pressed oils from oxidizing or turning stale.</p>
+                  </div>
+                </div>
+                <div class="pouch-feature-item">
+                  <span class="pouch-feature-icon">💨</span>
+                  <div class="pouch-feature-text">
+                    <h4>Nitrogen-Flushed Crispness</h4>
+                    <p>Food-grade nitrogen flushing eliminates air and moisture, keeping the delicate hand-coiled Murukku crackling-crisp for months.</p>
+                  </div>
+                </div>
+                <div class="pouch-feature-item">
+                  <span class="pouch-feature-icon">🌾</span>
+                  <div class="pouch-feature-text">
+                    <h4>Re-sealable Zipper Lock</h4>
+                    <p>Equipped with a premium airtight zip lock so you can enjoy small-batch Tamil craftsmanship over multiple tea-times.</p>
+                  </div>
+                </div>
+              </div>
             </div>
             
-            <form id="reservation-form" class="reservation-form" novalidate>
-              <div class="form-grid">
-                <div class="form-group">
-                  <label for="res-name">Full Name</label>
-                  <input type="text" id="res-name" name="name" placeholder="John Doe" required aria-required="true" />
-                  <span class="error-msg" id="name-error" role="alert">Please enter your name.</span>
-                </div>
-                <div class="form-group">
-                  <label for="res-phone">Phone Number</label>
-                  <input type="tel" id="res-phone" name="phone" placeholder="(555) 000-0000" required aria-required="true" />
-                  <span class="error-msg" id="phone-error" role="alert">Please enter a valid phone number.</span>
-                </div>
-                <div class="form-group">
-                  <label for="res-date">Date</label>
-                  <input type="date" id="res-date" name="date" required aria-required="true" />
-                  <span class="error-msg" id="date-error" role="alert">Please select a valid future date.</span>
-                </div>
-                <div class="form-group">
-                  <label for="res-time">Time</label>
-                  <select id="res-time" name="time" required aria-required="true">
-                    <option value="" disabled selected>Select dining time</option>
-                    <option value="17:00">5:00 PM</option>
-                    <option value="17:30">5:30 PM</option>
-                    <option value="18:00">6:00 PM</option>
-                    <option value="18:30">6:30 PM</option>
-                    <option value="19:00">7:00 PM</option>
-                    <option value="19:30">7:30 PM</option>
-                    <option value="20:00">8:00 PM</option>
-                    <option value="20:30">8:30 PM</option>
-                    <option value="21:00">9:00 PM</option>
-                    <option value="21:30">9:30 PM</option>
-                  </select>
-                  <span class="error-msg" id="time-error" role="alert">Please select a dining time.</span>
-                </div>
-                <div class="form-group form-full-width">
-                  <label for="res-guests">Guests</label>
-                  <select id="res-guests" name="guests" required aria-required="true">
-                    <option value="" disabled selected>Number of guests</option>
-                    <option value="1">1 Guest</option>
-                    <option value="2">2 Guests</option>
-                    <option value="3">3 Guests</option>
-                    <option value="4">4 Guests</option>
-                    <option value="5">5 Guests</option>
-                    <option value="6">6 Guests</option>
-                    <option value="7">7+ Guests (Requires private lounge inquiry)</option>
-                  </select>
-                  <span class="error-msg" id="guests-error" role="alert">Please select guest count.</span>
-                </div>
+            <!-- Right Side: The Product Pouch (Static Picture) -->
+            <div class="pouch-visual-container">
+              <img src="/src/assets/snack_pack.webp" alt="Oor Snacks Premium Aroma Lock Pouch" class="pouch-static-img" loading="lazy" />
+            </div>
+            
+          </div>
+        </div>
+      </section>
+
+      <!-- 5. Pinned Scrollytelling Section: From Dough to Crunch -->
+      <section class="scrolly-section" id="dough-crunch" aria-label="Our Craft: From Dough to Crunch">
+        <!-- Sticky Scroller Container -->
+        <div class="scrolly-sticky-wrap">
+          <div class="scrolly-grid">
+            
+            <!-- Left Side: Visual Sequence Frame -->
+            <div class="scrolly-visual-container">
+              <div class="cooking-visual-wrap">
+                <img src="/src/assets/traditional_prep.webp" alt="Traditional Murukku Cooking" class="cooking-img" />
+              </div>
+            </div>
+            
+            <!-- Right Side: Narrative Cards -->
+            <div class="scrolly-text-container">
+              <!-- Step Card 1 -->
+              <div class="scrolly-card active" data-step="1">
+                <span class="scrolly-step-num">Step 01</span>
+                <h3>The Ponni Rice</h3>
+                <p>We begin with raw Ponni rice and roasted urad dal, stone-ground in village mills to preserve natural starches and ensure a dry, crispy texture with minimal oil retention.</p>
               </div>
               
-              <div class="form-submit">
-                <button type="submit" class="btn btn-primary btn-block">Confirm Reservation</button>
+              <!-- Step Card 2 -->
+              <div class="scrolly-card" data-step="2">
+                <span class="scrolly-step-num">Step 02</span>
+                <h3>Hand-Rolled Craft</h3>
+                <p>Our experienced local homemakers coil and twist the fresh dough by hand, ring-by-ring, on clean wooden boards. This gentle handling lets the dough breathe for the perfect density.</p>
               </div>
-            </form>
+              
+              <!-- Step Card 3 -->
+              <div class="scrolly-card" data-step="3">
+                <span class="scrolly-step-num">Step 03</span>
+                <h3>Wood-Fired Hearth</h3>
+                <p>The dough rings are dropped gently into boiling wood-pressed groundnut oil, heating in vintage brass cauldrons over firewood coals to produce deep, wood-fired caramelization.</p>
+              </div>
+              
+              <!-- Step Card 4 -->
+              <div class="scrolly-card" data-step="4">
+                <span class="scrolly-step-num">Step 04</span>
+                <h3>The Fresh Crunch</h3>
+                <p>Emerging golden-crisp, seasoned with fresh butter, black cumin, and sea salt, each batch is tasted to ensure a clean, crunching bite with zero heavy aftertaste.</p>
+              </div>
+              
+              <!-- Step Card 5 -->
+              <div class="scrolly-card" data-step="5">
+                <span class="scrolly-step-num">Step 05</span>
+                <h3>Sealed for You</h3>
+                <p>Packed immediately into our premium double-walled nitrogen-flushed pouches, shielding the crisp freshness from light and moisture until you open it.</p>
+              </div>
+            </div>
             
-            <div id="form-success" class="form-success-message" role="status" aria-hidden="true" hidden>
-              <div class="success-icon">✓</div>
-              <h3>Reservation Requested</h3>
-              <p>Your table request at Ignis has been submitted. A confirmation SMS and email will be sent shortly.</p>
-              <button class="btn btn-secondary btn-sm success-reset">Book Another Table</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 6. Festival & Combo Collections -->
+      <section class="combos-section" id="combos" aria-label="Festival Packs & Combos">
+        <div class="section-container">
+          <div class="section-header scroll-reveal">
+            <p class="section-tag">Curated Collections</p>
+            <h2 class="section-title">Festival Boxes & Combos</h2>
+            <p class="section-subtitle">Perfect for gifting, celebrations, or daily tea-time rituals.</p>
+          </div>
+          
+          <div class="products-grid">
+            <!-- Combo 1 -->
+            <div class="product-card scroll-reveal" data-id="c1" data-name="Classic Tea-Time Box" data-base-price="350">
+              <div class="product-media">
+                <img src="/src/assets/snack_pack.webp" alt="Classic Tea-Time Box Combo" class="product-img" loading="lazy" />
+                <span class="product-badge combo-badge">Combo Pack</span>
+              </div>
+              <div class="product-details">
+                <h3 class="product-name">Classic Tea-Time Box</h3>
+                <p class="product-desc">Our core trilogy: Kai Murukku (250g), Madras Mixture (250g), and Pepper Banana Chips (150g).</p>
+                <div class="product-purchase-row">
+                  <span class="combo-fixed-price">₹350 <span class="combo-save">Save 12%</span></span>
+                  <button class="btn btn-primary btn-sm add-to-cart-btn">Add to Cart</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Combo 2 -->
+            <div class="product-card scroll-reveal" data-id="c2" data-name="Festive Gifting Box" data-base-price="550">
+              <div class="product-media">
+                <img src="/src/assets/snack_pack.webp" alt="Festive Gifting Box" class="product-img" loading="lazy" />
+                <span class="product-badge festival-badge">Festival Special</span>
+              </div>
+              <div class="product-details">
+                <h3 class="product-name">Traditional Gifting Box</h3>
+                <p class="product-desc">An elegant brass-patterned gift box loaded with assortments of Thattai, Seedai, Mixtures, and Sweets.</p>
+                <div class="product-purchase-row">
+                  <span class="combo-fixed-price">₹550</span>
+                  <button class="btn btn-primary btn-sm add-to-cart-btn">Add to Cart</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 7. Customer Reviews -->
+      <section class="reviews-section" id="reviews" aria-label="Customer Reviews">
+        <div class="section-container">
+          <div class="reviews-header text-center scroll-reveal">
+            <p class="section-tag">Shared Memories</p>
+            <h2 class="section-title">Nostalgia in Every Bite</h2>
+          </div>
+          
+          <div class="reviews-grid">
+            <div class="review-card scroll-reveal">
+              <p class="review-text">&ldquo;Opening the Nila pack took me straight back to my grandmother's house in Tanjore. The smell of fresh groundnut oil and the perfect hardness of the murukku is exactly how it should be.&rdquo;</p>
+              <cite class="review-author">&mdash; Karthik S., Bengaluru</cite>
+            </div>
+            <div class="review-card scroll-reveal">
+              <p class="review-text">&ldquo;It's incredibly hard to find banana chips made in authentic cold-pressed coconut oil without heavy preservatives. Oor chips are light, crispy, and taste completely fresh.&rdquo;</p>
+              <cite class="review-author">&mdash; Preethi R., Chennai</cite>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Shipping & Trust Features Banner -->
+      <section class="shipping-banner-section scroll-reveal" aria-label="Shipping and Hygiene Information">
+        <div class="section-container">
+          <div class="shipping-banner-grid">
+            <div class="shipping-banner-item">
+              <span class="shipping-icon">🚚</span>
+              <div class="shipping-text-wrap">
+                <strong>Pan-India Shipping</strong>
+                <p>Delivered fresh to your doorstep</p>
+              </div>
+            </div>
+            <div class="shipping-banner-item">
+              <span class="shipping-icon">⚡</span>
+              <div class="shipping-text-wrap">
+                <strong>Next-Day Delivery</strong>
+                <p>Available in Chennai & Bengaluru</p>
+              </div>
+            </div>
+            <div class="shipping-banner-item">
+              <span class="shipping-icon">🛡️</span>
+              <div class="shipping-text-wrap">
+                <strong>Hygienically Packed</strong>
+                <p>Sealed double-layer food packaging</p>
+              </div>
+            </div>
+            <div class="shipping-banner-item">
+              <span class="shipping-icon">🍃</span>
+              <div class="shipping-text-wrap">
+                <strong>100% Fresh Guarantee</strong>
+                <p>Small-batch prepared every single day</p>
+              </div>
             </div>
           </div>
         </div>
@@ -468,18 +517,20 @@
       <div class="section-container">
         <div class="footer-grid">
           <div class="footer-brand">
-            <a href="#" class="footer-logo">IGNIS</a>
-            <p class="footer-tagline">Fire. Smoke. Precision.</p>
+            <a href="#" class="footer-logo-wrapper">
+              <span class="footer-logo">OOR</span>
+              <span class="footer-logo-sub">பாரம்பரிய சுவை</span>
+            </a>
+            <p class="footer-tagline">Freshness. Appetite. Tradition.</p>
           </div>
           <div class="footer-col">
-            <h4>Hours</h4>
-            <p>Tuesday — Sunday<br>5:00 PM — 11:00 PM</p>
-            <p>Kitchen closes at 10:00 PM</p>
+            <h4>Deliveries</h4>
+            <p>Shipping fresh batches daily across India.<br>Next-day delivery available in Chennai and Bengaluru.</p>
           </div>
           <div class="footer-col">
             <h4>Contact</h4>
-            <p>742 Live Oak Boulevard<br>San Francisco, CA 94102</p>
-            <p><a href="tel:+15550199">+1 (555) 0199</a><br><a href="mailto:reservations@ignis-dining.com">reservations@ignis-dining.com</a></p>
+            <p>45 Temple Road, Mylapore<br>Chennai, TN 600004</p>
+            <p><a href="tel:+919876543210">+91 98765 43210</a><br><a href="mailto:orders@oorsnacks.com">orders@oorsnacks.com</a></p>
           </div>
           <div class="footer-col">
             <h4>Follow</h4>
@@ -491,14 +542,93 @@
         </div>
         
         <div class="footer-bottom">
-          <p class="copyright">&copy; 2026 Ignis Dining LLC. All rights reserved.</p>
+          <p class="copyright">&copy; 2026 Oor Snacks D2C Private Limited. All rights reserved.</p>
           <div class="footer-links">
+            <a href="#" id="foh-portal-trigger">Staff Portal (Demo)</a>
             <a href="#">Privacy Policy</a>
-            <a href="#">Terms of Service</a>
+            <a href="#">Terms & Conditions</a>
           </div>
         </div>
       </div>
     </footer>
+
+    <!-- 8. Interactive E-commerce Shopping Cart Drawer -->
+    <div id="cart-drawer" class="cart-drawer-panel" aria-hidden="true" tabindex="-1">
+      <div class="cart-drawer-overlay"></div>
+      <div class="cart-drawer-content">
+        <div class="cart-drawer-header">
+          <h3>Your Basket</h3>
+          <button class="cart-drawer-close" id="cart-close" aria-label="Close basket drawer">&times;</button>
+        </div>
+        
+        <div class="cart-drawer-body">
+          <div id="cart-empty-state" class="cart-empty-state">
+            <span class="empty-icon">🛒</span>
+            <p>Your basket is currently empty.</p>
+            <button class="btn btn-primary btn-sm" id="cart-shop-now">Shop Best Sellers</button>
+          </div>
+          
+          <div id="cart-items-list" class="cart-items-list" hidden>
+            <!-- Cart items render dynamically -->
+          </div>
+        </div>
+        
+        <div class="cart-drawer-footer" id="cart-summary-section" hidden>
+          <div class="cart-subtotal-row">
+            <span>Subtotal:</span>
+            <strong id="cart-subtotal-amount">₹0</strong>
+          </div>
+          
+          <form id="cart-checkout-form" class="cart-checkout-form">
+            <div class="form-group">
+              <label for="cust-name">Your Name</label>
+              <input type="text" id="cust-name" required placeholder="Enter full name" aria-required="true" />
+            </div>
+            <div class="form-group">
+              <label for="cust-address">Delivery Address</label>
+              <input type="text" id="cust-address" required placeholder="Street address, City, Pincode" aria-required="true" />
+            </div>
+            
+            <button type="submit" class="btn btn-primary btn-block checkout-submit-btn">
+              <span>Order via WhatsApp</span>
+              <span class="btn-subtext">Free shipping on orders above ₹500</span>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- 9. Mobile Sticky Cart Bottom Bar -->
+    <div id="mobile-sticky-cart" class="mobile-sticky-cart-bar" aria-hidden="true" hidden>
+      <div class="mobile-sticky-container">
+        <div class="mobile-cart-summary">
+          <span class="mobile-cart-icon">🛒</span>
+          <span class="mobile-cart-meta">
+            <strong id="mobile-cart-item-count">0 Items</strong> &bull; <strong id="mobile-cart-total-amount">₹0</strong>
+          </span>
+        </div>
+        <button class="btn btn-primary btn-sm" id="mobile-view-cart-btn">View Basket</button>
+      </div>
+    </div>
+
+    <!-- 10. Incoming Orders Ledger (Admin FOH Portal) -->
+    <div id="foh-portal" class="foh-portal-drawer" aria-hidden="true" tabindex="-1">
+      <div class="foh-portal-overlay"></div>
+      <div class="foh-portal-content">
+        <div class="foh-portal-header">
+          <h3>Incoming Orders Queue</h3>
+          <button class="foh-portal-close" aria-label="Close Dashboard">&times;</button>
+        </div>
+        <div class="foh-portal-body">
+          <div class="foh-ledger-actions">
+            <button class="btn btn-secondary btn-sm foh-clear-all">Clear Queue</button>
+          </div>
+          <div id="foh-ledger-list" class="foh-ledger-list">
+            <!-- Simulated Orders render here -->
+          </div>
+        </div>
+      </div>
+    </div>
 
     <script type="module" src="/src/main.js"></script>
   </body>
