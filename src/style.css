@@ -889,25 +889,43 @@ button, input, select {
   padding: 0 var(--space-md);
 }
 
-.scrolly-grid {
-  display: grid;
-  grid-template-columns: 1fr 1.8fr;
+/* Vertical stack: intro → image → steps */
+.craft-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--space-xl);
   width: 100%;
-  align-items: start;
-  gap: clamp(1.5rem, 3vw, 2.8rem);
 }
 
-/* Left Column: Sticky Editorial Centerpiece */
-.scrolly-visual-container {
-  position: sticky;
-  top: 110px;
+.craft-intro {
+  margin-bottom: 0;
+}
+
+.craft-intro .section-subtitle {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 52ch;
+}
+
+.craft-figure {
+  margin: 0;
   width: 100%;
-  aspect-ratio: 1 / 1; /* Match the square 1024x1024 image aspect ratio perfectly */
+  display: flex;
+  justify-content: center;
+}
+
+/* 1024×1024 source — square frame, no crop */
+.scrolly-visual-container {
+  position: relative;
+  width: min(100%, 640px);
+  aspect-ratio: 1 / 1;
+  margin: 0 auto;
   border-radius: var(--radius-lg);
   overflow: hidden;
-  background-color: var(--bg-secondary);
+  background-color: #1a0e08;
   border: 1px solid var(--border-color);
-  box-shadow: 0 10px 30px rgba(45, 24, 16, 0.03);
+  box-shadow: 0 12px 40px rgba(45, 24, 16, 0.06);
 }
 
 .cooking-visual-wrap {
@@ -921,9 +939,10 @@ button, input, select {
 .cooking-img.bg-img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
+  object-position: center center;
   display: block;
-  transform-origin: 62% 45%;
+  transform-origin: center center;
   animation: cinematicBreath 24s ease-in-out infinite alternate;
   will-change: transform;
 }
@@ -1013,11 +1032,13 @@ button, input, select {
   100% { transform: translateY(-100%) translateX(-2%) scaleX(1.42); opacity: 0; background: rgba(245,225,205,0.0); filter: blur(15px); }
 }
 
-/* Right Column: 2x3 Grid of narrative cards */
+/* Step cards: 3×2 grid — row 2 is Step 4, Step 5, Our Standard */
 .scrolly-text-container {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: clamp(1.2rem, 2vw, 2.2rem);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1rem, 1.8vw, 1.5rem);
+  width: 100%;
+  align-items: stretch;
 }
 
 .scrolly-card {
@@ -1028,6 +1049,8 @@ button, input, select {
   transition: all var(--transition-medium);
   display: flex;
   flex-direction: column;
+  height: 100%;
+  min-height: 0;
 }
 
 .scrolly-card:hover {
@@ -1061,14 +1084,19 @@ button, input, select {
   max-width: 36ch;  /* Apple-style restrained width */
 }
 
-/* Subtly different statement card to break visual repetition */
+/* Our Standard — sits in column 3 beside Step 5 on desktop/tablet */
 .craft-statement-card {
-  background-color: #fdfaf7; /* Warmer sand tone */
-  border: 1px dashed rgba(139, 30, 30, 0.2); /* Softer border */
+  background-color: #fdfaf7;
+  border: 1px dashed rgba(139, 30, 30, 0.2);
+  justify-content: center;
 }
 
 .craft-statement-card h3 {
   color: var(--accent-maroon);
+}
+
+.craft-statement-card p {
+  max-width: none;
 }
 
 .statement-icon {
@@ -1077,25 +1105,79 @@ button, input, select {
   display: block;
 }
 
+/* Tablet: 2 columns — Step 5 + Our Standard share the last row */
 @media (max-width: 992px) {
-  .scrolly-grid {
-    grid-template-columns: 1fr;
+  .craft-stack {
     gap: var(--space-lg);
   }
+
   .scrolly-visual-container {
-    position: relative;
-    top: 0;
-    width: 100%;
-    aspect-ratio: 1 / 1;
-    max-width: 500px;
-    margin: 0 auto;
+    width: min(100%, 520px);
+  }
+
+  .scrolly-text-container {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
+/* Mobile: single column, compact cards */
 @media (max-width: 768px) {
+  .craft-stack {
+    gap: var(--space-md);
+  }
+
+  .scrolly-visual-container {
+    width: 100%;
+    max-width: 100%;
+  }
+
   .scrolly-text-container {
     grid-template-columns: 1fr;
-    gap: var(--space-md);
+    gap: var(--space-sm);
+  }
+
+  .scrolly-text-container .scrolly-card {
+    padding: var(--space-sm) var(--space-md);
+    height: auto;
+  }
+
+  .scrolly-text-container .scrolly-card h3 {
+    font-size: 17px;
+    margin-bottom: 6px;
+  }
+
+  .scrolly-text-container .scrolly-card p {
+    font-size: 13px;
+    line-height: 1.55;
+    max-width: none;
+  }
+
+  .scrolly-text-container .scrolly-step-num {
+    font-size: 10px;
+    margin-bottom: 6px;
+  }
+
+  .craft-statement-card {
+    padding: var(--space-md);
+  }
+
+  .craft-statement-card .statement-icon {
+    font-size: 20px;
+    margin-bottom: 6px;
+  }
+}
+
+/* Small phones: Step 5 + Our Standard side-by-side */
+@media (max-width: 768px) and (min-width: 480px) {
+  .scrolly-text-container {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .scrolly-text-container .scrolly-card:nth-child(1),
+  .scrolly-text-container .scrolly-card:nth-child(2),
+  .scrolly-text-container .scrolly-card:nth-child(3),
+  .scrolly-text-container .scrolly-card:nth-child(4) {
+    grid-column: 1 / -1;
   }
 }
 
@@ -1934,31 +2016,15 @@ button, input, select {
     overflow: visible;
   }
 
-  .scrolly-grid {
-    grid-template-columns: 1fr;
+  .craft-stack {
     gap: var(--space-md);
   }
 
-  .scrolly-visual-container {
-    aspect-ratio: 16 / 10;
-    margin-bottom: var(--space-sm);
-  }
-
-
-
-  .scrolly-card {
-    display: block !important;
+  /* Keep card grid styling; only force scroll-reveal visibility */
+  .scrolly-text-container .scrolly-card {
+    display: flex !important;
     opacity: 1 !important;
     transform: none !important;
-    margin-bottom: var(--space-md);
-    border-bottom: 1px solid var(--border-color);
-    padding-bottom: var(--space-md);
-  }
-
-  .scrolly-card:last-child {
-    border-bottom: none;
-    margin-bottom: 0;
-    padding-bottom: 0;
   }
 
   .footer-bottom {

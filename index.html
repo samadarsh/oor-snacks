@@ -13,7 +13,14 @@
     <meta property="og:description" content="Authentic Tamil Nadu snacks made fresh with cold-pressed oils. Experience the traditional taste of Murukku, Mixture, and Thattai in premium packaging." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://oorsnacks.com" />
-    <meta property="og:image" content="/src/assets/hero_snacks.webp" />
+    <meta property="og:image" content="https://oorsnacks.com/og-image.webp" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Oor Snacks | Traditional Tamil Taste" />
+    <meta name="twitter:description" content="Authentic Tamil Nadu snacks made fresh with cold-pressed oils." />
+    <meta name="twitter:image" content="https://oorsnacks.com/og-image.webp" />
+    <link rel="canonical" href="https://oorsnacks.com/" />
     
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌾</text></svg>" />
@@ -32,7 +39,7 @@
         "@context": "https://schema.org",
         "@type": "FoodBusiness",
         "name": "Oor Snacks",
-        "image": "https://oorsnacks.com/src/assets/hero_snacks.webp",
+        "image": "https://oorsnacks.com/og-image.webp",
         "description": "Premium traditional Tamil Nadu snacks made with cold-pressed oils and organic rice flour.",
         "telephone": "+91-98765-43210",
         "address": {
@@ -87,7 +94,7 @@
             <li><a href="#best-sellers" class="nav-link">Best Sellers</a></li>
             <li><a href="#categories" class="nav-link">Categories</a></li>
             <li><a href="#why-oor" class="nav-link">Our Standards</a></li>
-            <li><a href="#heritage" class="nav-link">Craft</a></li>
+            <li><a href="#dough-crunch" class="nav-link">Craft</a></li>
             <li><a href="#combos" class="nav-link">Combos</a></li>
           </ul>
         </nav>
@@ -147,7 +154,7 @@
             <!-- Product Card 1 -->
             <div class="product-card scroll-reveal" data-id="p1" data-name="Kai Murukku" data-base-price="140">
               <div class="product-media">
-                <img src="/src/assets/hero_snacks.webp" alt="Traditional Kai Murukku" class="product-img" loading="lazy" />
+                <img src="/src/assets/traditional_prep.webp" alt="Traditional Kai Murukku" class="product-img" loading="lazy" />
                 <span class="product-badge">Best Seller</span>
               </div>
               <div class="product-details">
@@ -221,7 +228,7 @@
             <!-- Product Card 4 -->
             <div class="product-card scroll-reveal" data-id="p4" data-name="Garlic Karasev" data-base-price="120">
               <div class="product-media">
-                <img src="/src/assets/hero_snacks.webp" alt="Spicy Garlic Karasev" class="product-img" loading="lazy" />
+                <img src="/src/assets/snack_pack.webp" alt="Spicy Garlic Karasev" class="product-img" loading="lazy" />
                 <span class="product-badge festival-badge">Fresh Batch</span>
               </div>
               <div class="product-details">
@@ -256,7 +263,7 @@
           
           <div class="categories-grid">
             <div class="category-card scroll-reveal">
-              <img src="/src/assets/hero_snacks.webp" alt="Murukku Category" class="category-img" loading="lazy" />
+              <img src="/src/assets/traditional_prep.webp" alt="Murukku Category" class="category-img" loading="lazy" />
               <div class="category-overlay">
                 <h3>Murukkus</h3>
                 <p>Traditional hand-coiled rice rings</p>
@@ -357,29 +364,27 @@
       <!-- 5. Editorial Craft Section: From Dough to Crunch -->
       <section class="scrolly-section" id="dough-crunch" aria-label="Our Craft: From Dough to Crunch">
         <div class="scrolly-container">
-          
-          <div class="section-header text-center scroll-reveal">
-            <p class="section-tag">Our Craft</p>
-            <h2 class="section-title">From Dough to Crunch</h2>
-            <p class="section-subtitle">A step-by-step glimpse into traditional Tamil snack preparation.</p>
-          </div>
+          <div class="craft-stack">
+            <header class="craft-intro section-header text-center scroll-reveal">
+              <p class="section-tag">Our Craft</p>
+              <h2 class="section-title">From Dough to Crunch</h2>
+              <p class="section-subtitle">A step-by-step glimpse into traditional Tamil snack preparation.</p>
+            </header>
 
-          <div class="scrolly-grid">
-            
-            <!-- Left Side: Sticky Visual Frame (spans full height of grid) -->
-            <div class="scrolly-visual-container">
-              <div class="cooking-visual-wrap">
-                <img src="/src/assets/traditional_prep.webp" alt="Traditional Murukku Cooking" class="cooking-img bg-img" />
-                <div class="warmth-glow"></div>
-                <div class="steam-container">
-                  <div class="steam-wisp w1"></div>
-                  <div class="steam-wisp w2"></div>
-                  <div class="steam-wisp w3"></div>
+            <figure class="craft-figure scroll-reveal">
+              <div class="scrolly-visual-container">
+                <div class="cooking-visual-wrap">
+                  <img src="/src/assets/traditional_prep.webp" alt="Traditional Murukku cooking over a wood-fired hearth" class="cooking-img bg-img" />
+                  <div class="warmth-glow"></div>
+                  <div class="steam-container">
+                    <div class="steam-wisp w1"></div>
+                    <div class="steam-wisp w2"></div>
+                    <div class="steam-wisp w3"></div>
+                  </div>
                 </div>
               </div>
-            </div>
-            
-            <!-- Right Side: Narrative Cards 2x3 Grid -->
+            </figure>
+
             <div class="scrolly-text-container">
               <!-- Step Card 1 -->
               <div class="scrolly-card scroll-reveal" data-step="1">
@@ -423,7 +428,6 @@
                 <p>"We reject modern industrial short-cuts, hydrogenated fats, and chemical preservatives to protect the authentic taste of traditional Tamil snack preparation."</p>
               </div>
             </div>
-            
           </div>
         </div>
       </section>
@@ -483,7 +487,7 @@
           
           <div class="reviews-grid">
             <div class="review-card scroll-reveal">
-              <p class="review-text">&ldquo;Opening the Nila pack took me straight back to my grandmother's house in Tanjore. The smell of fresh groundnut oil and the perfect hardness of the murukku is exactly how it should be.&rdquo;</p>
+              <p class="review-text">&ldquo;Opening the Oor pack took me straight back to my grandmother's house in Tanjore. The smell of fresh groundnut oil and the perfect hardness of the murukku is exactly how it should be.&rdquo;</p>
               <cite class="review-author">&mdash; Karthik S., Bengaluru</cite>
             </div>
             <div class="review-card scroll-reveal">
@@ -564,8 +568,8 @@
           <p class="copyright">&copy; 2026 Oor Snacks D2C Private Limited. All rights reserved.</p>
           <div class="footer-links">
             <a href="#" id="foh-portal-trigger">Staff Portal (Demo)</a>
-            <a href="#">Privacy Policy</a>
-            <a href="#">Terms & Conditions</a>
+            <a href="/privacy.html">Privacy Policy</a>
+            <a href="/terms.html">Terms & Conditions</a>
           </div>
         </div>
       </div>

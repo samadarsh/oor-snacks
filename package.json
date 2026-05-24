@@ -1,5 +1,5 @@
 {
-  "name": "restaurant-site",
+  "name": "oor-snacks",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -9,7 +9,6 @@
     "preview": "vite preview"
   },
   "devDependencies": {
-    "sharp": "^0.34.5",
     "vite": "^8.0.12"
   },
   "dependencies": {

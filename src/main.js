@@ -2,9 +2,20 @@ import './style.css'
 import Lenis from 'lenis'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { SITE } from './config.js'
 
 // Register GSAP plugins
 gsap.registerPlugin(ScrollTrigger)
+
+const escapeHtml = (str) => {
+  if (str == null) return ''
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
+}
 
 // Accessibility check
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -157,10 +168,10 @@ const syncCartUI = () => {
   // 4. Render Cart Items List
   itemsList.innerHTML = cart.map(item => `
     <div class="cart-item">
-      <img src="${item.img}" alt="${item.name}" class="cart-item-img" />
+      <img src="${escapeHtml(item.img)}" alt="${escapeHtml(item.name)}" class="cart-item-img" />
       <div class="cart-item-info">
-        <h4 class="cart-item-title">${item.name}</h4>
-        <span class="cart-item-meta">${item.weight} &bull; ₹${item.price}</span>
+        <h4 class="cart-item-title">${escapeHtml(item.name)}</h4>
+        <span class="cart-item-meta">${escapeHtml(item.weight)} &bull; ₹${item.price}</span>
         <div class="cart-item-qty-row">
           <div class="qty-control">
             <button class="qty-btn dec-btn" data-id="${item.id}" data-weight="${item.weight}">&minus;</button>
@@ -292,7 +303,7 @@ checkoutForm.addEventListener('submit', (e) => {
   if (!name || !address) return
   
   const subtotal = getCartSubtotal()
-  const shipping = subtotal >= 500 ? 0 : 60
+  const shipping = subtotal >= SITE.freeShippingMin ? 0 : SITE.shippingFee
   const total = subtotal + shipping
   
   // 1. Format order text for WhatsApp
@@ -334,7 +345,7 @@ Thank you!`
   
   // 4. Fire WhatsApp API redirect
   const encodedMsg = encodeURIComponent(whatsappMsg)
-  const whatsappUrl = `https://api.whatsapp.com/send?phone=919876543210&text=${encodedMsg}`
+  const whatsappUrl = `https://api.whatsapp.com/send?phone=${SITE.whatsappPhone}&text=${encodedMsg}`
   
   window.open(whatsappUrl, '_blank')
 })
@@ -384,16 +395,16 @@ const renderOrdersLedger = () => {
     return `
       <div class="foh-ledger-card">
         <div class="foh-card-header">
-          <strong>${ord.name}</strong>
+          <strong>${escapeHtml(ord.name)}</strong>
           <span class="foh-card-tag">Pending Dispatch</span>
         </div>
         <div class="foh-card-details">
-          <p><span>Address:</span> ${ord.address}</p>
-          <p><span>Time:</span> ${dateStr} at ${timeStr}</p>
+          <p><span>Address:</span> ${escapeHtml(ord.address)}</p>
+          <p><span>Time:</span> ${escapeHtml(dateStr)} at ${escapeHtml(timeStr)}</p>
           <div class="foh-order-items">
             ${ord.items.map(i => `
               <div class="foh-order-item">
-                <span>${i.qty}x ${i.name} (${i.weight})</span>
+                <span>${i.qty}x ${escapeHtml(i.name)} (${escapeHtml(i.weight)})</span>
                 <span>₹${i.total}</span>
               </div>
             `).join('')}
