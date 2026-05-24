@@ -1199,6 +1199,23 @@ button, input, select {
   border-bottom: 1px solid var(--border-color);
 }
 
+.reviews-header {
+  gap: var(--space-sm);
+  margin-bottom: var(--space-sm);
+  max-width: 640px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.reviews-header .section-tag {
+  margin-bottom: 0;
+}
+
+.reviews-header .section-title {
+  margin-bottom: 0;
+  line-height: 1.15;
+}
+
 .reviews-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
