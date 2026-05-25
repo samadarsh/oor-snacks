@@ -17,24 +17,26 @@
   --error-color: #c93b2b;
 
   /* Typography Stacks */
-  --font-header: 'Outfit', 'Inter', system-ui, sans-serif;
+  --font-header: 'Inter', 'Outfit', system-ui, sans-serif;
   --font-body: 'Inter', system-ui, sans-serif;
   --font-tamil: 'Catamaran', 'Noto Sans Tamil', sans-serif;
 
-  /* Typography Scales */
-  --font-size-hero: clamp(40px, 7.5vw, 84px);
-  --font-size-section: clamp(26px, 4vw, 48px);
-  --font-size-card-title: clamp(16px, 2vw, 20px);
-  --font-size-body: 15px;
-  --font-size-sub: 13px;
+  /* Typography scales (Apple-style hierarchy) */
+  --font-size-hero: clamp(48px, 6.5vw, 96px);
+  --font-size-section: clamp(32px, 4.2vw, 56px);
+  --font-size-card-title: clamp(17px, 2vw, 22px);
+  --font-size-body: 18px;
+  --font-size-sub: 16px;
+  --font-size-label: 13px;
 
-  /* Spacing System */
+  /* Spacing — generous section rhythm */
   --space-xs: 8px;
   --space-sm: 16px;
   --space-md: 24px;
   --space-lg: 48px;
   --space-xl: 72px;
   --space-2xl: 100px;
+  --space-section: clamp(88px, 11vw, 140px);
   --container-width: 1200px;
   --header-height: 80px;
 
@@ -43,11 +45,12 @@
   --radius-md: 8px;
   --radius-lg: 12px;
 
-  /* Transitions */
-  --ease-primary: cubic-bezier(0.25, 1, 0.5, 1);
-  --transition-slow: 0.6s var(--ease-primary);
-  --transition-medium: 0.4s var(--ease-primary);
-  --transition-fast: 0.2s ease;
+  /* Motion — soft acceleration / deceleration */
+  --ease-primary: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-out-soft: cubic-bezier(0.25, 0.8, 0.35, 1);
+  --transition-slow: 0.7s var(--ease-primary);
+  --transition-medium: 0.45s var(--ease-primary);
+  --transition-fast: 0.25s var(--ease-out-soft);
 }
 
 /* -------------------------------------------------------------
@@ -144,7 +147,12 @@ button, input, select {
 }
 
 .section-header {
-  margin-bottom: var(--space-lg);
+  margin-bottom: var(--space-xl);
+}
+
+/* Scroll reveals: visible by default; GSAP enhances when motion allowed */
+.scroll-reveal {
+  will-change: auto;
 }
 
 .text-center {
@@ -155,27 +163,29 @@ button, input, select {
 }
 
 .section-tag {
-  font-size: var(--font-size-sub);
+  font-size: var(--font-size-label);
   text-transform: uppercase;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.18em;
   color: var(--accent-maroon);
-  margin-bottom: var(--space-xs);
+  margin-bottom: var(--space-sm);
   font-weight: 600;
   font-family: var(--font-header);
 }
 
 .section-title {
   font-size: var(--font-size-section);
-  margin-bottom: var(--space-xs);
+  margin-bottom: var(--space-sm);
   font-weight: 600;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.02em;
+  line-height: 1.08;
 }
 
 .section-subtitle {
-  font-size: 16px;
+  font-size: var(--font-size-sub);
   color: var(--text-secondary);
-  max-width: 550px;
+  max-width: 42ch;
   font-weight: 400;
+  line-height: 1.55;
 }
 
 /* Buttons */
@@ -203,8 +213,8 @@ button, input, select {
 .btn-primary:hover {
   background-color: var(--accent-maroon-hover);
   border-color: var(--accent-maroon-hover);
-  box-shadow: 0 4px 12px rgba(139, 30, 30, 0.15);
-  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(139, 30, 30, 0.12);
+  filter: brightness(1.04);
 }
 
 .btn-secondary {
@@ -216,7 +226,7 @@ button, input, select {
 .btn-secondary:hover {
   border-color: var(--accent-maroon);
   color: var(--accent-maroon);
-  transform: translateY(-1px);
+  background-color: rgba(139, 30, 30, 0.04);
 }
 
 .btn-sm {
@@ -400,7 +410,7 @@ button, input, select {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transform: scale(1.05); /* Zoomed in slightly for breathing animation */
+  transform: scale(1.02);
   will-change: transform;
 }
 
@@ -408,7 +418,7 @@ button, input, select {
  * Aroma Lock Pouch Showcase Section
  * ------------------------------------------------------------- */
 .pouch-section {
-  padding: var(--space-2xl) 0;
+  padding: var(--space-section) 0;
   background-color: var(--bg-secondary); /* Alternates with cream why-oor and dough-crunch */
   border-top: 1px solid var(--border-color);
   border-bottom: 1px solid var(--border-color);
@@ -525,38 +535,43 @@ button, input, select {
   position: relative;
   z-index: 2;
   text-align: center;
-  max-width: 800px;
+  max-width: 720px;
   padding: 0 var(--space-md);
-  margin-top: 40px;
+  margin-top: 24px;
   color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
 }
 
 .hero-pretitle {
-  font-size: var(--font-size-sub);
+  font-size: var(--font-size-label);
   text-transform: uppercase;
-  letter-spacing: 0.25em;
+  letter-spacing: 0.2em;
   color: var(--accent-turmeric);
-  margin-bottom: var(--space-sm);
+  margin-bottom: var(--space-md);
   font-weight: 600;
   text-shadow: 0 1px 4px rgba(0,0,0,0.15);
 }
 
 .hero-title {
   font-size: var(--font-size-hero);
-  font-weight: 700;
-  line-height: 0.95;
-  letter-spacing: -0.03em;
+  font-weight: 600;
+  line-height: 1.02;
+  letter-spacing: -0.035em;
   margin-bottom: var(--space-md);
   color: var(--bg-primary);
-  text-shadow: 0 2px 10px rgba(45,24,16,0.2);
+  text-shadow: 0 2px 16px rgba(45, 24, 16, 0.25);
 }
 
 .hero-subtitle {
-  font-size: clamp(16px, 2.5vw, 21px);
+  font-size: clamp(17px, 2.2vw, 22px);
   color: #f6efe7;
-  max-width: 520px;
-  margin: 0 auto var(--space-lg) auto;
+  max-width: 38ch;
+  margin: 0 auto var(--space-xl) auto;
   font-weight: 400;
+  line-height: 1.5;
   text-shadow: 0 1px 4px rgba(0,0,0,0.2);
 }
 
@@ -601,7 +616,7 @@ button, input, select {
  * Best Sellers & Products Section
  * ------------------------------------------------------------- */
 .best-sellers-section {
-  padding: var(--space-2xl) 0;
+  padding: var(--space-section) 0;
   background-color: var(--bg-primary);
   border-bottom: 1px solid var(--border-color);
 }
@@ -623,7 +638,7 @@ button, input, select {
 }
 
 .product-card:hover {
-  transform: translateY(-2px);
+  transform: none;
   border-color: rgba(139, 30, 30, 0.2);
   box-shadow: 0 8px 24px rgba(45, 24, 16, 0.04);
 }
@@ -644,7 +659,7 @@ button, input, select {
 }
 
 .product-card:hover .product-img {
-  transform: scale(1.03);
+  transform: scale(1.015);
 }
 
 .product-badge {
@@ -768,7 +783,7 @@ button, input, select {
  * Categories Section
  * ------------------------------------------------------------- */
 .categories-section {
-  padding: var(--space-2xl) 0;
+  padding: var(--space-section) 0;
   background-color: var(--bg-secondary);
   border-bottom: 1px solid var(--border-color);
 }
@@ -834,7 +849,7 @@ button, input, select {
  * Why Oor Section (Standards)
  * ------------------------------------------------------------- */
 .why-oor-section {
-  padding: var(--space-2xl) 0;
+  padding: var(--space-section) 0;
   background-color: var(--bg-primary);
   border-bottom: 1px solid var(--border-color);
 }
@@ -876,7 +891,7 @@ button, input, select {
  * Split Grid Craft Section ("From Dough to Crunch")
  * ------------------------------------------------------------- */
 .scrolly-section {
-  padding: var(--space-2xl) 0;
+  padding: var(--space-section) 0;
   background-color: var(--bg-primary);
   border-bottom: 1px solid var(--border-color);
   width: 100%;
@@ -942,18 +957,7 @@ button, input, select {
   object-fit: contain;
   object-position: center center;
   display: block;
-  transform-origin: center center;
-  animation: cinematicBreath 24s ease-in-out infinite alternate;
-  will-change: transform;
-}
-
-@keyframes cinematicBreath {
-  0% {
-    transform: scale(1.0);
-  }
-  100% {
-    transform: scale(1.05);
-  }
+  transform: scale(1);
 }
 
 /* Subconscious Warmth Hearth Glow (slow breathing warm air, very soft) */
@@ -961,10 +965,14 @@ button, input, select {
   position: absolute;
   right: 12%; bottom: 22%;
   width: 28%; height: 30%;
-  background: radial-gradient(ellipse, rgba(255,140,30,0.06) 0%, transparent 70%);
-  animation: glowPulse 5s ease-in-out infinite alternate;
+  background: radial-gradient(ellipse, rgba(255,140,30,0.05) 0%, transparent 70%);
   pointer-events: none;
   z-index: 1;
+}
+
+/* Ambient steam only when motion is allowed — kept very soft */
+.motion-enhanced .steam-wisp {
+  opacity: 0.85;
 }
 
 @keyframes glowPulse {
@@ -981,28 +989,27 @@ button, input, select {
   z-index: 2;
 }
 
-/* Soft Volumetric Steam Wisps (3 Max, warm tinted) */
+/* Soft volumetric steam — only when motion-enhanced */
 .steam-wisp {
   position: absolute;
   bottom: 0;
   border-radius: 50% 50% 30% 30%;
-  background: rgba(255,255,255,0.0);
-  animation-timing-function: ease-out;
-  animation-iteration-count: infinite;
+  background: rgba(255, 255, 255, 0);
+  animation: none;
   will-change: transform, opacity;
 }
 
-.w1 {
+.motion-enhanced .w1 {
   left: 30%; width: 28%; height: 70%;
-  animation: riseWisp1 5.5s 0s infinite ease-out;
+  animation: riseWisp1 8s 0s infinite ease-out;
 }
-.w2 {
+.motion-enhanced .w2 {
   left: 45%; width: 22%; height: 60%;
-  animation: riseWisp2 6.5s 1.8s infinite ease-out;
+  animation: riseWisp2 9s 2s infinite ease-out;
 }
-.w3 {
+.motion-enhanced .w3 {
   left: 18%; width: 25%; height: 55%;
-  animation: riseWisp3 7.0s 3.5s infinite ease-out;
+  animation: riseWisp3 9.5s 4s infinite ease-out;
 }
 
 @keyframes riseWisp1 {
@@ -1055,8 +1062,7 @@ button, input, select {
 
 .scrolly-card:hover {
   border-color: rgba(139, 30, 30, 0.2);
-  box-shadow: 0 8px 24px rgba(45, 24, 16, 0.04);
-  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(45, 24, 16, 0.05);
 }
 
 .scrolly-step-num {
@@ -1185,7 +1191,7 @@ button, input, select {
  * Combos / Festival Specials Section
  * ------------------------------------------------------------- */
 .combos-section {
-  padding: var(--space-2xl) 0;
+  padding: var(--space-section) 0;
   background-color: var(--bg-primary);
   border-bottom: 1px solid var(--border-color);
 }
@@ -1194,7 +1200,7 @@ button, input, select {
  * Testimonials Section
  * ------------------------------------------------------------- */
 .reviews-section {
-  padding: var(--space-xl) 0;
+  padding: var(--space-section) 0;
   background-color: var(--bg-secondary);
   border-bottom: 1px solid var(--border-color);
 }
@@ -2064,11 +2070,18 @@ button, input, select {
     transition-duration: 0s !important;
     transition-delay: 0s !important;
   }
+
+  .steam-wisp,
+  .warmth-glow {
+    display: none !important;
+  }
   
   .hero-bg-image,
   .product-img,
-  .category-img {
+  .category-img,
+  .scroll-reveal {
     transform: none !important;
+    opacity: 1 !important;
   }
   
   .scroll-dot {

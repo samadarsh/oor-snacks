@@ -456,61 +456,70 @@ if (fohTrigger && fohPortal) {
 }
 
 /* -------------------------------------------------------------
- * GSAP ScrollTrigger reveals
+ * Cinematic motion (Apple-style: opacity + depth, low frequency)
  * ------------------------------------------------------------- */
+const MOTION_EASE = 'power2.out'
+
 if (!prefersReducedMotion) {
-  // 1. Hero Load Entry Animation (Slow immersive flatlay zoom & text reveals)
+  document.documentElement.classList.add('motion-enhanced')
+
+  // Hero: single soft entrance — no aggressive slide
   window.addEventListener('load', () => {
-    const tl = gsap.timeline()
-    
+    const tl = gsap.timeline({ defaults: { ease: MOTION_EASE } })
+
     tl.from('.hero-bg-image', {
-      scale: 1.08,
+      scale: 1.04,
       opacity: 0,
-      duration: 2.5, /* Very slow camera breathing zoom */
-      ease: 'power3.out'
+      duration: 1.5,
     })
-    .from('.text-reveal', {
-      y: 25,
-      opacity: 0,
-      stagger: 0.15,
-      duration: 1.2,
-      ease: 'power3.out'
-    }, '-=1.8')
-    .from('.scroll-indicator', {
-      opacity: 0,
-      duration: 0.8
-    }, '-=0.4')
+      .from(
+        '.text-reveal',
+        {
+          opacity: 0,
+          y: 12,
+          stagger: 0.08,
+          duration: 0.85,
+        },
+        '-=1.1'
+      )
+      .from('.scroll-indicator', { opacity: 0, duration: 0.6 }, '-=0.5')
   })
 
-  // 2. Hero Scroll Parallax (Immersive background slow translation)
-  gsap.timeline({
+  // Hero parallax: subtle depth only (transform-only)
+  gsap.to('.hero-bg-image', {
+    yPercent: 4,
+    ease: 'none',
     scrollTrigger: {
       trigger: '#hero',
       start: 'top top',
       end: 'bottom top',
-      scrub: true
-    }
+      scrub: 0.6,
+    },
   })
-  .to('.hero-bg-image', { yPercent: 8, ease: 'none' }, 0)
 
-  // 3. Showcase Section: The Aroma Lock Pouch (Static picture - no animations or tilts)
-  // No JS animations required for static picture.
+  // Batched scroll reveals — one message at a time, gentle fade-up
+  const revealTargets = gsap.utils.toArray('.scroll-reveal').filter(
+    (el) => !el.closest('#hero')
+  )
 
-  // 5. Viewport scroll reveals (fast cards)
-  const reveals = document.querySelectorAll('.scroll-reveal')
-  reveals.forEach(element => {
-    gsap.from(element, {
-      y: 25,
-      opacity: 0,
-      duration: 1.0,
-      ease: 'power3.out',
-      scrollTrigger: {
-        trigger: element,
-        start: 'top 90%',
-        toggleActions: 'play none none none'
-      }
+  if (revealTargets.length) {
+    gsap.set(revealTargets, { opacity: 0, y: 14 })
+
+    ScrollTrigger.batch(revealTargets, {
+      start: 'top 88%',
+      once: true,
+      onEnter: (batch) => {
+        gsap.to(batch, {
+          opacity: 1,
+          y: 0,
+          duration: 0.85,
+          ease: MOTION_EASE,
+          stagger: 0.05,
+          overwrite: true,
+        })
+      },
     })
-  })
+  }
 }
 
 // Initial Sync

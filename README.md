@@ -49,6 +49,12 @@ Social preview image: **`public/og-image.webp`** (served at `/og-image.webp`).
 | `public/` | Static files copied as-is to build root |
 | `murukku_cinematic_animation.html` | Standalone motion prototype (not in build) |
 
+## Design direction (Apple-inspired)
+
+Phase 1 (current): calmer typography, generous section spacing, opacity-first motion, batched scroll reveals.
+
+Later phases: sticky scrollytelling scenes, texture cinematography, AVIF assets — see project issues / roadmap.
+
 ## Staff portal (demo)
 
 Footer link **Staff Portal (Demo)** shows orders stored in the browser’s `localStorage` (`oor_orders`). This is for prototyping only — not a shared backend.
