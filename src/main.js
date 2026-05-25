@@ -3,6 +3,8 @@ import Lenis from 'lenis'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { SITE } from './config.js'
+import { saveOrderToSupabase } from './orders-api.js'
+import { isSupabaseConfigured } from './supabase.js'
 
 // Register GSAP plugins
 gsap.registerPlugin(ScrollTrigger)
@@ -294,21 +296,79 @@ productCards.forEach(card => {
  * ------------------------------------------------------------- */
 const checkoutForm = document.getElementById('cart-checkout-form')
 
-checkoutForm.addEventListener('submit', (e) => {
+checkoutForm.addEventListener('submit', async (e) => {
   e.preventDefault()
-  
+
   const name = document.getElementById('cust-name').value
   const address = document.getElementById('cust-address').value
-  
+
   if (!name || !address) return
-  
+
   const subtotal = getCartSubtotal()
   const shipping = subtotal >= SITE.freeShippingMin ? 0 : SITE.shippingFee
   const total = subtotal + shipping
-  
-  // 1. Format order text for WhatsApp
-  const itemsText = cart.map(item => `- ${item.qty}x ${item.name} (${item.weight}) - ₹${item.price * item.qty}`).join('\n')
-  
+  const cartSnapshot = cart.map((item) => ({ ...item }))
+
+  const submitBtn = checkoutForm.querySelector('button[type="submit"]')
+  if (submitBtn) {
+    submitBtn.disabled = true
+    submitBtn.setAttribute('aria-busy', 'true')
+  }
+
+  const checkoutStatus = document.getElementById('checkout-status')
+
+  // 1. Save to Supabase when configured (staff admin reads this)
+  let backendSaved = false
+  if (isSupabaseConfigured()) {
+    const result = await saveOrderToSupabase({
+      customerName: name,
+      customerAddress: address,
+      subtotal,
+      shipping,
+      total,
+      cartItems: cartSnapshot,
+    })
+    backendSaved = result.ok
+    if (!result.ok && !result.skipped) {
+      console.warn('[Oor] Supabase save failed:', result.error)
+      if (checkoutStatus) {
+        checkoutStatus.textContent =
+          'Could not save to kitchen queue (database permissions). Run supabase/fix-rls.sql in Supabase, then try again. WhatsApp will still open.'
+        checkoutStatus.className = 'checkout-status checkout-status-error'
+        checkoutStatus.hidden = false
+      }
+    } else if (result.ok && checkoutStatus) {
+      checkoutStatus.textContent = 'Order saved. Opening WhatsApp to confirm…'
+      checkoutStatus.className = 'checkout-status checkout-status-ok'
+      checkoutStatus.hidden = false
+    }
+  }
+
+  // 2. Local fallback queue (demo / offline)
+  if (!backendSaved) {
+    const incomingOrders = JSON.parse(localStorage.getItem('oor_orders') || '[]')
+    incomingOrders.push({
+      id: Date.now(),
+      name,
+      address,
+      items: cartSnapshot.map((item) => ({
+        name: item.name,
+        weight: item.weight,
+        qty: item.qty,
+        total: item.price * item.qty,
+      })),
+      subtotal,
+      shipping,
+      total,
+    })
+    localStorage.setItem('oor_orders', JSON.stringify(incomingOrders))
+  }
+
+  // 3. Format order text for WhatsApp
+  const itemsText = cartSnapshot
+    .map((item) => `- ${item.qty}x ${item.name} (${item.weight}) - ₹${item.price * item.qty}`)
+    .join('\n')
+
   const whatsappMsg = `Hello Oor Snacks! I'd like to place an order:
 
 *Customer Details*
@@ -325,29 +385,24 @@ Shipping: ${shipping === 0 ? 'FREE' : `₹${shipping}`}
 
 Thank you!`
 
-  // 2. Log order to Local Storage (Simulating backend ledger queue)
-  const incomingOrders = JSON.parse(localStorage.getItem('oor_orders') || '[]')
-  incomingOrders.push({
-    id: Date.now(),
-    name,
-    address,
-    items: cart.map(item => ({ name: item.name, weight: item.weight, qty: item.qty, total: item.price * item.qty })),
-    subtotal,
-    shipping,
-    total
-  })
-  localStorage.setItem('oor_orders', JSON.stringify(incomingOrders))
-  
-  // 3. Clear cart memory
   cart = []
   updateCartStorage()
   closeCartDrawer()
-  
-  // 4. Fire WhatsApp API redirect
+
   const encodedMsg = encodeURIComponent(whatsappMsg)
   const whatsappUrl = `https://api.whatsapp.com/send?phone=${SITE.whatsappPhone}&text=${encodedMsg}`
-  
   window.open(whatsappUrl, '_blank')
+
+  if (submitBtn) {
+    submitBtn.disabled = false
+    submitBtn.removeAttribute('aria-busy')
+  }
+
+  if (backendSaved && checkoutStatus) {
+    setTimeout(() => {
+      checkoutStatus.hidden = true
+    }, 4000)
+  }
 })
 
 /* -------------------------------------------------------------

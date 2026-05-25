@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Staff Orders | Oor Snacks</title>
+    <meta name="robots" content="noindex" />
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌾</text></svg>" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <div id="admin-app" class="admin-app">
+      <header class="admin-header">
+        <a href="/" class="admin-back">&larr; Store</a>
+        <h1>Oor — Orders</h1>
+        <button type="button" id="admin-logout" class="admin-btn admin-btn-ghost" hidden>Sign out</button>
+      </header>
+
+      <section id="admin-login-panel" class="admin-panel">
+        <p class="admin-lead">Sign in with your staff account to view customer orders.</p>
+        <form id="admin-login-form" class="admin-form">
+          <label>
+            Email
+            <input type="email" id="admin-email" required autocomplete="username" />
+          </label>
+          <label>
+            Password
+            <input type="password" id="admin-password" required autocomplete="current-password" />
+          </label>
+          <p id="admin-login-error" class="admin-error" hidden></p>
+          <button type="submit" class="admin-btn admin-btn-primary">Sign in</button>
+        </form>
+        <div class="admin-hint-box">
+          <p><strong>First time setup</strong></p>
+          <ol>
+            <li>Supabase Dashboard → <strong>Authentication</strong> → <strong>Users</strong></li>
+            <li><strong>Add user</strong> → Create new user</li>
+            <li>Enter email + password</li>
+            <li>Turn on <strong>Auto Confirm User</strong> (required)</li>
+            <li>Sign in here with that <em>exact</em> email and password</li>
+          </ol>
+          <p class="admin-hint-note">Still failing? In Users, open the user → <strong>Send password recovery</strong> or delete and recreate with Auto Confirm on.</p>
+        </div>
+      </section>
+
+      <section id="admin-orders-panel" class="admin-panel" hidden>
+        <div class="admin-toolbar">
+          <p id="admin-order-count" class="admin-count"></p>
+          <button type="button" id="admin-refresh" class="admin-btn admin-btn-ghost">Refresh</button>
+        </div>
+        <div id="admin-orders-list" class="admin-orders-list"></div>
+        <p id="admin-empty" class="admin-empty" hidden>No orders yet.</p>
+      </section>
+
+      <p id="admin-config-warn" class="admin-warn" hidden>
+        Supabase is not configured. Add <code>VITE_SUPABASE_URL</code> and <code>VITE_SUPABASE_PUBLISHABLE_KEY</code> to <code>.env</code>, then restart <code>npm run dev</code>.
+      </p>
+    </div>
+    <script type="module" src="/src/admin.js"></script>
+  </body>
+</html>

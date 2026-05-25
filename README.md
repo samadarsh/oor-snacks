@@ -15,7 +15,7 @@ npm install
 npm run dev
 ```
 
-Open the URL shown in the terminal (default `http://localhost:5173`).
+Open the URL shown in the terminal (defaults to `http://localhost:5180`; if that port is busy, Vite picks the next free port).
 
 ## Production build
 
@@ -25,6 +25,12 @@ npm run preview
 ```
 
 Deploy the `dist/` folder to any static host (Netlify, Vercel, Cloudflare Pages, S3, etc.).
+
+## Backend (Supabase)
+
+Orders are saved to Supabase on checkout when `.env` is configured. Staff view orders at **`/admin.html`**.
+
+Full setup: **[SUPABASE_SETUP.md](./SUPABASE_SETUP.md)**
 
 ## Configuration
 

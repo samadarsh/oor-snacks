@@ -1497,6 +1497,26 @@ button, input, select {
   box-shadow: 0 0 6px var(--border-focus);
 }
 
+.checkout-status {
+  font-size: 12px;
+  line-height: 1.45;
+  padding: 8px 10px;
+  border-radius: var(--radius-sm);
+  margin-bottom: var(--space-xs);
+}
+
+.checkout-status-ok {
+  background: rgba(77, 124, 15, 0.1);
+  color: var(--accent-green);
+  border: 1px solid rgba(77, 124, 15, 0.2);
+}
+
+.checkout-status-error {
+  background: rgba(201, 59, 43, 0.08);
+  color: var(--error-color);
+  border: 1px solid rgba(201, 59, 43, 0.2);
+}
+
 .checkout-submit-btn {
   margin-top: 6px;
   display: flex;

@@ -3,9 +3,9 @@ export const SITE = {
   name: 'Oor Snacks',
   url: 'https://oorsnacks.com',
   email: 'orders@oorsnacks.com',
-  phoneDisplay: '+91 98765 43210',
-  phoneTel: '+919876543210',
-  whatsappPhone: '919876543210',
+  phoneDisplay: '+91 91766 61912',
+  phoneTel: '+919176661912',
+  whatsappPhone: '919176661912',
   shippingFee: 60,
   freeShippingMin: 500,
   address: {
