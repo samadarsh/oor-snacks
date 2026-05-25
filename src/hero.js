@@ -7,10 +7,12 @@ gsap.registerPlugin(ScrollTrigger)
 import { initSiteNav } from './shared/nav.js'
 import { initScrollReveals } from './shared/motion.js'
 import { syncCartBadge } from './cart.js'
+import { initResponsiveImages } from './shared/responsive-img.js'
 
 document.body.classList.add('page-hero')
 initSiteNav()
 syncCartBadge()
+initResponsiveImages()
 
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 let lenis = null

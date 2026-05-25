@@ -66,6 +66,42 @@ export const syncCartBadge = () => {
   if (badge) badge.textContent = String(getCartCount())
 }
 
+/** Sticky “View cart” bar on small screens (products page). */
+export const syncMobileStickyCart = () => {
+  const bar = document.getElementById('mobile-sticky-cart')
+  if (!bar) return
+
+  const count = getCartCount()
+  const subtotal = getCartSubtotal()
+  const isMobile = window.matchMedia('(max-width: 768px)').matches
+
+  const countEl = document.getElementById('mobile-cart-item-count')
+  const totalEl = document.getElementById('mobile-cart-total-amount')
+  if (countEl) countEl.textContent = `${count} item${count === 1 ? '' : 's'}`
+  if (totalEl) totalEl.textContent = `₹${subtotal}`
+
+  if (count > 0 && isMobile) {
+    bar.classList.add('active')
+    bar.removeAttribute('hidden')
+    bar.setAttribute('aria-hidden', 'false')
+  } else {
+    bar.classList.remove('active')
+    bar.setAttribute('hidden', '')
+    bar.setAttribute('aria-hidden', 'true')
+  }
+}
+
+export const initMobileStickyCart = () => {
+  if (!document.getElementById('mobile-sticky-cart')) return
+  const sync = () => {
+    syncCartBadge()
+    syncMobileStickyCart()
+  }
+  window.addEventListener('resize', sync, { passive: true })
+  onCartChange(sync)
+  sync()
+}
+
 export const renderCartItemsHtml = () =>
   cart
     .map(

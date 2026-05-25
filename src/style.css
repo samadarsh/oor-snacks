@@ -2457,9 +2457,14 @@ a.cart-trigger-btn {
 }
 
 @media (max-width: 768px) {
-  /* Prevent scroll collision with mobile sticky bar */
-  body {
-    padding-bottom: 64px;
+  body.has-mobile-cart-bar {
+    padding-bottom: 72px;
+  }
+
+  .add-to-cart-btn,
+  .qty-btn,
+  .mobile-sticky-cart-bar .btn-primary {
+    min-height: 44px;
   }
 
   /* Hamburger Menu navigation overlay */

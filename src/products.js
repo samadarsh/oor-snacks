@@ -1,13 +1,15 @@
 import './style.css'
 import { initSiteNav } from './shared/nav.js'
 import { initScrollReveals } from './shared/motion.js'
-import { addToCart, onCartChange, syncCartBadge } from './cart.js'
+import { addToCart, initMobileStickyCart, onCartChange, syncCartBadge } from './cart.js'
+import { initResponsiveImages } from './shared/responsive-img.js'
 
 initSiteNav()
-syncCartBadge()
+initResponsiveImages()
+initMobileStickyCart()
 initScrollReveals()
 
-document.body.classList.add('page-products')
+document.body.classList.add('page-products', 'has-mobile-cart-bar')
 
 let toastTimer
 const showAddedToast = () => {
@@ -52,4 +54,6 @@ document.querySelectorAll('.product-card').forEach((card) => {
   })
 })
 
-onCartChange(() => syncCartBadge())
+onCartChange(() => {
+  syncCartBadge()
+})
