@@ -12,6 +12,9 @@ const logoutBtn = document.getElementById('admin-logout')
 const refreshBtn = document.getElementById('admin-refresh')
 const configWarn = document.getElementById('admin-config-warn')
 
+let isLoadingOrders = false
+let lastLoadedAt = null
+
 const escapeHtml = (str) => {
   if (str == null) return ''
   return String(str)
@@ -29,6 +32,11 @@ const formatDate = (iso) => {
   })
 }
 
+const formatLastSync = () => {
+  if (!lastLoadedAt) return ''
+  return `Updated ${lastLoadedAt.toLocaleTimeString('en-IN', { hour: 'numeric', minute: '2-digit', second: '2-digit' })}`
+}
+
 const showLogin = () => {
   loginPanel.hidden = false
   ordersPanel.hidden = true
@@ -41,33 +49,56 @@ const showOrders = () => {
   logoutBtn.hidden = false
 }
 
-async function loadOrders() {
-  if (!supabase) return
+const setRefreshLoading = (loading) => {
+  if (!refreshBtn) return
+  refreshBtn.disabled = loading
+  refreshBtn.textContent = loading ? 'Refreshing…' : 'Refresh'
+  refreshBtn.setAttribute('aria-busy', loading ? 'true' : 'false')
+}
 
-  const { data, error } = await supabase
+/** Fetch orders + line items in two steps (more reliable than nested embed). */
+async function fetchOrdersWithItems() {
+  const { data: orders, error: ordersError } = await supabase
     .from('orders')
-    .select('*, order_items(*)')
+    .select('*')
     .order('created_at', { ascending: false })
 
-  if (error) {
-    ordersList.innerHTML = `<p class="admin-error">Could not load orders: ${escapeHtml(error.message)}</p>`
-    return
+  if (ordersError) {
+    return { error: ordersError.message }
   }
 
-  const orders = data || []
-  orderCount.textContent =
-    orders.length === 0 ? 'No orders' : `${orders.length} order${orders.length > 1 ? 's' : ''}`
-
-  if (orders.length === 0) {
-    ordersList.innerHTML = ''
-    emptyState.hidden = false
-    return
+  const list = orders || []
+  if (list.length === 0) {
+    return { orders: [] }
   }
 
-  emptyState.hidden = true
+  const orderIds = list.map((o) => o.id)
+  const { data: items, error: itemsError } = await supabase
+    .from('order_items')
+    .select('*')
+    .in('order_id', orderIds)
+
+  if (itemsError) {
+    return { error: itemsError.message }
+  }
+
+  const itemsByOrder = {}
+  for (const item of items || []) {
+    if (!itemsByOrder[item.order_id]) itemsByOrder[item.order_id] = []
+    itemsByOrder[item.order_id].push(item)
+  }
+
+  for (const order of list) {
+    order.order_items = itemsByOrder[order.id] || []
+  }
+
+  return { orders: list }
+}
+
+function renderOrders(orders) {
   ordersList.innerHTML = orders
     .map((ord) => {
-      const items = ord.order_items || []
+      const lineItems = ord.order_items || []
       const statusClass = ord.status === 'fulfilled' ? 'fulfilled' : ''
       return `
         <article class="admin-order-card" data-id="${ord.id}">
@@ -83,15 +114,19 @@ async function loadOrders() {
               : ''
           }
           <div class="admin-order-items">
-            ${items
-              .map(
-                (i) => `
+            ${
+              lineItems.length
+                ? lineItems
+                    .map(
+                      (i) => `
               <div class="admin-order-item">
                 <span>${i.qty}× ${escapeHtml(i.product_name)} (${escapeHtml(i.weight)})</span>
                 <span>₹${i.line_total}</span>
               </div>`
-              )
-              .join('')}
+                    )
+                    .join('')
+                : '<p class="admin-order-meta">No line items recorded</p>'
+            }
           </div>
           <div class="admin-order-total">
             <span>Total (incl. shipping ₹${ord.shipping})</span>
@@ -110,14 +145,73 @@ async function loadOrders() {
   ordersList.querySelectorAll('.admin-fulfill-btn').forEach((btn) => {
     btn.addEventListener('click', async () => {
       const id = btn.getAttribute('data-id')
+      btn.disabled = true
       const { error: updErr } = await supabase
         .from('orders')
         .update({ status: 'fulfilled' })
         .eq('id', id)
       if (updErr) alert(updErr.message)
-      else loadOrders()
+      else await loadOrders({ quiet: false })
     })
   })
+}
+
+async function loadOrders({ quiet = false } = {}) {
+  if (!supabase) return
+  if (isLoadingOrders) return
+
+  const {
+    data: { session },
+    error: sessionError,
+  } = await supabase.auth.getSession()
+
+  if (sessionError || !session) {
+    showLogin()
+    if (!quiet && loginError) {
+      loginError.textContent = 'Session expired. Please sign in again.'
+      loginError.hidden = false
+    }
+    return
+  }
+
+  isLoadingOrders = true
+  setRefreshLoading(true)
+
+  if (!quiet) {
+    ordersList.innerHTML = '<p class="admin-order-meta">Loading orders…</p>'
+    emptyState.hidden = true
+  }
+
+  try {
+    const result = await fetchOrdersWithItems()
+
+    if (result.error) {
+      orderCount.textContent = 'Could not load'
+      ordersList.innerHTML = `<p class="admin-error">Could not load orders: ${escapeHtml(result.error)}</p>`
+      emptyState.hidden = true
+      return
+    }
+
+    const orders = result.orders
+    lastLoadedAt = new Date()
+
+    orderCount.textContent =
+      orders.length === 0
+        ? `No orders · ${formatLastSync()}`
+        : `${orders.length} order${orders.length > 1 ? 's' : ''} · ${formatLastSync()}`
+
+    if (orders.length === 0) {
+      ordersList.innerHTML = ''
+      emptyState.hidden = false
+      return
+    }
+
+    emptyState.hidden = true
+    renderOrders(orders)
+  } finally {
+    isLoadingOrders = false
+    setRefreshLoading(false)
+  }
 }
 
 async function init() {
@@ -130,7 +224,7 @@ async function init() {
   const { data: { session } } = await supabase.auth.getSession()
   if (session) {
     showOrders()
-    loadOrders()
+    await loadOrders({ quiet: true })
   } else {
     showLogin()
   }
@@ -138,7 +232,7 @@ async function init() {
   supabase.auth.onAuthStateChange((_event, session) => {
     if (session) {
       showOrders()
-      loadOrders()
+      loadOrders({ quiet: true })
     } else {
       showLogin()
     }
@@ -167,6 +261,8 @@ loginForm.addEventListener('submit', async (e) => {
     }
     loginError.textContent = msg
     loginError.hidden = false
+  } else {
+    await loadOrders({ quiet: false })
   }
 })
 
@@ -175,6 +271,16 @@ logoutBtn.addEventListener('click', async () => {
   showLogin()
 })
 
-refreshBtn.addEventListener('click', loadOrders)
+if (refreshBtn) {
+  refreshBtn.addEventListener('click', () => loadOrders({ quiet: false }))
+} else {
+  console.error('[Oor Admin] Refresh button #admin-refresh not found')
+}
+
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible' && !ordersPanel.hidden) {
+    loadOrders({ quiet: true })
+  }
+})
 
 init()

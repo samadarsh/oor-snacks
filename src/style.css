@@ -1492,36 +1492,170 @@ button, input, select {
   transition: all var(--transition-fast);
 }
 
-.cart-checkout-form input:focus {
+.cart-checkout-form input:focus,
+.cart-checkout-form textarea:focus {
   border-color: var(--accent-maroon);
   box-shadow: 0 0 6px var(--border-focus);
 }
 
-.checkout-status {
-  font-size: 12px;
-  line-height: 1.45;
-  padding: 8px 10px;
+.cart-checkout-form textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--border-color);
   border-radius: var(--radius-sm);
-  margin-bottom: var(--space-xs);
+  resize: vertical;
+  min-height: 72px;
+  font: inherit;
+  background: var(--bg-primary);
 }
 
-.checkout-status-ok {
-  background: rgba(77, 124, 15, 0.1);
-  color: var(--accent-green);
-  border: 1px solid rgba(77, 124, 15, 0.2);
+.cart-checkout-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
 }
 
-.checkout-status-error {
-  background: rgba(201, 59, 43, 0.08);
+.checkout-panel-title {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--accent-maroon);
+  margin: 0 0 4px;
+}
+
+.checkout-inline-error {
+  font-size: 12px;
   color: var(--error-color);
-  border: 1px solid rgba(201, 59, 43, 0.2);
+  line-height: 1.45;
+  margin: 0;
+}
+
+.checkout-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--text-secondary);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: var(--space-xs) 0;
+}
+
+.checkout-divider::before,
+.checkout-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border-color);
+}
+
+.checkout-whatsapp-desc {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.45;
+  margin: 0 0 var(--space-sm);
+}
+
+.cart-whatsapp-panel .btn-secondary {
+  border-color: rgba(37, 211, 102, 0.45);
+  color: #1a7a3c;
+}
+
+.cart-whatsapp-panel .btn-secondary:hover {
+  border-color: #25d366;
+  background: rgba(37, 211, 102, 0.08);
+  color: #1a7a3c;
 }
 
 .checkout-submit-btn {
   margin-top: 6px;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
   line-height: 1.2;
+  transition: transform 0.12s ease, opacity 0.12s ease;
+}
+
+.checkout-submit-btn:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.checkout-submit-btn:disabled {
+  opacity: 0.75;
+  cursor: wait;
+}
+
+/* Website order success modal */
+.order-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-md);
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease, visibility 0.2s ease;
+}
+
+.order-modal.open {
+  pointer-events: auto;
+  opacity: 1;
+  visibility: visible;
+}
+
+.order-modal-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(45, 24, 16, 0.45);
+}
+
+.order-modal-content {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 400px);
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  text-align: center;
+  box-shadow: 0 24px 48px rgba(45, 24, 16, 0.15);
+  transform: translateY(8px) scale(0.98);
+  transition: transform 0.22s var(--ease-primary);
+}
+
+.order-modal.open .order-modal-content {
+  transform: translateY(0) scale(1);
+}
+
+.order-modal-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: rgba(77, 124, 15, 0.12);
+  color: var(--accent-green);
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: var(--space-sm);
+}
+
+.order-modal-content h3 {
+  font-size: 22px;
+  margin-bottom: var(--space-sm);
+}
+
+.order-modal-content p {
+  font-size: 15px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin-bottom: var(--space-md);
 }
 
 .btn-subtext {

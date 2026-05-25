@@ -54,12 +54,12 @@ If checkout opens WhatsApp but **admin shows no orders**, run [`supabase/fix-rls
 
 ## Step 6 — Test an order
 
-1. On the store, add items to the cart and checkout (name + address).
-2. You should see **“Order saved”** then WhatsApp opens.
+1. On the store, add items to the cart → **Place order on website** (name, mobile, address).
+2. You should see the green **Order placed successfully** popup within a few seconds.
 3. In Supabase **Table Editor** → `orders` and `order_items`, you should see the new row.
 4. Sign in at `/admin.html` with your staff user — the same order should appear.
 
-## Step 6 — Deploy (Vercel / Netlify)
+## Step 7 — Deploy (Vercel / Netlify)
 
 Add the same environment variables in your host dashboard:
 
@@ -81,6 +81,22 @@ Redeploy after saving.
 | Problem | Fix |
 |--------|-----|
 | Orders not in Supabase | Check `.env`, restart `npm run dev`, browser console for errors |
+| **`TypeError: Load failed`** or long wait then error | Browser never reached Supabase — not an RLS issue. See below |
 | Admin login fails | Confirm user exists under Authentication → Users |
 | Admin shows no orders | Same Supabase project URL/key as storefront; staff must be signed in |
-| Insert policy error | Re-run `supabase/schema.sql` in SQL Editor |
+| Insert policy error | Run [`supabase/fix-rls.sql`](./supabase/fix-rls.sql) in SQL Editor |
+
+### `Load failed` / very slow checkout
+
+This means the **network request failed** before Supabase answered (Safari shows `TypeError: Load failed`; Chrome often shows `Failed to fetch`).
+
+**Why it feels slow:** the button stays on “One moment…” until the browser gives up (often 10–60 seconds).
+
+**Common causes:**
+
+1. **Live site built without env vars** — In Vercel → Project → **Settings → Environment Variables**, add `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY`, then **Redeploy**. A build without these cannot save orders on production.
+2. **Ad blocker / privacy extension** — Allow `*.supabase.co` or disable the blocker on your site.
+3. **Offline / weak network / VPN** — Retry on stable Wi‑Fi.
+4. **Stale admin session** — The app now uses a separate store client for checkout; pull latest code and hard-refresh the page.
+
+**Verify the database is OK:** In Supabase SQL Editor, run [`supabase/fix-rls.sql`](./supabase/fix-rls.sql). If inserts work in the dashboard but not on the site, the problem is env/network, not RLS.

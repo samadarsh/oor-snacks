@@ -102,6 +102,11 @@ body {
   color: var(--text);
 }
 
+.admin-btn-ghost:disabled {
+  opacity: 0.55;
+  cursor: wait;
+}
+
 .admin-error {
   color: #c93b2b;
   font-size: 13px;
@@ -147,7 +152,9 @@ body {
 }
 
 .admin-count {
+  font-size: 14px;
   font-weight: 600;
+  color: var(--muted);
 }
 
 .admin-orders-list {

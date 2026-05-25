@@ -603,23 +603,52 @@
             <strong id="cart-subtotal-amount">₹0</strong>
           </div>
           
-          <form id="cart-checkout-form" class="cart-checkout-form">
-            <div class="form-group">
-              <label for="cust-name">Your Name</label>
-              <input type="text" id="cust-name" required placeholder="Enter full name" aria-required="true" />
+          <div class="cart-checkout-panel">
+            <p class="checkout-panel-title">Order on website</p>
+            <form id="cart-website-order-form" class="cart-checkout-form">
+              <div class="form-group">
+                <label for="cust-name">Your Name</label>
+                <input type="text" id="cust-name" name="name" required placeholder="Full name" autocomplete="name" />
+              </div>
+              <div class="form-group">
+                <label for="cust-mobile">Mobile Number</label>
+                <input type="tel" id="cust-mobile" name="mobile" required placeholder="10-digit mobile number" autocomplete="tel" inputmode="numeric" maxlength="14" />
+              </div>
+              <div class="form-group">
+                <label for="cust-address">Delivery Address</label>
+                <textarea id="cust-address" name="address" required rows="3" placeholder="House no., street, area, city, pincode"></textarea>
+              </div>
+              <p id="website-order-error" class="checkout-inline-error" role="alert" hidden></p>
+              <button type="submit" class="btn btn-primary btn-block checkout-submit-btn" id="website-order-submit">
+                <span class="checkout-btn-text">Place order on website</span>
+                <span class="btn-subtext">We will confirm by phone · Free shipping above ₹500</span>
+              </button>
+            </form>
+
+            <div class="checkout-divider" aria-hidden="true">
+              <span>or</span>
             </div>
-            <div class="form-group">
-              <label for="cust-address">Delivery Address</label>
-              <input type="text" id="cust-address" required placeholder="Street address, City, Pincode" aria-required="true" />
+
+            <div class="cart-whatsapp-panel">
+              <p class="checkout-panel-title">Order via WhatsApp</p>
+              <p class="checkout-whatsapp-desc">Send your basket to us on WhatsApp and share delivery details in chat.</p>
+              <button type="button" class="btn btn-secondary btn-block" id="cart-whatsapp-order">
+                <span>Continue on WhatsApp</span>
+              </button>
             </div>
-            
-            <p id="checkout-status" class="checkout-status" role="status" hidden></p>
-            <button type="submit" class="btn btn-primary btn-block checkout-submit-btn">
-              <span>Place order &amp; open WhatsApp</span>
-              <span class="btn-subtext">Saved to our kitchen queue · Free shipping above ₹500</span>
-            </button>
-          </form>
+          </div>
         </div>
+      </div>
+    </div>
+
+    <!-- Order success modal (website checkout only) -->
+    <div id="order-success-modal" class="order-modal" aria-hidden="true" role="dialog" aria-labelledby="order-success-title" aria-modal="true">
+      <div class="order-modal-overlay" tabindex="-1"></div>
+      <div class="order-modal-content">
+        <span class="order-modal-icon" aria-hidden="true">✓</span>
+        <h3 id="order-success-title">Order placed successfully!</h3>
+        <p id="order-success-message">Thank you. We have received your order and will contact you shortly on your mobile number.</p>
+        <button type="button" class="btn btn-primary btn-block" id="order-success-close">Continue shopping</button>
       </div>
     </div>
 

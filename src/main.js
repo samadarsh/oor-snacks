@@ -292,88 +292,157 @@ productCards.forEach(card => {
 })
 
 /* -------------------------------------------------------------
- * Checkout Form Handling (WhatsApp Compiler & Order Ledger Log)
+ * Checkout: website order vs WhatsApp (separate flows)
  * ------------------------------------------------------------- */
-const checkoutForm = document.getElementById('cart-checkout-form')
+const websiteOrderForm = document.getElementById('cart-website-order-form')
+const whatsappOrderBtn = document.getElementById('cart-whatsapp-order')
+const orderSuccessModal = document.getElementById('order-success-modal')
+const orderSuccessClose = document.getElementById('order-success-close')
+const websiteOrderError = document.getElementById('website-order-error')
 
-checkoutForm.addEventListener('submit', async (e) => {
-  e.preventDefault()
+const normalizeIndianMobile = (raw) => {
+  const digits = String(raw).replace(/\D/g, '')
+  if (digits.length === 10) return digits
+  if (digits.length === 12 && digits.startsWith('91')) return digits.slice(2)
+  if (digits.length === 11 && digits.startsWith('0')) return digits.slice(1)
+  return null
+}
 
-  const name = document.getElementById('cust-name').value
-  const address = document.getElementById('cust-address').value
+const formatMobileDisplay = (digits10) => `+91 ${digits10.slice(0, 5)} ${digits10.slice(5)}`
 
-  if (!name || !address) return
-
+const getOrderTotals = () => {
   const subtotal = getCartSubtotal()
   const shipping = subtotal >= SITE.freeShippingMin ? 0 : SITE.shippingFee
-  const total = subtotal + shipping
-  const cartSnapshot = cart.map((item) => ({ ...item }))
+  return { subtotal, shipping, total: subtotal + shipping }
+}
 
-  const submitBtn = checkoutForm.querySelector('button[type="submit"]')
-  if (submitBtn) {
-    submitBtn.disabled = true
-    submitBtn.setAttribute('aria-busy', 'true')
-  }
-
-  const checkoutStatus = document.getElementById('checkout-status')
-
-  // 1. Save to Supabase when configured (staff admin reads this)
-  let backendSaved = false
-  if (isSupabaseConfigured()) {
-    const result = await saveOrderToSupabase({
-      customerName: name,
-      customerAddress: address,
-      subtotal,
-      shipping,
-      total,
-      cartItems: cartSnapshot,
-    })
-    backendSaved = result.ok
-    if (!result.ok && !result.skipped) {
-      console.warn('[Oor] Supabase save failed:', result.error)
-      if (checkoutStatus) {
-        checkoutStatus.textContent =
-          'Could not save to kitchen queue (database permissions). Run supabase/fix-rls.sql in Supabase, then try again. WhatsApp will still open.'
-        checkoutStatus.className = 'checkout-status checkout-status-error'
-        checkoutStatus.hidden = false
-      }
-    } else if (result.ok && checkoutStatus) {
-      checkoutStatus.textContent = 'Order saved. Opening WhatsApp to confirm…'
-      checkoutStatus.className = 'checkout-status checkout-status-ok'
-      checkoutStatus.hidden = false
-    }
-  }
-
-  // 2. Local fallback queue (demo / offline)
-  if (!backendSaved) {
-    const incomingOrders = JSON.parse(localStorage.getItem('oor_orders') || '[]')
-    incomingOrders.push({
-      id: Date.now(),
-      name,
-      address,
-      items: cartSnapshot.map((item) => ({
-        name: item.name,
-        weight: item.weight,
-        qty: item.qty,
-        total: item.price * item.qty,
-      })),
-      subtotal,
-      shipping,
-      total,
-    })
-    localStorage.setItem('oor_orders', JSON.stringify(incomingOrders))
-  }
-
-  // 3. Format order text for WhatsApp
-  const itemsText = cartSnapshot
-    .map((item) => `- ${item.qty}x ${item.name} (${item.weight}) - ₹${item.price * item.qty}`)
+const buildCartItemsText = (cartSnapshot) =>
+  cartSnapshot
+    .map((item) => `- ${item.qty}x ${item.name} (${item.weight}) — ₹${item.price * item.qty}`)
     .join('\n')
 
-  const whatsappMsg = `Hello Oor Snacks! I'd like to place an order:
+const websiteOrderSubmit = document.getElementById('website-order-submit')
+const DEFAULT_SUBMIT_LABEL = 'Place order on website'
 
-*Customer Details*
-Name: ${name}
-Delivery Address: ${address}
+const setSubmitButtonBusy = (busy) => {
+  if (!websiteOrderSubmit) return
+  websiteOrderSubmit.disabled = busy
+  const textEl = websiteOrderSubmit.querySelector('.checkout-btn-text')
+  if (textEl) textEl.textContent = busy ? 'One moment…' : DEFAULT_SUBMIT_LABEL
+  if (busy) websiteOrderSubmit.setAttribute('aria-busy', 'true')
+  else websiteOrderSubmit.removeAttribute('aria-busy')
+}
+
+const openOrderSuccessModal = (mobileDigits) => {
+  if (!orderSuccessModal) return
+  const msgEl = document.getElementById('order-success-message')
+  if (msgEl) {
+    msgEl.textContent = `Thank you. We have received your order and will contact you on ${formatMobileDisplay(mobileDigits)} shortly.`
+  }
+  orderSuccessModal.classList.add('open')
+  orderSuccessModal.setAttribute('aria-hidden', 'false')
+  if (lenis) lenis.stop()
+  orderSuccessClose?.focus()
+}
+
+const closeOrderSuccessModal = () => {
+  if (!orderSuccessModal) return
+  orderSuccessModal.classList.remove('open')
+  orderSuccessModal.setAttribute('aria-hidden', 'true')
+  if (lenis) lenis.start()
+  setSubmitButtonBusy(false)
+}
+
+orderSuccessClose?.addEventListener('click', closeOrderSuccessModal)
+orderSuccessModal?.querySelector('.order-modal-overlay')?.addEventListener('click', closeOrderSuccessModal)
+
+/* Flow 1 — Place order on website (name, mobile, address → Supabase → success modal) */
+if (websiteOrderForm) {
+  websiteOrderForm.addEventListener('submit', async (e) => {
+    e.preventDefault()
+
+    if (cart.length === 0) return
+
+    const name = document.getElementById('cust-name').value.trim()
+    const address = document.getElementById('cust-address').value.trim()
+    const mobileRaw = document.getElementById('cust-mobile').value
+    const mobileDigits = normalizeIndianMobile(mobileRaw)
+
+    if (websiteOrderError) websiteOrderError.hidden = true
+
+    if (!name || !address || !mobileDigits) {
+      if (websiteOrderError) {
+        websiteOrderError.textContent =
+          'Please enter your name, a valid 10-digit mobile number, and delivery address.'
+        websiteOrderError.hidden = false
+      }
+      return
+    }
+
+    const { subtotal, shipping, total } = getOrderTotals()
+    const cartSnapshot = cart.map((item) => ({ ...item }))
+
+    setSubmitButtonBusy(true)
+
+    let saved = false
+
+    try {
+      if (isSupabaseConfigured()) {
+        const result = await saveOrderToSupabase({
+          customerName: name,
+          customerAddress: address,
+          customerPhone: mobileDigits,
+          subtotal,
+          shipping,
+          total,
+          cartItems: cartSnapshot,
+        })
+        saved = result.ok
+        if (!saved && websiteOrderError) {
+          websiteOrderError.textContent = result.skipped
+            ? 'Online ordering is not configured yet. Please use Order via WhatsApp.'
+            : result.error || 'Could not place order. Try again or use WhatsApp.'
+          websiteOrderError.hidden = false
+        }
+      } else if (websiteOrderError) {
+        websiteOrderError.textContent =
+          'Online ordering is not available on this site yet. Please use Order via WhatsApp.'
+        websiteOrderError.hidden = false
+      }
+
+      if (!saved) {
+        setSubmitButtonBusy(false)
+        return
+      }
+
+      cart = []
+      updateCartStorage()
+      websiteOrderForm.reset()
+      closeCartDrawer()
+      setSubmitButtonBusy(false)
+      openOrderSuccessModal(mobileDigits)
+    } catch (err) {
+      console.error('[Oor] checkout failed:', err)
+      setSubmitButtonBusy(false)
+      if (websiteOrderError) {
+        websiteOrderError.textContent =
+          'Something went wrong. Please try again or use Order via WhatsApp.'
+        websiteOrderError.hidden = false
+      }
+    }
+  })
+}
+
+/* Flow 2 — Order via WhatsApp (cart only, no form, does not save to website backend) */
+if (whatsappOrderBtn) {
+  whatsappOrderBtn.addEventListener('click', () => {
+    if (cart.length === 0) return
+
+    const { subtotal, shipping, total } = getOrderTotals()
+    const cartSnapshot = cart.map((item) => ({ ...item }))
+    const itemsText = buildCartItemsText(cartSnapshot)
+
+    const whatsappMsg = `Hello Oor Snacks! I'd like to order via WhatsApp:
 
 *Order Items*
 ${itemsText}
@@ -381,29 +450,14 @@ ${itemsText}
 *Summary*
 Subtotal: ₹${subtotal}
 Shipping: ${shipping === 0 ? 'FREE' : `₹${shipping}`}
-*Total Amount: ₹${total}*
+*Estimated total: ₹${total}*
 
-Thank you!`
+I will share my name, mobile number, and delivery address here.`
 
-  cart = []
-  updateCartStorage()
-  closeCartDrawer()
-
-  const encodedMsg = encodeURIComponent(whatsappMsg)
-  const whatsappUrl = `https://api.whatsapp.com/send?phone=${SITE.whatsappPhone}&text=${encodedMsg}`
-  window.open(whatsappUrl, '_blank')
-
-  if (submitBtn) {
-    submitBtn.disabled = false
-    submitBtn.removeAttribute('aria-busy')
-  }
-
-  if (backendSaved && checkoutStatus) {
-    setTimeout(() => {
-      checkoutStatus.hidden = true
-    }, 4000)
-  }
-})
+    const whatsappUrl = `https://api.whatsapp.com/send?phone=${SITE.whatsappPhone}&text=${encodeURIComponent(whatsappMsg)}`
+    window.open(whatsappUrl, '_blank')
+  })
+}
 
 /* -------------------------------------------------------------
  * Incoming Orders Dashboard Drawer (Admin FOH Portal)
