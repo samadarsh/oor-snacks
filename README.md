@@ -1,6 +1,6 @@
 # Oor Snacks
 
-Premium traditional Tamil Nadu snacks — marketing site with cart and WhatsApp checkout.
+Premium traditional Tamil Nadu snacks — multi-page storefront with Supabase checkout and WhatsApp.
 
 ## Stack
 
@@ -47,13 +47,16 @@ Social preview image: **`public/og-image.webp`** (served at `/og-image.webp`).
 
 | Path | Purpose |
 |------|---------|
-| `index.html` | Page markup and product catalog |
-| `src/main.js` | Cart, checkout, animations |
+| `index.html` | Hero landing page |
+| `products.html` | Product catalog (add to cart) |
+| `shop.html` | Basket + checkout |
+| `admin.html` | Staff order dashboard |
+| `src/cart.js` | Shared cart state (`localStorage`) |
+| `src/hero.js` / `products.js` / `shop.js` | Per-page scripts |
 | `src/style.css` | Design system and layout |
 | `src/config.js` | Site constants |
 | `src/assets/` | Product and hero WebP images |
 | `public/` | Static files copied as-is to build root |
-| `murukku_cinematic_animation.html` | Standalone motion prototype (not in build) |
 
 ## Design direction (Apple-inspired)
 

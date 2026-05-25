@@ -35,6 +35,8 @@ export default defineConfig(({ mode }) => {
     rollupOptions: {
       input: {
         main: resolve(__dirname, 'index.html'),
+        products: resolve(__dirname, 'products.html'),
+        shop: resolve(__dirname, 'shop.html'),
         admin: resolve(__dirname, 'admin.html'),
       },
     },

@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cart & Checkout | Oor Snacks</title>
+    <meta name="description" content="Review your Oor Snacks basket and place your order — website checkout or WhatsApp." />
+    <link rel="canonical" href="https://oorsnacks.com/shop.html" />
+    <meta name="robots" content="noindex" />
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌾</text></svg>" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Catamaran:wght@400;500;700&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <header class="main-header" id="navbar" role="banner">
+      <div class="header-container">
+        <a href="/" class="logo-wrapper" aria-label="Oor Home">
+          <span class="logo">OOR</span>
+          <span class="logo-sub">பாரம்பரிய சுவை</span>
+        </a>
+        <nav class="nav-menu" role="navigation" aria-label="Main">
+          <ul>
+            <li><a href="/" class="nav-link">Home</a></li>
+            <li><a href="/products.html" class="nav-link">Products</a></li>
+            <li><a href="/shop.html" class="nav-link" aria-current="page">Cart</a></li>
+          </ul>
+        </nav>
+        <div class="header-actions">
+          <a href="/shop.html" class="cart-trigger-btn" aria-label="Cart">
+            <span class="cart-icon">🛒</span>
+            <span class="cart-count-badge" id="cart-badge-count">0</span>
+          </a>
+        </div>
+        <button class="mobile-nav-toggle" aria-controls="navbar" aria-expanded="false" aria-label="Toggle menu">
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </button>
+      </div>
+    </header>
+
+    <main id="main-content" class="shop-page">
+      <div class="section-container shop-page-header scroll-reveal">
+        <p class="section-tag">Checkout</p>
+        <h1 class="section-title">Your basket</h1>
+        <p class="section-subtitle">Review items, then place your order below. We confirm by phone.</p>
+      </div>
+
+      <div class="section-container shop-layout">
+        <section class="shop-cart-panel" aria-label="Cart items">
+          <div id="shop-cart-empty" class="shop-cart-empty">
+            <span class="empty-icon" aria-hidden="true">🛒</span>
+            <p>Your basket is empty.</p>
+            <a href="/products.html" class="btn btn-primary">Browse products</a>
+          </div>
+          <div id="shop-cart-items" class="shop-cart-items cart-items-list" hidden></div>
+        </section>
+
+        <section id="shop-checkout-block" class="shop-checkout-panel" aria-label="Checkout" hidden>
+          <div class="shop-order-summary">
+            <div class="shop-summary-row"><span>Subtotal</span><strong id="shop-subtotal-amount">₹0</strong></div>
+            <div class="shop-summary-row"><span>Shipping</span><strong id="shop-shipping-amount">₹0</strong></div>
+            <div class="shop-summary-row shop-summary-total"><span>Estimated total</span><strong id="shop-total-amount">₹0</strong></div>
+            <p class="shop-summary-note">Free shipping on orders above ₹500</p>
+          </div>
+
+          <p class="checkout-panel-title">Order on website</p>
+          <form id="cart-website-order-form" class="cart-checkout-form">
+            <div class="form-group">
+              <label for="cust-name">Your name</label>
+              <input type="text" id="cust-name" name="name" required placeholder="Full name" autocomplete="name" />
+            </div>
+            <div class="form-group">
+              <label for="cust-mobile">Mobile</label>
+              <input type="tel" id="cust-mobile" name="mobile" required placeholder="10-digit mobile" autocomplete="tel" inputmode="numeric" maxlength="14" />
+            </div>
+            <div class="form-group">
+              <label for="cust-address">Delivery address</label>
+              <textarea id="cust-address" name="address" required rows="3" placeholder="House, street, area, city, pincode"></textarea>
+            </div>
+            <p id="website-order-error" class="checkout-inline-error" role="alert" hidden></p>
+            <button type="submit" class="btn btn-primary btn-block checkout-submit-btn" id="website-order-submit">
+              <span class="checkout-btn-text">Place order on website</span>
+              <span class="btn-subtext">We will confirm by phone</span>
+            </button>
+          </form>
+
+          <div class="checkout-divider" aria-hidden="true"><span>or</span></div>
+
+          <div class="cart-whatsapp-panel">
+            <p class="checkout-panel-title">Order via WhatsApp</p>
+            <p class="checkout-whatsapp-desc">Send your basket and share delivery details in chat.</p>
+            <button type="button" class="btn btn-secondary btn-block" id="cart-whatsapp-order">Continue on WhatsApp</button>
+          </div>
+        </section>
+      </div>
+
+      <section class="reviews-section reviews-section--compact" aria-label="Reviews">
+        <div class="section-container">
+          <div class="reviews-grid">
+            <div class="review-card scroll-reveal">
+              <p class="review-text">&ldquo;The murukku tastes exactly like my grandmother's in Tanjore — perfect crunch and fresh oil.&rdquo;</p>
+              <cite class="review-author">— Karthik S., Bengaluru</cite>
+            </div>
+            <div class="review-card scroll-reveal">
+              <p class="review-text">&ldquo;Hard to find banana chips in real coconut oil. Oor packs arrive crisp and fresh.&rdquo;</p>
+              <cite class="review-author">— Preethi R., Chennai</cite>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="shipping-banner-section shipping-banner-section--compact scroll-reveal" aria-label="Shipping">
+        <div class="section-container">
+          <div class="shipping-banner-grid">
+            <div class="shipping-banner-item"><span class="shipping-icon">🚚</span><div><strong>Pan-India</strong><p>Fresh delivery</p></div></div>
+            <div class="shipping-banner-item"><span class="shipping-icon">🛡️</span><div><strong>Sealed packs</strong><p>Nitrogen flushed</p></div></div>
+            <div class="shipping-banner-item"><span class="shipping-icon">🍃</span><div><strong>Small batches</strong><p>Daily prep</p></div></div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="main-footer" role="contentinfo">
+      <div class="section-container">
+        <div class="footer-bottom">
+          <p class="copyright">&copy; 2026 Oor Snacks.</p>
+          <div class="footer-links">
+            <a href="/products.html">Products</a>
+            <a href="/admin.html">Staff</a>
+            <a href="/privacy.html">Privacy</a>
+            <a href="/terms.html">Terms</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <div id="order-success-modal" class="order-modal" aria-hidden="true" role="dialog" aria-labelledby="order-success-title" aria-modal="true">
+      <div class="order-modal-overlay" tabindex="-1"></div>
+      <div class="order-modal-content">
+        <span class="order-modal-icon" aria-hidden="true">✓</span>
+        <h3 id="order-success-title">Order placed successfully!</h3>
+        <p id="order-success-message">Thank you. We will contact you shortly on your mobile number.</p>
+        <a href="/products.html" class="btn btn-primary btn-block" id="order-success-close">Continue shopping</a>
+      </div>
+    </div>
+
+    <script type="module" src="/src/shop.js"></script>
+  </body>
+</html>
