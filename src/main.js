@@ -4,7 +4,7 @@ import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { SITE } from './config.js'
 import { saveOrderToSupabase } from './orders-api.js'
-import { isSupabaseConfigured } from './supabase.js'
+import { initSupabase, warmSupabase } from './supabase.js'
 
 // Register GSAP plugins
 gsap.registerPlugin(ScrollTrigger)
@@ -387,7 +387,8 @@ if (websiteOrderForm) {
     let saved = false
 
     try {
-      if (isSupabaseConfigured()) {
+      const { configured } = await initSupabase()
+      if (configured) {
         const result = await saveOrderToSupabase({
           customerName: name,
           customerAddress: address,
@@ -406,7 +407,7 @@ if (websiteOrderForm) {
         }
       } else if (websiteOrderError) {
         websiteOrderError.textContent =
-          'Online ordering is not available on this site yet. Please use Order via WhatsApp.'
+          'Online ordering is not set up on this deployment yet. In Vercel, add VITE_SUPABASE_URL and VITE_SUPABASE_PUBLISHABLE_KEY, then redeploy. Or use Order via WhatsApp.'
         websiteOrderError.hidden = false
       }
 
@@ -633,3 +634,4 @@ if (!prefersReducedMotion) {
 
 // Initial Sync
 syncCartUI()
+warmSupabase()

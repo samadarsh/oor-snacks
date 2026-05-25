@@ -1,7 +1,21 @@
 import { resolve } from 'path'
-import { defineConfig } from 'vite'
+import { defineConfig, loadEnv } from 'vite'
 
-export default defineConfig({
+export default defineConfig(({ mode }) => {
+  const env = loadEnv(mode, process.cwd(), '')
+  const hasSupabase = Boolean(
+    env.VITE_SUPABASE_URL?.trim() &&
+      (env.VITE_SUPABASE_PUBLISHABLE_KEY?.trim() || env.VITE_SUPABASE_ANON_KEY?.trim())
+  )
+
+  if (mode === 'production' && process.env.VERCEL && !hasSupabase) {
+    console.warn(
+      '[oor-snacks] VITE_SUPABASE_URL / VITE_SUPABASE_PUBLISHABLE_KEY missing at build time. ' +
+        'Store will use /api/supabase-config at runtime if env vars are set on Vercel.'
+    )
+  }
+
+  return {
   server: {
     port: 5180,
     strictPort: false,
@@ -18,4 +32,5 @@ export default defineConfig({
       },
     },
   },
+  }
 })

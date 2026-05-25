@@ -1,5 +1,7 @@
 import './admin.css'
-import { supabase, isSupabaseConfigured } from './supabase.js'
+import { initSupabase, warmSupabase } from './supabase.js'
+
+let supabase = null
 
 const loginPanel = document.getElementById('admin-login-panel')
 const ordersPanel = document.getElementById('admin-orders-panel')
@@ -215,7 +217,10 @@ async function loadOrders({ quiet = false } = {}) {
 }
 
 async function init() {
-  if (!isSupabaseConfigured() || !supabase) {
+  const clients = await initSupabase()
+  supabase = clients.supabase
+
+  if (!clients.configured || !supabase) {
     configWarn.hidden = false
     loginForm.querySelector('button').disabled = true
     return
@@ -283,4 +288,5 @@ document.addEventListener('visibilitychange', () => {
   }
 })
 
+warmSupabase()
 init()

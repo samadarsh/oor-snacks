@@ -1,4 +1,4 @@
-import { supabaseStore, isSupabaseConfigured } from './supabase.js'
+import { initSupabase } from './supabase.js'
 
 const CHECKOUT_TIMEOUT_MS = 12_000
 
@@ -38,7 +38,8 @@ export async function saveOrderToSupabase({
   total,
   cartItems,
 }) {
-  if (!isSupabaseConfigured() || !supabaseStore) {
+  const { configured, supabaseStore } = await initSupabase()
+  if (!configured || !supabaseStore) {
     return { ok: false, skipped: true }
   }
 

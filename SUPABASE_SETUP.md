@@ -68,7 +68,9 @@ Add the same environment variables in your host dashboard:
 
 Do **not** add the secret key to Vercel/Netlify frontend env vars.
 
-Redeploy after saving.
+Redeploy after saving (use **Deployments → … → Redeploy** and turn on **Clear build cache** if orders still say “not available”).
+
+The site also loads config from `/api/supabase-config` at runtime, so a fresh deploy after adding env vars is enough even if an older build had empty Vite env.
 
 ## Security notes
 
