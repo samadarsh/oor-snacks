@@ -1,5 +1,29 @@
 const STORAGE_KEY = 'oor_cart'
 
+const normalizeCartItem = (item) => ({
+  id: item?.id,
+  name: item?.name ?? 'Item',
+  weight: item?.weight ?? 'Pack',
+  price: Number(item?.price) || 0,
+  qty: Number(item?.qty ?? item?.quantity) || 0,
+  img: item?.img ?? '',
+})
+
+const normalizeCart = (items) => {
+  if (!Array.isArray(items)) return []
+  return items.map(normalizeCartItem).filter((item) => item.id && item.qty > 0)
+}
+
+/** Re-read basket from localStorage (fixes bfcache / stale module state on shop page). */
+export const hydrateCart = () => {
+  try {
+    cart = normalizeCart(JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'))
+  } catch {
+    cart = []
+  }
+  return cart
+}
+
 const escapeHtml = (str) => {
   if (str == null) return ''
   return String(str)
@@ -10,8 +34,26 @@ const escapeHtml = (str) => {
     .replace(/'/g, '&#39;')
 }
 
-let cart = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]')
+let cart = []
 const listeners = new Set()
+
+hydrateCart()
+
+if (typeof window !== 'undefined') {
+  window.addEventListener('storage', (e) => {
+    if (e.key === STORAGE_KEY) {
+      hydrateCart()
+      notify()
+    }
+  })
+
+  window.addEventListener('pageshow', (e) => {
+    if (e.persisted) {
+      hydrateCart()
+      notify()
+    }
+  })
+}
 
 export const onCartChange = (fn) => {
   listeners.add(fn)

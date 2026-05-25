@@ -5,6 +5,7 @@ import { initSupabase, warmSupabase } from './supabase.js'
 import { initSiteNav } from './shared/nav.js'
 import { initScrollReveals } from './shared/motion.js'
 import {
+  hydrateCart,
   getCart,
   getCartCount,
   getCartSubtotal,
@@ -34,22 +35,30 @@ const getOrderTotals = () => {
   return { subtotal, shipping, total: subtotal + shipping }
 }
 
+const cartPanel = document.querySelector('.shop-cart-panel')
+
+const setShopCartVisible = (hasItems) => {
+  cartPanel?.classList.toggle('shop-cart-panel--has-items', hasItems)
+  if (hasItems) {
+    emptyState?.setAttribute('hidden', '')
+    itemsList?.removeAttribute('hidden')
+    summaryBlock?.removeAttribute('hidden')
+  } else {
+    emptyState?.removeAttribute('hidden')
+    itemsList?.setAttribute('hidden', '')
+    summaryBlock?.setAttribute('hidden', '')
+  }
+}
+
 const syncShopUI = () => {
+  hydrateCart()
   const count = getCartCount()
   const { subtotal, shipping, total } = getOrderTotals()
 
   syncCartBadge()
+  setShopCartVisible(count > 0)
 
-  if (count === 0) {
-    emptyState?.removeAttribute('hidden')
-    itemsList?.setAttribute('hidden', '')
-    summaryBlock?.setAttribute('hidden', '')
-    return
-  }
-
-  emptyState?.setAttribute('hidden', '')
-  itemsList?.removeAttribute('hidden')
-  summaryBlock?.removeAttribute('hidden')
+  if (count === 0) return
 
   if (itemsList) {
     itemsList.innerHTML = renderCartItemsHtml()

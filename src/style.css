@@ -668,6 +668,20 @@ a.cart-trigger-btn {
   text-align: center;
 }
 
+.shop-cart-panel--has-items .shop-cart-empty {
+  display: none !important;
+}
+
+.shop-cart-items[hidden],
+.shop-checkout-panel[hidden],
+.shop-cart-empty[hidden] {
+  display: none !important;
+}
+
+.shop-cart-panel--has-items .shop-cart-items {
+  display: flex;
+}
+
 .shop-cart-items {
   display: flex;
   flex-direction: column;
