@@ -95,7 +95,7 @@ const buildCartItemsText = (cartSnapshot) =>
     .join('\n')
 
 const websiteOrderSubmit = document.getElementById('website-order-submit')
-const DEFAULT_SUBMIT_LABEL = 'Place order on website'
+const DEFAULT_SUBMIT_LABEL = 'Place order'
 
 const setSubmitButtonBusy = (busy) => {
   if (!websiteOrderSubmit) return
@@ -168,13 +168,13 @@ if (websiteOrderForm) {
         saved = result.ok
         if (!saved && websiteOrderError) {
           websiteOrderError.textContent = result.skipped
-            ? 'Online ordering is not configured yet. Please use Order via WhatsApp.'
-            : result.error || 'Could not place order. Try again or use WhatsApp.'
+            ? 'Checkout is unavailable right now. Please use WhatsApp below.'
+            : result.error || 'Could not place your order. Try again or use WhatsApp.'
           websiteOrderError.hidden = false
         }
       } else if (websiteOrderError) {
         websiteOrderError.textContent =
-          'Online ordering is not set up on this deployment. Use Order via WhatsApp or contact us.'
+          'Checkout is unavailable right now. Use WhatsApp below or contact us.'
         websiteOrderError.hidden = false
       }
 
