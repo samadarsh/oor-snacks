@@ -59,18 +59,26 @@ If checkout opens WhatsApp but **admin shows no orders**, run [`supabase/fix-rls
 3. In Supabase **Table Editor** → `orders` and `order_items`, you should see the new row.
 4. Sign in at `/admin.html` with your staff user — the same order should appear.
 
-## Step 7 — Deploy (Vercel / Netlify)
+## Step 7 — Deploy (Vercel)
 
-Add the same environment variables in your host dashboard:
+In **Vercel → your project → Settings → Environment Variables**, add **six variables** (same values, two names each) for **Production** (and Preview if you use it):
 
-- `VITE_SUPABASE_URL`
-- `VITE_SUPABASE_PUBLISHABLE_KEY`
+| Key | Example value |
+|-----|----------------|
+| `VITE_SUPABASE_URL` | `https://abcdefgh.supabase.co` |
+| `VITE_SUPABASE_PUBLISHABLE_KEY` | `sb_publishable_...` |
+| `SUPABASE_URL` | *(same as `VITE_SUPABASE_URL`)* |
+| `SUPABASE_PUBLISHABLE_KEY` | *(same as `VITE_SUPABASE_PUBLISHABLE_KEY`)* |
 
-Do **not** add the secret key to Vercel/Netlify frontend env vars.
+The `SUPABASE_*` pair is required for `/api/supabase-config` on Vercel (serverless functions often do not see `VITE_*` at runtime).
 
-Redeploy after saving (use **Deployments → … → Redeploy** and turn on **Clear build cache** if orders still say “not available”).
+Do **not** add the secret key to Vercel frontend env vars.
 
-The site also loads config from `/api/supabase-config` at runtime, so a fresh deploy after adding env vars is enough even if an older build had empty Vite env.
+1. Save all variables for **Production**.
+2. **Deployments → … → Redeploy** (enable **Clear build cache** once).
+3. Open `https://YOUR-APP.vercel.app/api/supabase-config` — you must see `"configured": true`. If `false`, the vars are missing on this project or not scoped to Production.
+
+The storefront loads Supabase from that API when the JS build did not embed env vars.
 
 ## Security notes
 
