@@ -25,10 +25,12 @@ export function initSiteNav() {
 
   navMenu.querySelectorAll('.nav-link').forEach((link) => {
     link.addEventListener('click', () => {
-      mobileToggle.setAttribute('aria-expanded', 'false')
-      mobileToggle.classList.remove('open')
-      navMenu.classList.remove('open')
-      document.body.classList.remove('nav-open')
+      if (!link.classList.contains('nav-anchor')) {
+        mobileToggle.setAttribute('aria-expanded', 'false')
+        mobileToggle.classList.remove('open')
+        navMenu.classList.remove('open')
+        document.body.classList.remove('nav-open')
+      }
     })
   })
 }
