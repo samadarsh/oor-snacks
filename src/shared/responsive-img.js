@@ -9,9 +9,9 @@ export function initResponsiveImages() {
     const ext = img.dataset.ext || 'jpg'
     const variantExt = img.dataset.variantExt || (ext === 'webp' ? 'jpg' : ext)
     const widths = DEFAULT_WIDTHS
-    const basePath = `/src/assets/${stem}.${ext}`
+    const basePath = `/images/${stem}.${ext}`
 
-    const parts = widths.map((w) => `/src/assets/${stem}-${w}w.${variantExt} ${w}w`)
+    const parts = widths.map((w) => `/images/${stem}-${w}w.${variantExt} ${w}w`)
     parts.push(`${basePath} 1200w`)
 
     img.src = basePath

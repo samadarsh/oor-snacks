@@ -7,7 +7,7 @@ import { fileURLToPath } from 'url'
 import { execSync } from 'child_process'
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..')
-const assetsDir = join(root, 'src/assets')
+const assetsDir = join(root, 'public/images')
 const widths = [480, 960]
 
 const skipPattern = /-\d+w\.(jpg|jpeg|webp|png)$/i

@@ -55,7 +55,7 @@ Social preview image: **`public/og-image.webp`** (served at `/og-image.webp`).
 | `src/hero.js` / `products.js` / `shop.js` | Per-page scripts |
 | `src/style.css` | Design system and layout |
 | `src/config.js` | Site constants |
-| `src/assets/` | Product and hero WebP images |
+| `public/images/` | Product and hero images (served at `/images/…` in dev and production) |
 | `public/` | Static files copied as-is to build root |
 
 ## Design direction (Apple-inspired)
