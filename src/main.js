@@ -407,7 +407,7 @@ if (websiteOrderForm) {
         }
       } else if (websiteOrderError) {
         websiteOrderError.textContent =
-          'Online ordering is not set up on this deployment yet. In Vercel, add VITE_SUPABASE_URL and VITE_SUPABASE_PUBLISHABLE_KEY, then redeploy. Or use Order via WhatsApp.'
+          'Online ordering is not set up yet. Open /oor-config.json on this site — if configured is false, add Supabase env vars in Vercel (Production) and redeploy. Or use Order via WhatsApp.'
         websiteOrderError.hidden = false
       }
 

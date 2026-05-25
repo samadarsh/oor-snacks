@@ -76,9 +76,13 @@ Do **not** add the secret key to Vercel frontend env vars.
 
 1. Save all variables for **Production**.
 2. **Deployments → … → Redeploy** (enable **Clear build cache** once).
-3. Open `https://YOUR-APP.vercel.app/api/supabase-config` — you must see `"configured": true`. If `false`, the vars are missing on this project or not scoped to Production.
+3. After deploy, open **both** (should show `"configured": true`):
+   - `https://YOUR-APP.vercel.app/oor-config.json` ← primary (written at build)
+   - `https://YOUR-APP.vercel.app/api/supabase-config` ← backup
 
-The storefront loads Supabase from that API when the JS build did not embed env vars.
+If the **Vercel build fails** with “missing Supabase env”, your Production variables are not attached to this project — fix in Settings, then redeploy.
+
+Use the public URL **https://oor-snacks.vercel.app** (not the long `git-main-…` preview links).
 
 ## Security notes
 

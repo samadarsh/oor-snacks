@@ -19,6 +19,10 @@ export default defineConfig(({ mode }) => {
   }
 
   return {
+  define: {
+    __OOR_SB_URL__: JSON.stringify(supabaseUrl || ''),
+    __OOR_SB_KEY__: JSON.stringify(supabaseKey || ''),
+  },
   server: {
     port: 5180,
     strictPort: false,
