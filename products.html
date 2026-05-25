@@ -45,10 +45,42 @@
 
     <main id="main-content" class="catalog-main">
       <section class="page-intro section-container scroll-reveal">
-        <p class="section-tag">Our collection</p>
-        <h1 class="section-title">Snacks & sweets worth sharing</h1>
-        <p class="section-subtitle">Savouries and traditional Tamil Nadu sweets — add to your basket, then checkout. Free shipping above ₹500.</p>
-        <a href="/shop.html" class="btn btn-secondary btn-sm page-intro-cta">Go to cart</a>
+        <p class="section-tag">Shop</p>
+        <h1 class="section-title">Snacks & sweets from Chennai</h1>
+        <p class="section-subtitle">Handmade savouries and heritage Tamil Nadu sweets — cold-pressed oils, small batches, packed fresh.</p>
+        <p class="page-intro-note">Free shipping on orders above ₹500</p>
+        <nav class="page-intro-jump" aria-label="Jump to collection">
+          <a href="#best-sellers" class="page-intro-jump-link">Savouries</a>
+          <a href="#sweets" class="page-intro-jump-link">Sweets</a>
+          <a href="#combos" class="page-intro-jump-link">Gift boxes</a>
+        </nav>
+      </section>
+
+      <section class="categories-section" id="categories" aria-label="Browse by category">
+        <div class="section-container">
+          <div class="section-header text-center scroll-reveal">
+            <p class="section-tag">Browse</p>
+            <h2 class="section-title">By category</h2>
+          </div>
+          <div class="categories-grid">
+            <a href="#murukku" class="category-card scroll-reveal">
+              <img data-responsive="traditional_prep" data-ext="webp" alt="Murukku" class="category-img" loading="lazy" decoding="async" />
+              <div class="category-overlay"><h3>Murukkus</h3><p>Hand-coiled rice rings</p></div>
+            </a>
+            <a href="#mixture" class="category-card scroll-reveal">
+              <img data-responsive="hero_snacks" data-ext="webp" alt="Mixture" class="category-img" loading="lazy" decoding="async" />
+              <div class="category-overlay"><h3>Mixtures</h3><p>Curry leaf & spice blends</p></div>
+            </a>
+            <a href="#banana-chips" class="category-card scroll-reveal">
+              <img data-responsive="banana_chips" data-ext="webp" alt="Banana chips" class="category-img" loading="lazy" decoding="async" />
+              <div class="category-overlay"><h3>Banana chips</h3><p>Coconut oil fried</p></div>
+            </a>
+            <a href="#sweets" class="category-card scroll-reveal">
+              <img data-responsive="sweet_halwa" data-ext="jpg" alt="Traditional Tamil sweets" class="category-img" loading="lazy" decoding="async" />
+              <div class="category-overlay"><h3>Traditional sweets</h3><p>Halwa, palkova & more</p></div>
+            </a>
+          </div>
+        </div>
       </section>
 
       <section class="best-sellers-section" id="best-sellers" aria-label="Best sellers">
@@ -58,7 +90,7 @@
             <h2 class="section-title">Best sellers</h2>
           </div>
           <div class="products-grid">
-            <div class="product-card scroll-reveal" data-id="p1" data-name="Kai Murukku" data-base-price="140">
+            <div class="product-card scroll-reveal" id="murukku" data-id="p1" data-name="Kai Murukku" data-base-price="140">
               <div class="product-media">
                 <img data-responsive="traditional_prep" data-ext="webp" alt="Traditional Kai Murukku" class="product-img" loading="lazy" decoding="async" />
                 <span class="product-badge">Best Seller</span>
@@ -78,7 +110,7 @@
                 </div>
               </div>
             </div>
-            <div class="product-card scroll-reveal" data-id="p2" data-name="Madras Mixture" data-base-price="130">
+            <div class="product-card scroll-reveal" id="mixture" data-id="p2" data-name="Madras Mixture" data-base-price="130">
               <div class="product-media">
                 <img data-responsive="hero_snacks" data-ext="webp" alt="Madras Mixture" class="product-img" loading="lazy" decoding="async" />
                 <span class="product-badge combo-badge">Tea-Time</span>
@@ -97,7 +129,7 @@
                 </div>
               </div>
             </div>
-            <div class="product-card scroll-reveal" data-id="p3" data-name="Pepper Banana Chips" data-base-price="110">
+            <div class="product-card scroll-reveal" id="banana-chips" data-id="p3" data-name="Pepper Banana Chips" data-base-price="110">
               <div class="product-media">
                 <img data-responsive="banana_chips" data-ext="webp" alt="Banana chips" class="product-img" loading="lazy" decoding="async" />
               </div>
@@ -251,33 +283,6 @@
                   <button type="button" class="btn btn-primary btn-sm add-to-cart-btn">Add to cart</button>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="categories-section" id="categories" aria-label="Categories">
-        <div class="section-container">
-          <div class="section-header text-center scroll-reveal">
-            <p class="section-tag">Browse</p>
-            <h2 class="section-title">By category</h2>
-          </div>
-          <div class="categories-grid">
-            <div class="category-card scroll-reveal">
-              <img data-responsive="traditional_prep" data-ext="webp" alt="Murukku" class="category-img" loading="lazy" decoding="async" />
-              <div class="category-overlay"><h3>Murukkus</h3><p>Hand-coiled rice rings</p></div>
-            </div>
-            <div class="category-card scroll-reveal">
-              <img data-responsive="hero_snacks" data-ext="webp" alt="Mixture" class="category-img" loading="lazy" decoding="async" />
-              <div class="category-overlay"><h3>Mixtures</h3><p>Curry leaf & spice blends</p></div>
-            </div>
-            <div class="category-card scroll-reveal">
-              <img data-responsive="banana_chips" data-ext="webp" alt="Banana chips" class="category-img" loading="lazy" decoding="async" />
-              <div class="category-overlay"><h3>Banana chips</h3><p>Coconut oil fried</p></div>
-            </div>
-            <div class="category-card scroll-reveal">
-              <img data-responsive="sweet_halwa" data-ext="jpg" alt="Traditional Tamil sweets" class="category-img" loading="lazy" decoding="async" />
-              <div class="category-overlay"><h3>Traditional sweets</h3><p>Halwa, palkova & more</p></div>
             </div>
           </div>
         </div>
