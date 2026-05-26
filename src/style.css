@@ -622,7 +622,9 @@ a.cart-trigger-btn {
 }
 
 .page-intro {
-  padding: var(--space-lg) 0 var(--space-md);
+  /* Do not use padding shorthand with 0 sides — it wipes .section-container horizontal inset */
+  padding-top: var(--space-lg);
+  padding-bottom: var(--space-md);
 }
 
 .page-intro-note {
@@ -634,7 +636,7 @@ a.cart-trigger-btn {
 .page-intro-jump {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--space-xs);
+  gap: var(--space-sm);
   margin-top: var(--space-md);
 }
 
@@ -648,6 +650,21 @@ a.cart-trigger-btn {
   border-radius: 999px;
   background: var(--bg-primary);
   transition: background var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast);
+}
+
+@media (max-width: 768px) {
+  .page-intro {
+    padding-top: var(--space-md);
+    padding-bottom: var(--space-sm);
+  }
+
+  .page-intro .section-title {
+    margin-bottom: var(--space-sm);
+  }
+
+  .page-intro-jump {
+    gap: 10px;
+  }
 }
 
 .page-intro-jump-link:hover {
