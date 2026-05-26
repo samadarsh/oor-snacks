@@ -71,9 +71,34 @@ if (!prefersReducedMotion) {
   })
 
   initScrollReveals()
+  initCraftCinematicVideo()
 } else {
   document.querySelectorAll('.scroll-reveal').forEach((el) => {
     el.style.opacity = '1'
     el.style.transform = 'none'
   })
+}
+
+/** Play grandma murukku clip only while the craft block is on screen. */
+function initCraftCinematicVideo() {
+  const video = document.querySelector('.craft-cinematic-video')
+  if (!video) return
+
+  const play = () => video.play().catch(() => {})
+  const pause = () => {
+    if (!video.paused) video.pause()
+  }
+
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && entry.intersectionRatio >= 0.35) play()
+        else pause()
+      },
+      { threshold: [0, 0.35, 0.6] }
+    )
+    io.observe(video)
+  } else {
+    play()
+  }
 }

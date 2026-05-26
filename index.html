@@ -162,8 +162,29 @@
           <figure class="craft-figure craft-moment-figure scroll-reveal">
             <div class="scrolly-visual-container craft-moment-visual">
               <div class="cooking-visual-wrap">
-                <img data-responsive="traditional_prep" data-ext="webp" data-sizes="(max-width: 768px) 100vw, 50vw" alt="Murukku preparation over a traditional hearth" class="cooking-img bg-img" loading="lazy" width="1024" height="1024" decoding="async" />
-                <div class="warmth-glow" aria-hidden="true"></div>
+                <video
+                  class="craft-cinematic-video"
+                  src="/videos/muruku_cinematic_video.mp4"
+                  poster="/images/traditional_prep-960w.jpg"
+                  muted
+                  loop
+                  playsinline
+                  preload="metadata"
+                  width="1024"
+                  height="1024"
+                  aria-label="Grandmother preparing murukku beside a traditional stove with rising steam"
+                ></video>
+                <img
+                  data-responsive="traditional_prep"
+                  data-ext="webp"
+                  data-sizes="(max-width: 768px) 100vw, 50vw"
+                  alt="Murukku preparation over a traditional hearth"
+                  class="cooking-img bg-img craft-cinematic-fallback"
+                  loading="lazy"
+                  width="1024"
+                  height="1024"
+                  decoding="async"
+                />
               </div>
             </div>
             <figcaption class="craft-moment-caption">Documentary calm — handmade, never hurried.</figcaption>

@@ -1417,11 +1417,28 @@ a.cart-trigger-btn {
   overflow: hidden;
 }
 
-/* Stable image with very slow, continuous cinematic zoom */
+.craft-cinematic-video {
+  display: none;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  background: #1a0e08;
+}
+
+.motion-enhanced .craft-cinematic-video {
+  display: block;
+}
+
+.motion-enhanced .craft-cinematic-fallback {
+  display: none;
+}
+
+/* Stable image fallback when motion is reduced or video unsupported */
 .cooking-img.bg-img {
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  object-fit: cover;
   object-position: center center;
   display: block;
   transform: scale(1);
