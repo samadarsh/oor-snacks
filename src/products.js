@@ -41,14 +41,6 @@ function initCatalogAnchors() {
   }
 }
 
-document.querySelectorAll('.product-card').forEach((card) => {
-  const select = card.querySelector('.weight-select')
-  if (select) {
-    select.addEventListener('change', () => {
-      updateProductButtons()
-    })
-  }
-})
 
 onCartChange(() => {
   syncCartBadge()

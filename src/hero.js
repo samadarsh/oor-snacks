@@ -107,15 +107,6 @@ function initCraftCinematicVideo() {
 
 /** Homepage featured product cards add-to-cart logic. */
 function initHomepageCart() {
-  document.querySelectorAll('.product-card').forEach((card) => {
-    const select = card.querySelector('.weight-select')
-    if (select) {
-      select.addEventListener('change', () => {
-        updateProductButtons()
-      })
-    }
-  })
-
   onCartChange(() => {
     syncCartBadge()
     updateProductButtons()
