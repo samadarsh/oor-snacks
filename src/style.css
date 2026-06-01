@@ -685,6 +685,14 @@ a.cart-trigger-btn {
 .pouch-static-img--glow {
   filter: drop-shadow(0 24px 48px rgba(0, 0, 0, 0.45))
     drop-shadow(0 0 40px rgba(255, 160, 60, 0.12));
+  will-change: transform;
+}
+
+.pouch-feature-icon.icon-lit {
+  background: rgba(212, 175, 55, 0.12);
+  border-color: rgba(212, 175, 55, 0.35);
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.18);
+  transition: background 0.5s ease, border-color 0.5s ease, box-shadow 0.5s ease;
 }
 
 .home-cta-band {
