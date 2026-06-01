@@ -204,6 +204,15 @@ export const updateProductButtons = () => {
   document.querySelectorAll('.product-card').forEach((card) => {
     const id = card.getAttribute('data-id')
     const select = card.querySelector('.weight-select')
+
+    // Bind change listener to variant selector if not already bound
+    if (select && !select.dataset.listenerBound) {
+      select.dataset.listenerBound = 'true'
+      select.addEventListener('change', () => {
+        updateProductButtons()
+      })
+    }
+
     let weight = 'Pack'
     if (select) {
       weight = select.value
