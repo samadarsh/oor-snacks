@@ -30,16 +30,20 @@
         <nav class="nav-menu" role="navigation" aria-label="Main">
           <ul>
             <li><a href="/" class="nav-link" aria-current="page">Home</a></li>
-            <li><a href="#about" class="nav-link nav-anchor">About</a></li>
-            <li><a href="#culture" class="nav-link nav-anchor">Culture</a></li>
-            <li><a href="#craft" class="nav-link nav-anchor">Craft</a></li>
+            <li><a href="#origin" class="nav-link nav-anchor">Story</a></li>
             <li><a href="/products.html" class="nav-link">Products</a></li>
             <li><a href="/shop.html" class="nav-link">Cart</a></li>
           </ul>
         </nav>
         <div class="header-actions">
           <a href="/shop.html" class="cart-trigger-btn" id="cart-toggle" aria-label="View cart and checkout">
-            <span class="cart-icon">🛒</span>
+            <span class="cart-icon">
+              <svg class="icon-svg icon-svg--sm" viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="9" cy="21" r="1"></circle>
+                <circle cx="20" cy="21" r="1"></circle>
+                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+              </svg>
+            </span>
             <span class="cart-count-badge" id="cart-badge-count">0</span>
           </a>
         </div>
@@ -60,14 +64,14 @@
         <div class="hero-content hero-content--brand">
           <p class="hero-pretitle text-reveal">இனிப்பு & காரம் · SWEETS & SAVOURY</p>
           <h1 class="hero-brand-title text-reveal">Oor Snacks</h1>
-          <p class="hero-tagline text-reveal">Crafted in Tradition. Packed for Freshness.</p>
-          <p class="hero-subtitle text-reveal">Handmade snacks and iconic Tamil Nadu sweets from Chennai.</p>
+          <p class="hero-tagline text-reveal">Crafted in Tradition.<br>Packed for Freshness.</p>
+          <p class="hero-subtitle text-reveal">Handmade snacks and iconic Tamil sweets from Chennai.</p>
           <div class="hero-ctas text-reveal">
             <a href="/products.html" class="btn btn-primary">Explore collection</a>
-            <a href="#about" class="btn btn-secondary nav-anchor">Our story</a>
+            <a href="https://api.whatsapp.com/send?phone=919176661912" class="btn btn-secondary" target="_blank" rel="noopener noreferrer">Order on WhatsApp</a>
           </div>
         </div>
-        <a href="#about" class="scroll-indicator nav-anchor" aria-label="Scroll to our story">
+        <a href="#origin" class="scroll-indicator nav-anchor" aria-label="Scroll to our story">
           <span class="scroll-dot"></span>
           <span class="scroll-text">Our story</span>
         </a>
@@ -75,50 +79,26 @@
 
       <section class="hero-trust-strip home-scroll-section" aria-label="Brand promise">
         <div class="section-container hero-trust-inner">
-          <p>Murukku, mixture, chips — and Tirunelveli halwa, palkova, adhirasam & more.</p>
+          <p>Murukku, mixture, chips — and Tirunelveli halwa, Srivilliputhur palkova, adhirasam & more.</p>
         </div>
       </section>
 
-      <section class="story-split-section home-scroll-section" id="about" aria-labelledby="about-heading">
-        <div class="section-container story-split story-split--image-right">
-          <div class="story-split-copy scroll-reveal">
-            <p class="section-tag">About Oor</p>
-            <p class="story-tamil-line">ஊர் — the taste of home</p>
-            <h2 id="about-heading" class="section-title">Handcrafted cultural craftsmanship</h2>
-            <p class="story-lead">
-              Oor is not a snack catalogue. It is a Chennai kitchen tradition carried forward — stone-ground flours,
-              cold-pressed oils, and recipes shaped by gatherings, festivals, and everyday tea-time rituals.
-            </p>
-            <p class="story-body">
-              We honour the pace of real preparation: limited batches, no palm oil, no industrial shortcuts. Every pack
-              is meant to arrive with the warmth and crunch of something made hours ago, not months ago.
-            </p>
-          </div>
-          <figure class="story-split-media scroll-reveal">
-            <img data-responsive="about_heritage" data-ext="jpg" data-sizes="(max-width: 768px) 100vw, 42vw" alt="Hands shaping traditional snack dough in a Chennai kitchen" class="story-split-img" loading="lazy" width="1200" height="1500" decoding="async" />
-          </figure>
-        </div>
-      </section>
-
-      <section class="story-split-section story-split-section--alt home-scroll-section" id="founder" aria-labelledby="founder-heading">
-        <div class="section-container story-split story-split--image-left">
-          <figure class="story-split-media scroll-reveal">
-            <img data-responsive="founder_origin" data-ext="jpg" data-sizes="(max-width: 768px) 100vw, 42vw" alt="Family kitchen traditions inspiring Oor" class="story-split-img" loading="lazy" width="1200" height="1500" decoding="async" />
-          </figure>
+      <section class="story-split-section home-scroll-section" id="origin" aria-labelledby="origin-heading">
+        <div class="section-container story-split">
           <div class="story-split-copy scroll-reveal">
             <p class="section-tag">Origin</p>
-            <p class="story-tamil-line">குடும்ப சமையல் · FAMILY KITCHENS</p>
-            <h2 id="founder-heading" class="section-title">Inspired before it was a brand</h2>
+            <p class="story-tamil-line">ஊர் — the taste of home</p>
+            <h2 id="origin-heading" class="section-title">Handcrafted in Mylapore</h2>
             <p class="story-lead">
-              Oor began in the quiet rhythm of home — murukku twisted by hand, oil measured by memory, laughter between
-              batches cooling on the counter.
+              Oor began in the quiet rhythm of a home kitchen. Hand-coiled murukku, cold-pressed oils, and recipes shaped by family gatherings.
             </p>
             <p class="story-body">
-              Long before there was a label or a website, there were recipes that filled family gatherings. We built Oor
-              to share that same care with homes across India — not as a factory story, but as an emotional origin story
-              rooted in Mylapore, Chennai.
+              We honour the pace of real preparation: limited batches, wood-pressed oils, and no shortcuts. Every pack is designed to deliver the warmth and crunch of Chennai to your home.
             </p>
           </div>
+          <figure class="story-split-media scroll-reveal">
+            <img data-responsive="founder_origin" data-ext="jpg" data-sizes="(max-width: 768px) 100vw, 42vw" alt="Family kitchen traditions in Mylapore, Chennai" class="story-split-img" loading="lazy" width="1200" height="1500" decoding="async" />
+          </figure>
         </div>
       </section>
 
@@ -131,17 +111,35 @@
           </div>
           <div class="why-grid">
             <article class="why-card scroll-reveal">
-              <div class="why-icon" aria-hidden="true">🌾</div>
+              <div class="why-icon" aria-hidden="true">
+                <svg class="icon-svg icon-svg--lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 2v20"></path>
+                  <path d="M12 6c3-1.5 5.5-1 7 1-1.5 3-4.5 4-7 2"></path>
+                  <path d="M12 6c-3-1.5-5.5-1-7 1 1.5 3 4.5 4 7 2"></path>
+                  <path d="M12 11c3-1.5 5.5-1 7 1-1.5 3-4.5 4-7 2"></path>
+                  <path d="M12 11c-3-1.5-5.5-1-7 1 1.5 3 4.5 4 7 2"></path>
+                </svg>
+              </div>
               <h3>Small batch craft</h3>
               <p>Every batch prepared in limited quantities — freshness over scale.</p>
             </article>
             <article class="why-card scroll-reveal">
-              <div class="why-icon" aria-hidden="true">🫗</div>
+              <div class="why-icon" aria-hidden="true">
+                <svg class="icon-svg icon-svg--lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 22a7 7 0 0 0 7-7c0-4.3-7-11-7-11S5 10.7 5 15a7 7 0 0 0 7 7z"></path>
+                  <path d="M12 15a3 3 0 0 0 3-3"></path>
+                </svg>
+              </div>
               <h3>No shortcut freshness</h3>
               <p>Packed immediately after preparation. Cold-pressed oils, no reheating cycles.</p>
             </article>
             <article class="why-card scroll-reveal">
-              <div class="why-icon" aria-hidden="true">🏡</div>
+              <div class="why-icon" aria-hidden="true">
+                <svg class="icon-svg icon-svg--lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                  <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                </svg>
+              </div>
               <h3>Homegrown roots</h3>
               <p>Inspired by Chennai kitchen traditions and the people who still make them by hand.</p>
             </article>
@@ -176,7 +174,7 @@
                 ></video>
                 <img
                   data-responsive="traditional_prep"
-                  data-ext="webp"
+                  data-ext="jpg"
                   data-sizes="(max-width: 768px) 100vw, 50vw"
                   alt="Murukku preparation over a traditional hearth"
                   class="cooking-img bg-img craft-cinematic-fallback"
@@ -204,14 +202,22 @@
               </p>
               <div class="pouch-feature-list">
                 <div class="pouch-feature-item">
-                  <span class="pouch-feature-icon" aria-hidden="true">🛡️</span>
+                  <span class="pouch-feature-icon" aria-hidden="true">
+                    <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                    </svg>
+                  </span>
                   <div class="pouch-feature-text">
                     <h4>Triple-layer barrier</h4>
                     <p>Shields cold-pressed oils from light and oxidation.</p>
                   </div>
                 </div>
                 <div class="pouch-feature-item">
-                  <span class="pouch-feature-icon" aria-hidden="true">💨</span>
+                  <span class="pouch-feature-icon" aria-hidden="true">
+                    <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M9.59 4.59A2 2 0 1 1 11 8H2M12.59 19.41A2 2 0 1 0 14 16H2M16 12H2"></path>
+                    </svg>
+                  </span>
                   <div class="pouch-feature-text">
                     <h4>Nitrogen-flushed crispness</h4>
                     <p>Food-grade flushing replaces air inside every seal.</p>
@@ -220,7 +226,57 @@
               </div>
             </div>
             <div class="pouch-visual-container scroll-reveal">
-              <img data-responsive="snack_pack" data-ext="webp" data-sizes="(max-width: 768px) 80vw, 400px" alt="Oor Aroma Lock snack pouch" class="pouch-static-img pouch-static-img--glow" loading="lazy" width="800" height="800" decoding="async" />
+              <img data-responsive="snack_pack" data-ext="jpg" data-sizes="(max-width: 768px) 80vw, 400px" alt="Oor Aroma Lock snack pouch" class="pouch-static-img pouch-static-img--glow" loading="lazy" width="800" height="800" decoding="async" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="best-sellers-section home-scroll-section" id="featured-products" aria-labelledby="featured-heading">
+        <div class="section-container">
+          <div class="section-header text-center scroll-reveal">
+            <p class="section-tag">Featured</p>
+            <h2 id="featured-heading" class="section-title">Our signature collection</h2>
+            <p class="section-subtitle">Handmade in small batches, packed immediately for pristine freshness.</p>
+          </div>
+          <div class="products-grid">
+            <div class="product-card scroll-reveal" data-id="p1" data-name="Kai Murukku" data-base-price="140">
+              <div class="product-media">
+                <img data-responsive="traditional_prep" data-ext="jpg" alt="Traditional Kai Murukku" class="product-img" loading="lazy" decoding="async" />
+                <span class="product-badge">Best Seller</span>
+              </div>
+              <div class="product-details">
+                <h3 class="product-name">Traditional Kai Murukku</h3>
+                <p class="product-desc">Hand-twisted rice flour coils. Cold-pressed groundnut oil, cumin, butter notes.</p>
+                <div class="product-purchase-row">
+                  <div class="weight-selector-wrap">
+                    <select class="weight-select" aria-label="Weight">
+                      <option value="250g" data-multiplier="1.0">250g — ₹140</option>
+                      <option value="500g" data-multiplier="1.8">500g — ₹252</option>
+                    </select>
+                  </div>
+                  <button type="button" class="btn btn-primary btn-sm add-to-cart-btn">Add to cart</button>
+                </div>
+              </div>
+            </div>
+            <div class="product-card scroll-reveal" data-id="s1" data-name="Tirunelveli Halwa" data-base-price="280">
+              <div class="product-media">
+                <img data-responsive="sweet_halwa" data-ext="jpg" alt="Tirunelveli halwa in pure ghee" class="product-img" loading="lazy" decoding="async" />
+                <span class="product-badge">Iconic</span>
+              </div>
+              <div class="product-details">
+                <h3 class="product-name">Tirunelveli Halwa</h3>
+                <p class="product-desc">Translucent wheat halwa, slow-cooked in pure ghee with cashew notes.</p>
+                <div class="product-purchase-row">
+                  <div class="weight-selector-wrap">
+                    <select class="weight-select" aria-label="Weight">
+                      <option value="250g" data-multiplier="1.0">250g — ₹280</option>
+                      <option value="500g" data-multiplier="1.85">500g — ₹518</option>
+                    </select>
+                  </div>
+                  <button type="button" class="btn btn-primary btn-sm add-to-cart-btn">Add to cart</button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -232,7 +288,7 @@
           <p class="home-cta-sub">Explore snacks, traditional sweets, and festival boxes.</p>
           <div class="home-cta-actions">
             <a href="/products.html" class="btn btn-primary">Explore snacks</a>
-            <a href="https://api.whatsapp.com/send?phone=919176661912" class="btn btn-secondary" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+            <a href="https://api.whatsapp.com/send?phone=919176661912" class="btn btn-secondary" target="_blank" rel="noopener noreferrer">Order on WhatsApp</a>
           </div>
         </div>
       </section>
@@ -243,6 +299,8 @@
         <div class="footer-bottom">
           <p class="copyright">&copy; 2026 Oor Snacks. All rights reserved.</p>
           <div class="footer-links">
+            <a href="/">Home</a>
+            <a href="/#origin">Story</a>
             <a href="/products.html">Products</a>
             <a href="/shop.html">Cart</a>
             <a href="/admin.html">Staff</a>
