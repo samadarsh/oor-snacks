@@ -296,7 +296,7 @@ button, input, select {
   border-color: var(--border-color);
 }
 
-/* Nav goes white when floating over the dark hero — but NOT when mobile menu is open */
+/* Nav goes white when floating over the dark hero — not when mobile menu is open */
 body.page-hero:not(.nav-open) .main-header:not(.scrolled) .logo {
   color: #fff;
 }
