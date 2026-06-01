@@ -6,7 +6,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 gsap.registerPlugin(ScrollTrigger)
 import { initSiteNav } from './shared/nav.js'
 import { initScrollReveals } from './shared/motion.js'
-import { addToCart, onCartChange, syncCartBadge, updateProductButtons } from './cart.js'
+import { onCartChange, syncCartBadge, updateProductButtons } from './cart.js'
 import { initResponsiveImages } from './shared/responsive-img.js'
 
 document.body.classList.add('page-hero')
@@ -56,9 +56,13 @@ if (!prefersReducedMotion) {
 
   window.addEventListener('load', () => {
     gsap.timeline({ defaults: { ease: 'power3.out' } })
-      .from('.hero-bg-image', { scale: 1.03, opacity: 0, duration: 1.2 })
-      .from('.text-reveal', { opacity: 0, y: 15, stagger: 0.08, duration: 0.8 }, '-=0.9')
-      .from('.scroll-indicator', { opacity: 0, duration: 0.5 }, '-=0.4')
+      .from('.hero-bg-image', { scale: 1.06, opacity: 0, duration: 1.4 })
+      .from('.hero-pretitle',    { opacity: 0, y: 8,  duration: 0.65 }, '-=0.9')
+      .from('.hero-brand-title', { opacity: 0, y: 28, duration: 0.85 }, '-=0.5')
+      .from('.hero-tagline',     { opacity: 0, y: 18, duration: 0.75 }, '-=0.55')
+      .from('.hero-subtitle',    { opacity: 0, y: 12, duration: 0.65 }, '-=0.45')
+      .from('.hero-ctas',        { opacity: 0, y: 8,  duration: 0.55 }, '-=0.35')
+      .from('.scroll-indicator', { opacity: 0, duration: 0.5 }, '-=0.2')
 
     gsap.to('.hero-bg-image', {
       yPercent: 3,

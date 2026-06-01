@@ -296,6 +296,32 @@ button, input, select {
   border-color: var(--border-color);
 }
 
+/* Nav goes white when floating over the dark hero */
+body.page-hero .main-header:not(.scrolled) .logo {
+  color: #fff;
+}
+body.page-hero .main-header:not(.scrolled) .logo-sub {
+  color: rgba(255, 215, 160, 0.8);
+}
+body.page-hero .main-header:not(.scrolled) .nav-link {
+  color: rgba(255, 255, 255, 0.72);
+}
+body.page-hero .main-header:not(.scrolled) .nav-link:hover {
+  color: #fff;
+}
+body.page-hero .main-header:not(.scrolled) .cart-trigger-btn {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.25);
+  color: #fff;
+}
+body.page-hero .main-header:not(.scrolled) .cart-count-badge {
+  background-color: var(--accent-gold);
+  color: var(--bg-dark);
+}
+body.page-hero .main-header:not(.scrolled) .bar {
+  background-color: #fff;
+}
+
 .header-container {
   max-width: var(--container-width);
   margin: 0 auto;
@@ -480,7 +506,7 @@ a.cart-trigger-btn {
   font-size: clamp(15px, 2vw, 18px);
   margin-bottom: var(--space-lg);
   max-width: 46ch;
-  color: #faf6f0;
+  color: rgba(250, 246, 240, 0.88);
   text-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
 }
 
@@ -1003,7 +1029,7 @@ a.cart-trigger-btn {
   left: 0;
   width: 100%;
   height: 100%;
-  background: var(--overlay-dark);
+  background: rgba(18, 13, 10, 0.52);
 }
 
 .hero-vignette {
@@ -1012,7 +1038,7 @@ a.cart-trigger-btn {
   left: 0;
   width: 100%;
   height: 100%;
-  background: radial-gradient(circle, transparent 30%, rgba(45,24,16,0.55) 100%);
+  background: linear-gradient(to top, rgba(18, 13, 10, 0.65) 0%, transparent 45%);
 }
 
 .hero-noise {
@@ -1094,11 +1120,24 @@ a.cart-trigger-btn {
 }
 
 .scroll-dot {
-  width: 4px;
-  height: 4px;
-  background-color: var(--accent-turmeric);
-  border-radius: 50%;
-  animation: scrollDown 2.2s infinite ease-in-out;
+  display: none;
+}
+
+.scroll-chevron {
+  display: block;
+  width: 22px;
+  height: 22px;
+  stroke: var(--accent-gold);
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  animation: chevronBounce 2s infinite ease-in-out;
+}
+
+@keyframes chevronBounce {
+  0%, 100% { transform: translateY(0);   opacity: 0.6; }
+  50%       { transform: translateY(6px); opacity: 1;   }
 }
 
 @keyframes scrollDown {
