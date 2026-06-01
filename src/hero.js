@@ -6,13 +6,14 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 gsap.registerPlugin(ScrollTrigger)
 import { initSiteNav } from './shared/nav.js'
 import { initScrollReveals } from './shared/motion.js'
-import { syncCartBadge } from './cart.js'
+import { addToCart, onCartChange, syncCartBadge } from './cart.js'
 import { initResponsiveImages } from './shared/responsive-img.js'
 
 document.body.classList.add('page-hero')
 initSiteNav()
 syncCartBadge()
 initResponsiveImages()
+initHomepageCart()
 
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 let lenis = null
@@ -53,9 +54,9 @@ if (!prefersReducedMotion) {
   gsap.ticker.lagSmoothing(0)
 
   window.addEventListener('load', () => {
-    gsap.timeline({ defaults: { ease: 'power2.out' } })
+    gsap.timeline({ defaults: { ease: 'power3.out' } })
       .from('.hero-bg-image', { scale: 1.03, opacity: 0, duration: 1.2 })
-      .from('.text-reveal', { opacity: 0, y: 10, stagger: 0.07, duration: 0.75 }, '-=0.9')
+      .from('.text-reveal', { opacity: 0, y: 15, stagger: 0.08, duration: 0.8 }, '-=0.9')
       .from('.scroll-indicator', { opacity: 0, duration: 0.5 }, '-=0.4')
 
     gsap.to('.hero-bg-image', {
@@ -101,4 +102,54 @@ function initCraftCinematicVideo() {
   } else {
     play()
   }
+}
+
+/** Homepage featured product cards add-to-cart logic. */
+function initHomepageCart() {
+  let toastTimer
+  const showAddedToast = () => {
+    let el = document.getElementById('cart-added-toast')
+    if (!el) {
+      el = document.createElement('div')
+      el.id = 'cart-added-toast'
+      el.className = 'cart-added-toast'
+      el.setAttribute('role', 'status')
+      el.innerHTML =
+        'Added to basket. <a href="/shop.html">View cart & checkout</a>'
+      document.body.appendChild(el)
+    }
+    el.classList.add('visible')
+    clearTimeout(toastTimer)
+    toastTimer = setTimeout(() => el.classList.remove('visible'), 3200)
+  }
+
+  document.querySelectorAll('.product-card').forEach((card) => {
+    const addBtn = card.querySelector('.add-to-cart-btn')
+    if (!addBtn) return
+
+    addBtn.addEventListener('click', () => {
+      const id = card.getAttribute('data-id')
+      const name = card.getAttribute('data-name')
+      const basePrice = parseInt(card.getAttribute('data-base-price'), 10)
+      const img = card.querySelector('.product-img')?.getAttribute('src') || ''
+
+      const select = card.querySelector('.weight-select')
+      let weight = 'Pack'
+      let price = basePrice
+
+      if (select) {
+        const option = select.options[select.selectedIndex]
+        weight = option.value
+        const multiplier = parseFloat(option.getAttribute('data-multiplier') || '1')
+        price = Math.round(basePrice * multiplier)
+      }
+
+      addToCart(id, name, weight, price, img)
+      showAddedToast()
+    })
+  })
+
+  onCartChange(() => {
+    syncCartBadge()
+  })
 }

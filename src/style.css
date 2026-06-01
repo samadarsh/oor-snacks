@@ -2,22 +2,29 @@
  * Design Tokens & Variables (Oor Snacks - South Indian D2C)
  * ------------------------------------------------------------- */
 :root {
-  /* Warm Heritage Color Palette */
-  --bg-primary: #fdfaf5;         /* Warm Cream Backdrop */
-  --bg-secondary: #f6efe7;       /* Soft Almond Accent */
-  --text-primary: #2d1810;       /* Espresso Cocoa */
-  --text-secondary: #6e5e57;     /* Soft Warm Clay */
-  --accent-maroon: #8b1e1e;      /* Festive Red/Maroon */
-  --accent-maroon-hover: #6d1515;
-  --accent-turmeric: #d97706;    /* Turmeric Amber */
-  --accent-green: #4d7c0f;       /* Fresh Leaf Green */
-  --border-color: rgba(139, 30, 30, 0.08);
-  --border-focus: rgba(139, 30, 30, 0.3);
-  --overlay-dark: rgba(45, 24, 16, 0.35); /* Warm overlay for Hero */
-  --error-color: #c93b2b;
+  /* Warm Heritage Color Palette (Apple-D2C redone) */
+  --bg-primary: #FAF6F0;         /* Rice Ivory Backdrop */
+  --bg-secondary: #F0ECE6;       /* Soft Almond Accent */
+  --bg-dark: #120D0A;            /* Sesame Black Cinematic Dark */
+  --text-primary: #120D0A;       /* Deep Espresso/Sesame Black */
+  --text-secondary: #5A4E46;     /* Soft Charcoal Clay */
+  --accent-red: #A62B2B;         /* Terracotta Red (Primary CTA) */
+  --accent-red-hover: #822020;
+  --accent-gold: #D4AF37;        /* Ghee Gold Accent */
+  --accent-green: #3B7A57;       /* Banana Leaf Green (Success/Badges) */
+  
+  /* Legacy Color mappings to keep styling intact */
+  --accent-maroon: var(--accent-red);
+  --accent-maroon-hover: var(--accent-red-hover);
+  --accent-turmeric: var(--accent-gold);
+  
+  --border-color: rgba(166, 43, 43, 0.08);
+  --border-focus: rgba(166, 43, 43, 0.3);
+  --overlay-dark: rgba(18, 13, 10, 0.4); /* Dark Sesame overlay for Hero */
+  --error-color: #A62B2B;
 
   /* Typography Stacks */
-  --font-header: 'Inter', 'Outfit', system-ui, sans-serif;
+  --font-header: 'Outfit', 'Inter', system-ui, sans-serif;
   --font-body: 'Inter', system-ui, sans-serif;
   --font-tamil: 'Catamaran', 'Noto Sans Tamil', sans-serif;
 
@@ -134,6 +141,35 @@ button, input, select {
   font: inherit;
   color: inherit;
   outline: none;
+}
+
+/* Custom premium inline SVGs */
+.icon-svg {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vertical-align: middle;
+  transition: stroke var(--transition-fast), transform var(--transition-fast);
+}
+
+.icon-svg--sm {
+  width: 18px;
+  height: 18px;
+}
+
+.icon-svg--lg {
+  width: 32px;
+  height: 32px;
+}
+
+.icon-svg--xl {
+  width: 48px;
+  height: 48px;
 }
 
 /* -------------------------------------------------------------
@@ -387,8 +423,9 @@ a.cart-trigger-btn {
 .hero-trust-strip {
   padding: var(--space-lg) 0;
   text-align: center;
-  background: var(--bg-primary);
+  background: var(--bg-secondary);
   border-top: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
 }
 
 .hero-trust-inner p {
@@ -405,31 +442,46 @@ a.cart-trigger-btn {
   contain-intrinsic-size: auto 520px;
 }
 
+.hero-content--brand {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  color: #fff;
+  max-width: 800px;
+  padding: 0 var(--space-md);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .hero-content--brand .hero-brand-title {
-  font-size: clamp(42px, 8vw, 72px);
-  font-weight: 600;
-  letter-spacing: -0.03em;
-  line-height: 1.05;
-  margin: 0 0 var(--space-sm);
+  font-size: clamp(48px, 8.5vw, 84px);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1.02;
+  margin: 0 0 var(--space-xs);
   color: var(--bg-primary);
   text-shadow: 0 2px 16px rgba(45, 24, 16, 0.25);
+  font-family: var(--font-header);
 }
 
 .hero-content--brand .hero-tagline {
-  font-size: clamp(20px, 3vw, 28px);
-  font-weight: 500;
-  letter-spacing: -0.02em;
+  font-size: clamp(24px, 3.8vw, 36px);
+  font-weight: 600;
+  letter-spacing: -0.03em;
   color: #faf6f0;
   margin: 0 0 var(--space-sm);
-  max-width: 28ch;
-  line-height: 1.25;
-  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.2);
+  line-height: 1.15;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.25);
+  font-family: var(--font-header);
 }
 
 .hero-content--brand .hero-subtitle {
   font-size: clamp(15px, 2vw, 18px);
   margin-bottom: var(--space-lg);
-  max-width: 32ch;
+  max-width: 46ch;
+  color: #faf6f0;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
 }
 
 .story-split-section {
@@ -548,7 +600,7 @@ a.cart-trigger-btn {
 }
 
 .pouch-section--tech {
-  background: linear-gradient(165deg, #1f1612 0%, #2a1f18 45%, #1a1410 100%);
+  background: linear-gradient(165deg, var(--bg-dark) 0%, #1f1814 60%, var(--bg-dark) 100%);
   border-color: rgba(255, 255, 255, 0.06);
   color: #f0e8df;
 }
@@ -898,7 +950,6 @@ a.cart-trigger-btn {
 }
 
 .pouch-feature-icon {
-  font-size: 20px;
   background-color: var(--bg-primary);
   width: 44px;
   height: 44px;
@@ -908,7 +959,14 @@ a.cart-trigger-btn {
   justify-content: center;
   border: 1px solid var(--border-color);
   flex-shrink: 0;
+  box-shrink: 0;
   box-shadow: 0 4px 10px rgba(45, 24, 16, 0.02);
+  color: var(--accent-red);
+}
+
+.pouch-feature-icon svg {
+  width: 20px;
+  height: 20px;
 }
 
 .pouch-feature-text h4 {
@@ -1093,6 +1151,10 @@ a.cart-trigger-btn {
   height: 100%;
   object-fit: cover;
   transition: transform var(--transition-slow);
+}
+
+.product-img.img-pos-karasev {
+  object-position: center 58%;
 }
 
 .product-card:hover .product-img {

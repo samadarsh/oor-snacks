@@ -26,13 +26,20 @@
         <nav class="nav-menu" role="navigation" aria-label="Main">
           <ul>
             <li><a href="/" class="nav-link">Home</a></li>
+            <li><a href="/#origin" class="nav-link">Story</a></li>
             <li><a href="/products.html" class="nav-link" aria-current="page">Products</a></li>
             <li><a href="/shop.html" class="nav-link">Cart</a></li>
           </ul>
         </nav>
         <div class="header-actions">
           <a href="/shop.html" class="cart-trigger-btn" id="cart-toggle" aria-label="View cart and checkout">
-            <span class="cart-icon">🛒</span>
+            <span class="cart-icon">
+              <svg class="icon-svg icon-svg--sm" viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="9" cy="21" r="1"></circle>
+                <circle cx="20" cy="21" r="1"></circle>
+                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+              </svg>
+            </span>
             <span class="cart-count-badge" id="cart-badge-count">0</span>
           </a>
         </div>
@@ -64,11 +71,11 @@
           </div>
           <div class="categories-grid">
             <a href="#murukku" class="category-card scroll-reveal">
-              <img data-responsive="traditional_prep" data-ext="webp" alt="Murukku" class="category-img" loading="lazy" decoding="async" />
+              <img data-responsive="traditional_prep" data-ext="jpg" alt="Murukku" class="category-img" loading="lazy" decoding="async" />
               <div class="category-overlay"><h3>Murukkus</h3><p>Hand-coiled rice rings</p></div>
             </a>
             <a href="#mixture" class="category-card scroll-reveal">
-              <img data-responsive="hero_snacks" data-ext="webp" alt="Mixture" class="category-img" loading="lazy" decoding="async" />
+              <img data-responsive="hero_snacks" data-ext="jpg" alt="Mixture" class="category-img" loading="lazy" decoding="async" />
               <div class="category-overlay"><h3>Mixtures</h3><p>Curry leaf & spice blends</p></div>
             </a>
             <a href="#banana-chips" class="category-card scroll-reveal">
@@ -92,7 +99,7 @@
           <div class="products-grid">
             <div class="product-card scroll-reveal" id="murukku" data-id="p1" data-name="Kai Murukku" data-base-price="140">
               <div class="product-media">
-                <img data-responsive="traditional_prep" data-ext="webp" alt="Traditional Kai Murukku" class="product-img" loading="lazy" decoding="async" />
+                <img data-responsive="traditional_prep" data-ext="jpg" alt="Traditional Kai Murukku" class="product-img" loading="lazy" decoding="async" />
                 <span class="product-badge">Best Seller</span>
               </div>
               <div class="product-details">
@@ -112,7 +119,7 @@
             </div>
             <div class="product-card scroll-reveal" id="mixture" data-id="p2" data-name="Madras Mixture" data-base-price="130">
               <div class="product-media">
-                <img data-responsive="hero_snacks" data-ext="webp" alt="Madras Mixture" class="product-img" loading="lazy" decoding="async" />
+                <img data-responsive="hero_snacks" data-ext="jpg" alt="Madras Mixture" class="product-img" loading="lazy" decoding="async" />
                 <span class="product-badge combo-badge">Tea-Time</span>
               </div>
               <div class="product-details">
@@ -149,7 +156,7 @@
             </div>
             <div class="product-card scroll-reveal" data-id="p4" data-name="Garlic Karasev" data-base-price="120">
               <div class="product-media">
-                <img data-responsive="snack_pack" data-ext="webp" alt="Garlic Karasev" class="product-img" loading="lazy" decoding="async" />
+                <img data-responsive="garlic_karasev" data-ext="jpg" alt="Garlic Karasev" class="product-img img-pos-karasev" loading="lazy" decoding="async" />
               </div>
               <div class="product-details">
                 <h3 class="product-name">Spicy Garlic Karasev</h3>
@@ -296,17 +303,35 @@
           </div>
           <div class="why-grid">
             <div class="why-card scroll-reveal">
-              <div class="why-icon">🫗</div>
+              <div class="why-icon">
+                <svg class="icon-svg icon-svg--lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 22a7 7 0 0 0 7-7c0-4.3-7-11-7-11S5 10.7 5 15a7 7 0 0 0 7 7z"></path>
+                  <path d="M12 15a3 3 0 0 0 3-3"></path>
+                </svg>
+              </div>
               <h3>Cold-pressed oils</h3>
               <p>Groundnut and coconut oil only — no palm oil, no reheating cycles.</p>
             </div>
             <div class="why-card scroll-reveal">
-              <div class="why-icon">🌾</div>
+              <div class="why-icon">
+                <svg class="icon-svg icon-svg--lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 2v20"></path>
+                  <path d="M12 6c3-1.5 5.5-1 7 1-1.5 3-4.5 4-7 2"></path>
+                  <path d="M12 6c-3-1.5-5.5-1-7 1 1.5 3 4.5 4 7 2"></path>
+                  <path d="M12 11c3-1.5 5.5-1 7 1-1.5 3-4.5 4-7 2"></path>
+                  <path d="M12 11c-3-1.5-5.5-1-7 1 1.5 3 4.5 4 7 2"></path>
+                </svg>
+              </div>
               <h3>Stone-ground flour</h3>
               <p>Ponni rice and urad dal milled for the right dough and crunch.</p>
             </div>
             <div class="why-card scroll-reveal">
-              <div class="why-icon">👵</div>
+              <div class="why-icon">
+                <svg class="icon-svg icon-svg--lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 3.5 1 9.8a7 7 0 0 1-9 8.2z"></path>
+                  <path d="M9 22v-4h4"></path>
+                </svg>
+              </div>
               <h3>Small batches</h3>
               <p>No artificial preservatives — packed daily in aroma-lock pouches.</p>
             </div>
@@ -323,7 +348,7 @@
           <div class="products-grid">
             <div class="product-card scroll-reveal" data-id="c1" data-name="Classic Tea-Time Box" data-base-price="350">
               <div class="product-media">
-                <img data-responsive="snack_pack" data-ext="webp" alt="Tea-Time Box" class="product-img" loading="lazy" decoding="async" />
+                <img data-responsive="tea_time_box" data-ext="jpg" alt="Tea-Time Box" class="product-img" loading="lazy" decoding="async" />
                 <span class="product-badge combo-badge">Combo</span>
               </div>
               <div class="product-details">
@@ -337,7 +362,7 @@
             </div>
             <div class="product-card scroll-reveal" data-id="c2" data-name="Festive Gifting Box" data-base-price="550">
               <div class="product-media">
-                <img data-responsive="snack_pack" data-ext="webp" alt="Gifting Box" class="product-img" loading="lazy" decoding="async" />
+                <img data-responsive="gift_box" data-ext="jpg" alt="Gifting Box" class="product-img" loading="lazy" decoding="async" />
                 <span class="product-badge festival-badge">Gift</span>
               </div>
               <div class="product-details">
@@ -360,6 +385,8 @@
           <p class="copyright">&copy; 2026 Oor Snacks.</p>
           <div class="footer-links">
             <a href="/">Home</a>
+            <a href="/#origin">Story</a>
+            <a href="/products.html" aria-current="page">Products</a>
             <a href="/shop.html">Cart</a>
             <a href="/admin.html">Staff</a>
             <a href="/privacy.html">Privacy</a>
@@ -372,7 +399,13 @@
     <div id="mobile-sticky-cart" class="mobile-sticky-cart-bar" hidden aria-hidden="true">
       <div class="mobile-sticky-container">
         <div class="mobile-cart-summary">
-          <span class="mobile-cart-icon" aria-hidden="true">🛒</span>
+          <span class="mobile-cart-icon" aria-hidden="true">
+            <svg class="icon-svg icon-svg--sm" viewBox="0 0 24 24" aria-hidden="true" style="color: var(--accent-red)">
+              <circle cx="9" cy="21" r="1"></circle>
+              <circle cx="20" cy="21" r="1"></circle>
+              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+            </svg>
+          </span>
           <span class="mobile-cart-meta">
             <strong id="mobile-cart-item-count">0 items</strong>
             <span aria-hidden="true"> · </span>
