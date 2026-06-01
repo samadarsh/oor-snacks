@@ -447,19 +447,50 @@ a.cart-trigger-btn {
 }
 
 .hero-trust-strip {
-  padding: var(--space-lg) 0;
-  text-align: center;
-  background: var(--bg-secondary);
-  border-top: 1px solid var(--border-color);
-  border-bottom: 1px solid var(--border-color);
+  padding: var(--space-md) 0;
+  background: var(--bg-dark);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
-.hero-trust-inner p {
+.trust-pill-list {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  list-style: none;
   margin: 0;
-  font-size: 15px;
-  color: var(--text-secondary);
-  letter-spacing: 0.04em;
-  font-weight: 500;
+  padding: 0;
+}
+
+.trust-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(250, 246, 240, 0.75);
+}
+
+.trust-pill-icon {
+  width: 16px;
+  height: 16px;
+  stroke: var(--accent-gold);
+  fill: none;
+  stroke-width: 1.75;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  flex-shrink: 0;
+}
+
+.trust-pill-divider {
+  width: 1px;
+  height: 16px;
+  background: rgba(255, 255, 255, 0.15);
+  flex-shrink: 0;
 }
 
 /* Homepage scrollable brand story */
@@ -2895,6 +2926,16 @@ a.cart-trigger-btn {
     flex-direction: column;
     gap: var(--space-sm);
     text-align: center;
+  }
+}
+
+/* Trust strip — hide dividers when pills wrap on mobile */
+@media (max-width: 480px) {
+  .trust-pill-divider {
+    display: none;
+  }
+  .trust-pill-list {
+    gap: var(--space-md) var(--space-lg);
   }
 }
 
