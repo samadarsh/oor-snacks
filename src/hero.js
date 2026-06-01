@@ -6,7 +6,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 gsap.registerPlugin(ScrollTrigger)
 import { initSiteNav } from './shared/nav.js'
 import { initScrollReveals } from './shared/motion.js'
-import { addToCart, onCartChange, syncCartBadge } from './cart.js'
+import { addToCart, onCartChange, syncCartBadge, updateProductButtons } from './cart.js'
 import { initResponsiveImages } from './shared/responsive-img.js'
 
 document.body.classList.add('page-hero')
@@ -14,6 +14,7 @@ initSiteNav()
 syncCartBadge()
 initResponsiveImages()
 initHomepageCart()
+updateProductButtons()
 
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 let lenis = null
@@ -127,13 +128,19 @@ function initHomepageCart() {
     const addBtn = card.querySelector('.add-to-cart-btn')
     if (!addBtn) return
 
+    const select = card.querySelector('.weight-select')
+    if (select) {
+      select.addEventListener('change', () => {
+        updateProductButtons()
+      })
+    }
+
     addBtn.addEventListener('click', () => {
       const id = card.getAttribute('data-id')
       const name = card.getAttribute('data-name')
       const basePrice = parseInt(card.getAttribute('data-base-price'), 10)
       const img = card.querySelector('.product-img')?.getAttribute('src') || ''
 
-      const select = card.querySelector('.weight-select')
       let weight = 'Pack'
       let price = basePrice
 
@@ -151,5 +158,6 @@ function initHomepageCart() {
 
   onCartChange(() => {
     syncCartBadge()
+    updateProductButtons()
   })
 }

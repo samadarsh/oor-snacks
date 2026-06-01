@@ -1,7 +1,7 @@
 import './style.css'
 import { initSiteNav } from './shared/nav.js'
 import { initScrollReveals } from './shared/motion.js'
-import { addToCart, initMobileStickyCart, onCartChange, syncCartBadge } from './cart.js'
+import { addToCart, initMobileStickyCart, onCartChange, syncCartBadge, updateProductButtons } from './cart.js'
 import { initResponsiveImages } from './shared/responsive-img.js'
 
 initSiteNav()
@@ -62,13 +62,19 @@ document.querySelectorAll('.product-card').forEach((card) => {
   const addBtn = card.querySelector('.add-to-cart-btn')
   if (!addBtn) return
 
+  const select = card.querySelector('.weight-select')
+  if (select) {
+    select.addEventListener('change', () => {
+      updateProductButtons()
+    })
+  }
+
   addBtn.addEventListener('click', () => {
     const id = card.getAttribute('data-id')
     const name = card.getAttribute('data-name')
     const basePrice = parseInt(card.getAttribute('data-base-price'), 10)
     const img = card.querySelector('.product-img')?.getAttribute('src') || ''
 
-    const select = card.querySelector('.weight-select')
     let weight = 'Pack'
     let price = basePrice
 
@@ -86,4 +92,7 @@ document.querySelectorAll('.product-card').forEach((card) => {
 
 onCartChange(() => {
   syncCartBadge()
+  updateProductButtons()
 })
+
+updateProductButtons()

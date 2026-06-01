@@ -181,5 +181,33 @@ export const bindCartQtyButtons = (container) => {
   })
 }
 
-onCartChange(() => syncCartBadge())
+export const updateProductButtons = () => {
+  if (typeof document === 'undefined') return
+  const cart = getCart()
+  document.querySelectorAll('.product-card').forEach((card) => {
+    const id = card.getAttribute('data-id')
+    const addBtn = card.querySelector('.add-to-cart-btn')
+    if (!addBtn) return
+
+    const select = card.querySelector('.weight-select')
+    let weight = 'Pack'
+    if (select) {
+      weight = select.value
+    }
+
+    const cartItem = cart.find((item) => item.id === id && item.weight === weight)
+    const qty = cartItem ? cartItem.qty : 0
+
+    if (qty > 0) {
+      addBtn.textContent = `Add to cart (+${qty})`
+    } else {
+      addBtn.textContent = 'Add to cart'
+    }
+  })
+}
+
+onCartChange(() => {
+  syncCartBadge()
+  updateProductButtons()
+})
 syncCartBadge()
