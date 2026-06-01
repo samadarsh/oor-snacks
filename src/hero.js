@@ -6,7 +6,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 gsap.registerPlugin(ScrollTrigger)
 import { initSiteNav } from './shared/nav.js'
 import { initScrollReveals } from './shared/motion.js'
-import { addToCart, onCartChange, syncCartBadge } from './cart.js'
+import { addToCart, onCartChange, syncCartBadge, updateProductButtons } from './cart.js'
 import { initResponsiveImages } from './shared/responsive-img.js'
 
 document.body.classList.add('page-hero')
@@ -14,6 +14,7 @@ initSiteNav()
 syncCartBadge()
 initResponsiveImages()
 initHomepageCart()
+updateProductButtons()
 
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 let lenis = null
@@ -106,50 +107,8 @@ function initCraftCinematicVideo() {
 
 /** Homepage featured product cards add-to-cart logic. */
 function initHomepageCart() {
-  let toastTimer
-  const showAddedToast = () => {
-    let el = document.getElementById('cart-added-toast')
-    if (!el) {
-      el = document.createElement('div')
-      el.id = 'cart-added-toast'
-      el.className = 'cart-added-toast'
-      el.setAttribute('role', 'status')
-      el.innerHTML =
-        'Added to basket. <a href="/shop.html">View cart & checkout</a>'
-      document.body.appendChild(el)
-    }
-    el.classList.add('visible')
-    clearTimeout(toastTimer)
-    toastTimer = setTimeout(() => el.classList.remove('visible'), 3200)
-  }
-
-  document.querySelectorAll('.product-card').forEach((card) => {
-    const addBtn = card.querySelector('.add-to-cart-btn')
-    if (!addBtn) return
-
-    addBtn.addEventListener('click', () => {
-      const id = card.getAttribute('data-id')
-      const name = card.getAttribute('data-name')
-      const basePrice = parseInt(card.getAttribute('data-base-price'), 10)
-      const img = card.querySelector('.product-img')?.getAttribute('src') || ''
-
-      const select = card.querySelector('.weight-select')
-      let weight = 'Pack'
-      let price = basePrice
-
-      if (select) {
-        const option = select.options[select.selectedIndex]
-        weight = option.value
-        const multiplier = parseFloat(option.getAttribute('data-multiplier') || '1')
-        price = Math.round(basePrice * multiplier)
-      }
-
-      addToCart(id, name, weight, price, img)
-      showAddedToast()
-    })
-  })
-
   onCartChange(() => {
     syncCartBadge()
+    updateProductButtons()
   })
 }
