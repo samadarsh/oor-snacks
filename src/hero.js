@@ -78,6 +78,7 @@ if (!prefersReducedMotion) {
 
   initScrollReveals()
   initCraftCinematicVideo()
+  initCraftSection()
   initPouchSection()
 } else {
   document.querySelectorAll('.scroll-reveal').forEach((el) => {
@@ -107,6 +108,57 @@ function initCraftCinematicVideo() {
     io.observe(video)
   } else {
     play()
+  }
+}
+
+/** Craft section — sequential copy reveal + video/image scale entrance. */
+function initCraftSection() {
+  const section = document.querySelector('#craft')
+  if (!section) return
+
+  const copyChildren = [
+    section.querySelector('.section-tag'),
+    section.querySelector('.story-tamil-line'),
+    section.querySelector('.section-title'),
+    section.querySelector('.craft-moment-lead'),
+  ].filter(Boolean)
+
+  const figure = section.querySelector('.craft-animate-figure')
+
+  gsap.set(copyChildren, { opacity: 0, x: -22 })
+
+  ScrollTrigger.create({
+    trigger: section,
+    start: 'top 75%',
+    once: true,
+    onEnter: () => {
+      gsap.to(copyChildren, {
+        opacity: 1,
+        x: 0,
+        duration: 0.72,
+        ease: 'power3.out',
+        stagger: 0.1,
+      })
+    },
+  })
+
+  if (figure) {
+    gsap.set(figure, { opacity: 0, scale: 0.94, y: 20 })
+
+    ScrollTrigger.create({
+      trigger: section,
+      start: 'top 70%',
+      once: true,
+      onEnter: () => {
+        gsap.to(figure, {
+          opacity: 1,
+          scale: 1,
+          y: 0,
+          duration: 1.0,
+          ease: 'power3.out',
+        })
+      },
+    })
   }
 }
 
