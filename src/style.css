@@ -296,6 +296,32 @@ button, input, select {
   border-color: var(--border-color);
 }
 
+/* Nav goes white when floating over the dark hero */
+body.page-hero .main-header:not(.scrolled) .logo {
+  color: #fff;
+}
+body.page-hero .main-header:not(.scrolled) .logo-sub {
+  color: rgba(255, 215, 160, 0.8);
+}
+body.page-hero .main-header:not(.scrolled) .nav-link {
+  color: rgba(255, 255, 255, 0.72);
+}
+body.page-hero .main-header:not(.scrolled) .nav-link:hover {
+  color: #fff;
+}
+body.page-hero .main-header:not(.scrolled) .cart-trigger-btn {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.25);
+  color: #fff;
+}
+body.page-hero .main-header:not(.scrolled) .cart-count-badge {
+  background-color: var(--accent-gold);
+  color: var(--bg-dark);
+}
+body.page-hero .main-header:not(.scrolled) .bar {
+  background-color: #fff;
+}
+
 .header-container {
   max-width: var(--container-width);
   margin: 0 auto;
@@ -421,19 +447,50 @@ a.cart-trigger-btn {
 }
 
 .hero-trust-strip {
-  padding: var(--space-lg) 0;
-  text-align: center;
-  background: var(--bg-secondary);
-  border-top: 1px solid var(--border-color);
-  border-bottom: 1px solid var(--border-color);
+  padding: var(--space-md) 0;
+  background: var(--bg-dark);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
-.hero-trust-inner p {
+.trust-pill-list {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  list-style: none;
   margin: 0;
-  font-size: 15px;
-  color: var(--text-secondary);
-  letter-spacing: 0.04em;
-  font-weight: 500;
+  padding: 0;
+}
+
+.trust-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(250, 246, 240, 0.75);
+}
+
+.trust-pill-icon {
+  width: 16px;
+  height: 16px;
+  stroke: var(--accent-gold);
+  fill: none;
+  stroke-width: 1.75;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  flex-shrink: 0;
+}
+
+.trust-pill-divider {
+  width: 1px;
+  height: 16px;
+  background: rgba(255, 255, 255, 0.15);
+  flex-shrink: 0;
 }
 
 /* Homepage scrollable brand story */
@@ -480,7 +537,7 @@ a.cart-trigger-btn {
   font-size: clamp(15px, 2vw, 18px);
   margin-bottom: var(--space-lg);
   max-width: 46ch;
-  color: #faf6f0;
+  color: rgba(250, 246, 240, 0.88);
   text-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
 }
 
@@ -628,6 +685,14 @@ a.cart-trigger-btn {
 .pouch-static-img--glow {
   filter: drop-shadow(0 24px 48px rgba(0, 0, 0, 0.45))
     drop-shadow(0 0 40px rgba(255, 160, 60, 0.12));
+  will-change: transform;
+}
+
+.pouch-feature-icon.icon-lit {
+  background: rgba(212, 175, 55, 0.12);
+  border-color: rgba(212, 175, 55, 0.35);
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.18);
+  transition: background 0.5s ease, border-color 0.5s ease, box-shadow 0.5s ease;
 }
 
 .home-cta-band {
@@ -1003,7 +1068,7 @@ a.cart-trigger-btn {
   left: 0;
   width: 100%;
   height: 100%;
-  background: var(--overlay-dark);
+  background: rgba(18, 13, 10, 0.52);
 }
 
 .hero-vignette {
@@ -1012,7 +1077,7 @@ a.cart-trigger-btn {
   left: 0;
   width: 100%;
   height: 100%;
-  background: radial-gradient(circle, transparent 30%, rgba(45,24,16,0.55) 100%);
+  background: linear-gradient(to top, rgba(18, 13, 10, 0.65) 0%, transparent 45%);
 }
 
 .hero-noise {
@@ -1094,11 +1159,24 @@ a.cart-trigger-btn {
 }
 
 .scroll-dot {
-  width: 4px;
-  height: 4px;
-  background-color: var(--accent-turmeric);
-  border-radius: 50%;
-  animation: scrollDown 2.2s infinite ease-in-out;
+  display: none;
+}
+
+.scroll-chevron {
+  display: block;
+  width: 22px;
+  height: 22px;
+  stroke: var(--accent-gold);
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  animation: chevronBounce 2s infinite ease-in-out;
+}
+
+@keyframes chevronBounce {
+  0%, 100% { transform: translateY(0);   opacity: 0.6; }
+  50%       { transform: translateY(6px); opacity: 1;   }
 }
 
 @keyframes scrollDown {
@@ -1112,7 +1190,8 @@ a.cart-trigger-btn {
  * ------------------------------------------------------------- */
 .best-sellers-section {
   padding: var(--space-section) 0;
-  background-color: var(--bg-primary);
+  background-color: var(--bg-secondary);
+  border-top: 1px solid var(--border-color);
   border-bottom: 1px solid var(--border-color);
 }
 
@@ -1125,23 +1204,24 @@ a.cart-trigger-btn {
 .product-card {
   background-color: var(--bg-primary);
   border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-lg, 16px);
   overflow: hidden;
-  transition: all var(--transition-medium);
+  transition: transform var(--transition-medium), box-shadow var(--transition-medium), border-color var(--transition-medium);
   display: flex;
   flex-direction: column;
+  cursor: pointer;
 }
 
 .product-card:hover {
-  transform: none;
-  border-color: rgba(139, 30, 30, 0.2);
-  box-shadow: 0 8px 24px rgba(45, 24, 16, 0.04);
+  transform: translateY(-6px);
+  border-color: rgba(166, 43, 43, 0.18);
+  box-shadow: 0 16px 40px rgba(18, 13, 10, 0.12), 0 4px 12px rgba(18, 13, 10, 0.06);
 }
 
 .product-media {
   position: relative;
   width: 100%;
-  aspect-ratio: 16 / 10;
+  aspect-ratio: 4 / 3;
   overflow: hidden;
   background-color: var(--bg-secondary);
 }
@@ -1150,7 +1230,7 @@ a.cart-trigger-btn {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform var(--transition-slow);
+  transition: transform 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .product-img.img-pos-karasev {
@@ -1158,7 +1238,7 @@ a.cart-trigger-btn {
 }
 
 .product-card:hover .product-img {
-  transform: scale(1.015);
+  transform: scale(1.06);
 }
 
 .product-badge {
@@ -1171,9 +1251,19 @@ a.cart-trigger-btn {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  padding: 4px 10px;
-  border-radius: var(--radius-sm);
+  padding: 5px 12px;
+  border-radius: 999px;
   z-index: 2;
+  backdrop-filter: blur(4px);
+}
+
+.product-price {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--accent-maroon);
+  margin-bottom: var(--space-xs);
+  font-family: var(--font-header);
+  letter-spacing: -0.01em;
 }
 
 .product-badge.combo-badge {
@@ -1185,7 +1275,7 @@ a.cart-trigger-btn {
 }
 
 .product-details {
-  padding: var(--space-sm);
+  padding: var(--space-md);
   display: flex;
   flex-direction: column;
   flex: 1;
@@ -1205,6 +1295,26 @@ a.cart-trigger-btn {
   margin-bottom: var(--space-sm);
   font-weight: 400;
   flex: 1;
+}
+
+.products-grid-footer {
+  text-align: center;
+  margin-top: var(--space-xl);
+}
+
+.products-view-all {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--accent-maroon);
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 2px;
+  transition: opacity var(--transition-fast);
+}
+
+.products-view-all:hover {
+  opacity: 0.7;
 }
 
 .product-trust-tags {
@@ -2824,6 +2934,16 @@ a.cart-trigger-btn {
     flex-direction: column;
     gap: var(--space-sm);
     text-align: center;
+  }
+}
+
+/* Trust strip — hide dividers when pills wrap on mobile */
+@media (max-width: 480px) {
+  .trust-pill-divider {
+    display: none;
+  }
+  .trust-pill-list {
+    gap: var(--space-md) var(--space-lg);
   }
 }
 

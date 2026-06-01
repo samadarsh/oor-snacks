@@ -6,7 +6,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 gsap.registerPlugin(ScrollTrigger)
 import { initSiteNav } from './shared/nav.js'
 import { initScrollReveals } from './shared/motion.js'
-import { addToCart, onCartChange, syncCartBadge, updateProductButtons } from './cart.js'
+import { onCartChange, syncCartBadge, updateProductButtons } from './cart.js'
 import { initResponsiveImages } from './shared/responsive-img.js'
 
 document.body.classList.add('page-hero')
@@ -56,9 +56,13 @@ if (!prefersReducedMotion) {
 
   window.addEventListener('load', () => {
     gsap.timeline({ defaults: { ease: 'power3.out' } })
-      .from('.hero-bg-image', { scale: 1.03, opacity: 0, duration: 1.2 })
-      .from('.text-reveal', { opacity: 0, y: 15, stagger: 0.08, duration: 0.8 }, '-=0.9')
-      .from('.scroll-indicator', { opacity: 0, duration: 0.5 }, '-=0.4')
+      .from('.hero-bg-image', { scale: 1.06, opacity: 0, duration: 1.4 })
+      .from('.hero-pretitle',    { opacity: 0, y: 8,  duration: 0.65 }, '-=0.9')
+      .from('.hero-brand-title', { opacity: 0, y: 28, duration: 0.85 }, '-=0.5')
+      .from('.hero-tagline',     { opacity: 0, y: 18, duration: 0.75 }, '-=0.55')
+      .from('.hero-subtitle',    { opacity: 0, y: 12, duration: 0.65 }, '-=0.45')
+      .from('.hero-ctas',        { opacity: 0, y: 8,  duration: 0.55 }, '-=0.35')
+      .from('.scroll-indicator', { opacity: 0, duration: 0.5 }, '-=0.2')
 
     gsap.to('.hero-bg-image', {
       yPercent: 3,
@@ -74,6 +78,7 @@ if (!prefersReducedMotion) {
 
   initScrollReveals()
   initCraftCinematicVideo()
+  initPouchSection()
 } else {
   document.querySelectorAll('.scroll-reveal').forEach((el) => {
     el.style.opacity = '1'
@@ -102,6 +107,77 @@ function initCraftCinematicVideo() {
     io.observe(video)
   } else {
     play()
+  }
+}
+
+/** Packaging section — sequential content reveal + floating pouch entrance. */
+function initPouchSection() {
+  const section = document.querySelector('#freshness')
+  if (!section) return
+
+  const img = section.querySelector('.pouch-static-img')
+  const features = section.querySelectorAll('.pouch-feature-item')
+
+  const contentChildren = [
+    section.querySelector('.section-tag'),
+    section.querySelector('.story-tamil-line'),
+    section.querySelector('.section-title'),
+    section.querySelector('.pouch-lead'),
+    ...features,
+  ].filter(Boolean)
+
+  // Set initial hidden state for content children
+  gsap.set(contentChildren, { opacity: 0, x: -22 })
+
+  // Stagger content in from the left as section enters viewport
+  ScrollTrigger.create({
+    trigger: section,
+    start: 'top 72%',
+    once: true,
+    onEnter: () => {
+      gsap.to(contentChildren, {
+        opacity: 1,
+        x: 0,
+        duration: 0.72,
+        ease: 'power3.out',
+        stagger: 0.1,
+        onComplete: () => {
+          // Light up feature icons after they've slid in
+          section.querySelectorAll('.pouch-feature-icon').forEach((icon) => {
+            icon.classList.add('icon-lit')
+          })
+        },
+      })
+    },
+  })
+
+  // Pouch image: scale up from slightly small, then float
+  if (img) {
+    gsap.set(img, { opacity: 0, scale: 0.86 })
+
+    ScrollTrigger.create({
+      trigger: section,
+      start: 'top 68%',
+      once: true,
+      onEnter: () => {
+        gsap.to(img, {
+          opacity: 1,
+          scale: 1,
+          duration: 1.2,
+          ease: 'power3.out',
+          onComplete: () => {
+            // Continuous gentle float after entrance
+            gsap.to(img, {
+              y: -12,
+              duration: 2.8,
+              ease: 'sine.inOut',
+              yoyo: true,
+              repeat: -1,
+            })
+          },
+        })
+      },
+    })
   }
 }
 
