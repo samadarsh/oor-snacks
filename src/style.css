@@ -2937,6 +2937,25 @@ a.cart-trigger-btn {
   }
 }
 
+/* Mobile animation safeguards */
+@media (max-width: 768px) {
+  /* Disable continuous float on mobile — causes jank on low-end devices */
+  .pouch-static-img {
+    animation: none !important;
+    transform: none !important;
+  }
+  /* Reduce card hover lift on touch — cards don't hover on mobile anyway */
+  .product-card:hover {
+    transform: none;
+    box-shadow: none;
+  }
+  /* Ensure craft figure is always visible on mobile */
+  .craft-animate-figure {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
 /* Trust strip — hide dividers when pills wrap on mobile */
 @media (max-width: 480px) {
   .trust-pill-divider {
