@@ -198,168 +198,82 @@ export const showAddedToast = () => {
   toastTimer = setTimeout(() => el.classList.remove('visible'), 3200)
 }
 
-export const transformProductCards = () => {
-  if (typeof document === 'undefined') return
-  document.querySelectorAll('.product-card').forEach((card) => {
-    if (card.querySelector('.product-variants-container')) return
-
-    const purchaseRow = card.querySelector('.product-purchase-row')
-    if (!purchaseRow) return
-
-    const select = purchaseRow.querySelector('.weight-select')
-    if (!select) return
-
-    const id = card.getAttribute('data-id')
-    const basePrice = parseInt(card.getAttribute('data-base-price'), 10)
-
-    const variants = Array.from(select.options).map((opt) => {
-      const weight = opt.value
-      const multiplier = parseFloat(opt.getAttribute('data-multiplier') || '1')
-      const price = Math.round(basePrice * multiplier)
-      const label = opt.textContent.trim()
-      return { weight, price, label }
-    })
-
-    const container = document.createElement('div')
-    container.className = 'product-variants-container'
-
-    variants.forEach((v) => {
-      const row = document.createElement('div')
-      row.className = 'product-variant-row'
-      row.setAttribute('data-weight', v.weight)
-      row.setAttribute('data-price', v.price)
-      row.innerHTML = `
-        <span class="variant-info">${v.label}</span>
-        <div class="variant-action-wrap"></div>
-      `
-      container.appendChild(row)
-    })
-
-    purchaseRow.style.display = 'none'
-    const details = card.querySelector('.product-details')
-    if (details) {
-      details.appendChild(container)
-    }
-  })
-}
-
 export const updateProductButtons = () => {
   if (typeof document === 'undefined') return
-  
-  transformProductCards()
-
   const cart = getCart()
-
   document.querySelectorAll('.product-card').forEach((card) => {
     const id = card.getAttribute('data-id')
-    const name = card.getAttribute('data-name')
-    const basePrice = parseInt(card.getAttribute('data-base-price'), 10)
-    const img = card.querySelector('.product-img')?.getAttribute('src') || ''
+    const select = card.querySelector('.weight-select')
+    let weight = 'Pack'
+    if (select) {
+      weight = select.value
+    }
 
-    const variantRows = card.querySelectorAll('.product-variant-row')
-    
-    if (variantRows.length > 0) {
-      variantRows.forEach((row) => {
-        const weight = row.getAttribute('data-weight')
-        const price = parseInt(row.getAttribute('data-price'), 10)
-        const actionWrap = row.querySelector('.variant-action-wrap')
-        if (!actionWrap) return
+    const cartItem = cart.find((item) => item.id === id && item.weight === weight)
+    const qty = cartItem ? cartItem.qty : 0
 
-        const cartItem = cart.find((item) => item.id === id && item.weight === weight)
-        const qty = cartItem ? cartItem.qty : 0
+    const row = card.querySelector('.product-purchase-row')
+    if (!row) return
 
-        let addBtn = actionWrap.querySelector('.add-to-cart-btn')
-        let qtyCtrl = actionWrap.querySelector('.product-qty-control')
+    let addBtn = row.querySelector('.add-to-cart-btn')
+    let qtyCtrl = row.querySelector('.product-qty-control')
 
-        if (qty > 0) {
-          if (addBtn) addBtn.remove()
-          if (!qtyCtrl) {
-            qtyCtrl = document.createElement('div')
-            qtyCtrl.className = 'qty-control product-qty-control'
-            actionWrap.appendChild(qtyCtrl)
-          }
-          qtyCtrl.innerHTML = `
-            <button type="button" class="qty-btn dec-product-qty" aria-label="Decrease quantity">&minus;</button>
-            <span class="qty-number">${qty}</span>
-            <button type="button" class="qty-btn inc-product-qty" aria-label="Increase quantity">+</button>
-          `
-          qtyCtrl.querySelector('.dec-product-qty').addEventListener('click', (e) => {
-            e.stopPropagation()
-            updateQty(id, weight, -1)
-          })
-          qtyCtrl.querySelector('.inc-product-qty').addEventListener('click', (e) => {
-            e.stopPropagation()
-            addToCart(id, name, weight, price, img)
-          })
-        } else {
-          if (qtyCtrl) qtyCtrl.remove()
-          if (!addBtn) {
-            addBtn = document.createElement('button')
-            addBtn.type = 'button'
-            addBtn.className = 'btn btn-primary btn-sm add-to-cart-btn'
-            addBtn.textContent = 'Add to cart'
-            actionWrap.appendChild(addBtn)
-          }
-          const newAddBtn = addBtn.cloneNode(true)
-          addBtn.parentNode.replaceChild(newAddBtn, addBtn)
-          
-          newAddBtn.addEventListener('click', (e) => {
-            e.preventDefault()
-            addToCart(id, name, weight, price, img)
-            showAddedToast()
-          })
+    if (qty > 0) {
+      if (addBtn) addBtn.remove()
+      if (!qtyCtrl) {
+        qtyCtrl = document.createElement('div')
+        qtyCtrl.className = 'qty-control product-qty-control'
+        row.appendChild(qtyCtrl)
+      }
+      qtyCtrl.innerHTML = `
+        <button type="button" class="qty-btn dec-product-qty" aria-label="Decrease quantity">&minus;</button>
+        <span class="qty-number">${qty}</span>
+        <button type="button" class="qty-btn inc-product-qty" aria-label="Increase quantity">+</button>
+      `
+      qtyCtrl.querySelector('.dec-product-qty').addEventListener('click', (e) => {
+        e.stopPropagation()
+        updateQty(id, weight, -1)
+      })
+      qtyCtrl.querySelector('.inc-product-qty').addEventListener('click', (e) => {
+        e.stopPropagation()
+        const name = card.getAttribute('data-name')
+        const basePrice = parseInt(card.getAttribute('data-base-price'), 10)
+        const img = card.querySelector('.product-img')?.getAttribute('src') || ''
+        let price = basePrice
+        if (select) {
+          const option = select.options[select.selectedIndex]
+          const multiplier = parseFloat(option.getAttribute('data-multiplier') || '1')
+          price = Math.round(basePrice * multiplier)
         }
+        addToCart(id, name, weight, price, img)
       })
     } else {
-      const row = card.querySelector('.product-purchase-row')
-      if (!row) return
-
-      const weight = 'Pack'
-      const price = basePrice
-      const cartItem = cart.find((item) => item.id === id && item.weight === weight)
-      const qty = cartItem ? cartItem.qty : 0
-
-      let addBtn = row.querySelector('.add-to-cart-btn')
-      let qtyCtrl = row.querySelector('.product-qty-control')
-
-      if (qty > 0) {
-        if (addBtn) addBtn.remove()
-        if (!qtyCtrl) {
-          qtyCtrl = document.createElement('div')
-          qtyCtrl.className = 'qty-control product-qty-control'
-          row.appendChild(qtyCtrl)
-        }
-        qtyCtrl.innerHTML = `
-          <button type="button" class="qty-btn dec-product-qty" aria-label="Decrease quantity">&minus;</button>
-          <span class="qty-number">${qty}</span>
-          <button type="button" class="qty-btn inc-product-qty" aria-label="Increase quantity">+</button>
-        `
-        qtyCtrl.querySelector('.dec-product-qty').addEventListener('click', (e) => {
-          e.stopPropagation()
-          updateQty(id, weight, -1)
-        })
-        qtyCtrl.querySelector('.inc-product-qty').addEventListener('click', (e) => {
-          e.stopPropagation()
-          addToCart(id, name, weight, price, img)
-        })
-      } else {
-        if (qtyCtrl) qtyCtrl.remove()
-        if (!addBtn) {
-          addBtn = document.createElement('button')
-          addBtn.type = 'button'
-          addBtn.className = 'btn btn-primary btn-sm add-to-cart-btn'
-          addBtn.textContent = 'Add to cart'
-          row.appendChild(addBtn)
-        }
-        const newAddBtn = addBtn.cloneNode(true)
-        addBtn.parentNode.replaceChild(newAddBtn, addBtn)
-        
-        newAddBtn.addEventListener('click', (e) => {
-          e.preventDefault()
-          addToCart(id, name, weight, price, img)
-          showAddedToast()
-        })
+      if (qtyCtrl) qtyCtrl.remove()
+      if (!addBtn) {
+        addBtn = document.createElement('button')
+        addBtn.type = 'button'
+        addBtn.className = 'btn btn-primary btn-sm add-to-cart-btn'
+        addBtn.textContent = 'Add to cart'
+        row.appendChild(addBtn)
       }
+      
+      const newAddBtn = addBtn.cloneNode(true)
+      addBtn.parentNode.replaceChild(newAddBtn, addBtn)
+      
+      newAddBtn.addEventListener('click', (e) => {
+        e.preventDefault()
+        const name = card.getAttribute('data-name')
+        const basePrice = parseInt(card.getAttribute('data-base-price'), 10)
+        const img = card.querySelector('.product-img')?.getAttribute('src') || ''
+        let price = basePrice
+        if (select) {
+          const option = select.options[select.selectedIndex]
+          const multiplier = parseFloat(option.getAttribute('data-multiplier') || '1')
+          price = Math.round(basePrice * multiplier)
+        }
+        addToCart(id, name, weight, price, img)
+        showAddedToast()
+      })
     }
   })
 }
