@@ -181,14 +181,28 @@ export const bindCartQtyButtons = (container) => {
   })
 }
 
+let toastTimer
+export const showAddedToast = () => {
+  if (typeof document === 'undefined') return
+  let el = document.getElementById('cart-added-toast')
+  if (!el) {
+    el = document.createElement('div')
+    el.id = 'cart-added-toast'
+    el.className = 'cart-added-toast'
+    el.setAttribute('role', 'status')
+    el.innerHTML = 'Added to basket. <a href="/shop.html">View cart & checkout</a>'
+    document.body.appendChild(el)
+  }
+  el.classList.add('visible')
+  clearTimeout(toastTimer)
+  toastTimer = setTimeout(() => el.classList.remove('visible'), 3200)
+}
+
 export const updateProductButtons = () => {
   if (typeof document === 'undefined') return
   const cart = getCart()
   document.querySelectorAll('.product-card').forEach((card) => {
     const id = card.getAttribute('data-id')
-    const addBtn = card.querySelector('.add-to-cart-btn')
-    if (!addBtn) return
-
     const select = card.querySelector('.weight-select')
     let weight = 'Pack'
     if (select) {
@@ -198,10 +212,68 @@ export const updateProductButtons = () => {
     const cartItem = cart.find((item) => item.id === id && item.weight === weight)
     const qty = cartItem ? cartItem.qty : 0
 
+    const row = card.querySelector('.product-purchase-row')
+    if (!row) return
+
+    let addBtn = row.querySelector('.add-to-cart-btn')
+    let qtyCtrl = row.querySelector('.product-qty-control')
+
     if (qty > 0) {
-      addBtn.textContent = `Add to cart (+${qty})`
+      if (addBtn) addBtn.remove()
+      if (!qtyCtrl) {
+        qtyCtrl = document.createElement('div')
+        qtyCtrl.className = 'qty-control product-qty-control'
+        row.appendChild(qtyCtrl)
+      }
+      qtyCtrl.innerHTML = `
+        <button type="button" class="qty-btn dec-product-qty" aria-label="Decrease quantity">&minus;</button>
+        <span class="qty-number">${qty}</span>
+        <button type="button" class="qty-btn inc-product-qty" aria-label="Increase quantity">+</button>
+      `
+      qtyCtrl.querySelector('.dec-product-qty').addEventListener('click', (e) => {
+        e.stopPropagation()
+        updateQty(id, weight, -1)
+      })
+      qtyCtrl.querySelector('.inc-product-qty').addEventListener('click', (e) => {
+        e.stopPropagation()
+        const name = card.getAttribute('data-name')
+        const basePrice = parseInt(card.getAttribute('data-base-price'), 10)
+        const img = card.querySelector('.product-img')?.getAttribute('src') || ''
+        let price = basePrice
+        if (select) {
+          const option = select.options[select.selectedIndex]
+          const multiplier = parseFloat(option.getAttribute('data-multiplier') || '1')
+          price = Math.round(basePrice * multiplier)
+        }
+        addToCart(id, name, weight, price, img)
+      })
     } else {
-      addBtn.textContent = 'Add to cart'
+      if (qtyCtrl) qtyCtrl.remove()
+      if (!addBtn) {
+        addBtn = document.createElement('button')
+        addBtn.type = 'button'
+        addBtn.className = 'btn btn-primary btn-sm add-to-cart-btn'
+        addBtn.textContent = 'Add to cart'
+        row.appendChild(addBtn)
+      }
+      
+      const newAddBtn = addBtn.cloneNode(true)
+      addBtn.parentNode.replaceChild(newAddBtn, addBtn)
+      
+      newAddBtn.addEventListener('click', (e) => {
+        e.preventDefault()
+        const name = card.getAttribute('data-name')
+        const basePrice = parseInt(card.getAttribute('data-base-price'), 10)
+        const img = card.querySelector('.product-img')?.getAttribute('src') || ''
+        let price = basePrice
+        if (select) {
+          const option = select.options[select.selectedIndex]
+          const multiplier = parseFloat(option.getAttribute('data-multiplier') || '1')
+          price = Math.round(basePrice * multiplier)
+        }
+        addToCart(id, name, weight, price, img)
+        showAddedToast()
+      })
     }
   })
 }
