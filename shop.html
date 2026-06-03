@@ -19,7 +19,7 @@
           <span class="logo">OOR</span>
           <span class="logo-sub">பாரம்பரிய சுவை</span>
         </a>
-        <nav class="nav-menu" role="navigation" aria-label="Main">
+        <nav id="main-nav" class="nav-menu" role="navigation" aria-label="Main">
           <ul>
             <li><a href="/" class="nav-link">Home</a></li>
             <li><a href="/#origin" class="nav-link">Story</a></li>
@@ -39,7 +39,7 @@
             <span class="cart-count-badge" id="cart-badge-count">0</span>
           </a>
         </div>
-        <button class="mobile-nav-toggle" aria-controls="navbar" aria-expanded="false" aria-label="Toggle menu">
+        <button class="mobile-nav-toggle" aria-controls="main-nav" aria-expanded="false" aria-label="Toggle menu">
           <span class="bar"></span>
           <span class="bar"></span>
         </button>
@@ -102,9 +102,13 @@
         </section>
       </div>
 
-      <section class="reviews-section reviews-section--compact" aria-label="Reviews">
+      <section class="reviews-section reviews-section--compact" aria-labelledby="checkout-reviews-heading">
         <div class="section-container">
-          <div class="reviews-grid">
+          <div class="reviews-header text-center scroll-reveal" style="margin-bottom: var(--space-md)">
+            <p class="section-tag">From our customers</p>
+            <h2 id="checkout-reviews-heading" class="section-title" style="font-size: clamp(22px, 3vw, 32px)">What people say</h2>
+          </div>
+          <div class="reviews-grid" style="margin-top: 0">
             <div class="review-card scroll-reveal">
               <p class="review-text">&ldquo;The murukku tastes exactly like my grandmother's in Tanjore — perfect crunch and fresh oil.&rdquo;</p>
               <cite class="review-author">— Karthik S., Bengaluru</cite>

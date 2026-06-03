@@ -23,7 +23,7 @@
           <span class="logo">OOR</span>
           <span class="logo-sub">பாரம்பரிய சுவை</span>
         </a>
-        <nav class="nav-menu" role="navigation" aria-label="Main">
+        <nav id="main-nav" class="nav-menu" role="navigation" aria-label="Main">
           <ul>
             <li><a href="/" class="nav-link">Home</a></li>
             <li><a href="/#origin" class="nav-link">Story</a></li>
@@ -43,7 +43,7 @@
             <span class="cart-count-badge" id="cart-badge-count">0</span>
           </a>
         </div>
-        <button class="mobile-nav-toggle" aria-controls="navbar" aria-expanded="false" aria-label="Toggle menu">
+        <button class="mobile-nav-toggle" aria-controls="main-nav" aria-expanded="false" aria-label="Toggle menu">
           <span class="bar"></span>
           <span class="bar"></span>
         </button>
@@ -312,8 +312,8 @@
             <h2 class="section-title">Clean. Authentic. Fresh.</h2>
           </div>
           <div class="why-grid">
-            <div class="why-card scroll-reveal">
-              <div class="why-icon">
+            <article class="why-card scroll-reveal">
+              <div class="why-icon" aria-hidden="true">
                 <svg class="icon-svg icon-svg--lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M12 22a7 7 0 0 0 7-7c0-4.3-7-11-7-11S5 10.7 5 15a7 7 0 0 0 7 7z"></path>
                   <path d="M12 15a3 3 0 0 0 3-3"></path>
@@ -321,9 +321,9 @@
               </div>
               <h3>Cold-pressed oils</h3>
               <p>Groundnut and coconut oil only — no palm oil, no reheating cycles.</p>
-            </div>
-            <div class="why-card scroll-reveal">
-              <div class="why-icon">
+            </article>
+            <article class="why-card scroll-reveal">
+              <div class="why-icon" aria-hidden="true">
                 <svg class="icon-svg icon-svg--lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M12 2v20"></path>
                   <path d="M12 6c3-1.5 5.5-1 7 1-1.5 3-4.5 4-7 2"></path>
@@ -334,9 +334,9 @@
               </div>
               <h3>Stone-ground flour</h3>
               <p>Ponni rice and urad dal milled for the right dough and crunch.</p>
-            </div>
-            <div class="why-card scroll-reveal">
-              <div class="why-icon">
+            </article>
+            <article class="why-card scroll-reveal">
+              <div class="why-icon" aria-hidden="true">
                 <svg class="icon-svg icon-svg--lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 3.5 1 9.8a7 7 0 0 1-9 8.2z"></path>
                   <path d="M9 22v-4h4"></path>
@@ -344,7 +344,7 @@
               </div>
               <h3>Small batches</h3>
               <p>No artificial preservatives — packed daily in aroma-lock pouches.</p>
-            </div>
+            </article>
           </div>
         </div>
       </section>

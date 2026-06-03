@@ -143,6 +143,35 @@ button, input, select {
   outline: none;
 }
 
+/* Restore focus rings removed by the reset above */
+.btn:focus-visible,
+.cart-trigger-btn:focus-visible,
+.mobile-nav-toggle:focus-visible,
+.page-intro-jump-link:focus-visible,
+.products-view-all:focus-visible,
+.foh-delete-btn:focus-visible {
+  outline: 2px solid var(--accent-maroon);
+  outline-offset: 2px;
+}
+
+.weight-select:focus-visible {
+  outline: 2px solid var(--accent-maroon);
+  outline-offset: 2px;
+  border-color: var(--accent-maroon);
+}
+
+.qty-btn:focus-visible {
+  outline: 2px solid var(--accent-maroon);
+  outline-offset: -2px;
+}
+
+.cart-drawer-close:focus-visible,
+.foh-portal-close:focus-visible {
+  outline: 2px solid var(--accent-maroon);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
 /* Custom premium inline SVGs */
 .icon-svg {
   display: inline-block;
@@ -372,6 +401,12 @@ body.page-hero:not(.nav-open) .main-header:not(.scrolled) .bar {
 
 .nav-link:hover {
   color: var(--accent-maroon);
+}
+
+.nav-link[aria-current="page"] {
+  color: var(--accent-maroon);
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 7px;
 }
 
 /* Basket Trigger */
@@ -1204,7 +1239,7 @@ a.cart-trigger-btn {
 .product-card {
   background-color: var(--bg-primary);
   border: 1px solid var(--border-color);
-  border-radius: var(--radius-lg, 16px);
+  border-radius: var(--radius-lg);
   overflow: hidden;
   transition: transform var(--transition-medium), box-shadow var(--transition-medium), border-color var(--transition-medium);
   display: flex;
@@ -2354,7 +2389,7 @@ a.cart-trigger-btn {
 }
 
 .btn-subtext {
-  font-size: 9px;
+  font-size: 11px;
   font-weight: 500;
   opacity: 0.8;
   letter-spacing: 0.05em;
@@ -2719,7 +2754,7 @@ a.cart-trigger-btn {
 
 .shipping-banner-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: var(--space-md);
 }
 
