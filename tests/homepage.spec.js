@@ -31,8 +31,39 @@ test.describe('Homepage', () => {
   test('hero section is visible with image', async ({ page }) => {
     const hero = page.locator('.hero-section')
     await expect(hero).toBeVisible()
-    const heroImg = page.locator('.hero-bg-image')
-    await expect(heroImg).toBeVisible()
+    const hasScrub = await page.locator('html.hero-scrub-active').count()
+    const heroVisual = hasScrub
+      ? page.locator('.hero-scrub-video')
+      : page.locator('.hero-bg-image')
+    await expect(heroVisual).toBeVisible()
+  })
+
+  test('hero scrub video is active and uses the responsive source', async ({ page }) => {
+    await page.waitForFunction(() => document.documentElement.classList.contains('hero-scrub-active'))
+
+    const video = page.locator('.hero-scrub-video')
+    await expect(video).toBeVisible()
+
+    const currentSrc = await video.evaluate((el) => el.currentSrc || el.getAttribute('src') || '')
+    const isMobile = (page.viewportSize()?.width ?? 1280) <= 768
+    expect(currentSrc).toContain(isMobile ? 'hero_halwa_scrub_720.mp4' : 'hero_halwa_scrub.mp4')
+  })
+
+  test('hero scrub video advances with scroll', async ({ page }) => {
+    await page.waitForFunction(() => document.documentElement.classList.contains('hero-scrub-active'))
+    await page.waitForFunction(() => {
+      const video = document.querySelector('.hero-scrub-video')
+      return video && Number.isFinite(video.duration) && video.duration > 0 && video.readyState >= 1
+    })
+
+    const video = page.locator('.hero-scrub-video')
+    const before = await video.evaluate((el) => el.currentTime)
+
+    await page.evaluate(() => window.scrollTo(0, window.innerHeight * 1.5))
+    await page.waitForTimeout(1200)
+
+    const after = await video.evaluate((el) => el.currentTime)
+    expect(after).toBeGreaterThan(before + 0.05)
   })
 
   test('hero has CTA button linking to products', async ({ page }) => {

@@ -15,7 +15,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Catamaran:wght@400;500;700&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet" />
-    <link rel="preload" href="/images/hero_collection-960w.jpg" as="image" fetchpriority="high" />
+    <link rel="preload" href="/images/hero_halwa_poster-960w.jpg" as="image" fetchpriority="high" />
     <script type="application/ld+json">
       {"@context":"https://schema.org","@type":"FoodBusiness","name":"Oor Snacks","image":"https://oorsnacks.com/og-image.webp","description":"Handcrafted Tamil Nadu snacks from Chennai.","telephone":"+91-91766-61912","address":{"@type":"PostalAddress","streetAddress":"45 Temple Road, Mylapore","addressLocality":"Chennai","addressRegion":"TN","postalCode":"600004","addressCountry":"IN"}}
     </script>
@@ -57,7 +57,18 @@
     <main id="main-content" class="hero-page-main">
       <section class="hero-section hero-section--full" id="hero" aria-label="Welcome to Oor Snacks">
         <div class="hero-bg-container">
-          <img data-responsive="hero_collection" data-ext="jpg" data-sizes="100vw" alt="Traditional Tamil Nadu snacks and sweets" class="hero-bg-image" fetchpriority="high" decoding="async" />
+          <video
+            class="hero-scrub-video"
+            data-desktop-src="/videos/hero_halwa_scrub.mp4"
+            data-mobile-src="/videos/hero_halwa_scrub_720.mp4"
+            poster="/images/hero_halwa_poster-960w.jpg"
+            muted
+            playsinline
+            webkit-playsinline
+            preload="none"
+            aria-hidden="true"
+          ></video>
+          <img data-responsive="hero_halwa_poster" data-ext="jpg" data-sizes="100vw" alt="Handmade Tamil Nadu snacks and sweets from Chennai" class="hero-bg-image hero-bg-fallback" decoding="async" />
           <div class="hero-overlay"></div>
           <div class="hero-vignette"></div>
         </div>
