@@ -3,7 +3,6 @@ import { isIgnorableConsoleError, waitForBodyClass } from './helpers.js'
 
 test.describe('Homepage', () => {
   test.beforeEach(async ({ page }) => {
-    await page.addInitScript(() => localStorage.removeItem('oor-hero-intro-seen'))
     await page.goto('/')
     await waitForBodyClass(page, 'page-hero')
     await page.waitForLoadState('networkidle')
@@ -29,20 +28,20 @@ test.describe('Homepage', () => {
     await expect(badge).toHaveText('0')
   })
 
-  test('hero section is visible with intro video', async ({ page }) => {
+  test('hero section is visible with scrub video', async ({ page }) => {
     const hero = page.locator('.hero-section')
     await expect(hero).toBeVisible()
-    const hasIntro = await page.locator('html.hero-intro-active').count()
-    const heroVisual = hasIntro
-      ? page.locator('.hero-intro-video')
+    const hasScrub = await page.locator('html.hero-scrub-active').count()
+    const heroVisual = hasScrub
+      ? page.locator('.hero-scrub-video')
       : page.locator('.hero-bg-image')
     await expect(heroVisual).toBeVisible()
   })
 
-  test('hero intro video uses the responsive source', async ({ page }) => {
-    await page.waitForFunction(() => document.documentElement.classList.contains('hero-intro-active'))
+  test('hero scrub video uses the responsive source', async ({ page }) => {
+    await page.waitForFunction(() => document.documentElement.classList.contains('hero-scrub-active'))
 
-    const video = page.locator('.hero-intro-video')
+    const video = page.locator('.hero-scrub-video')
     await expect(video).toBeVisible()
 
     const currentSrc = await video.evaluate((el) => el.currentSrc || el.getAttribute('src') || '')
@@ -50,21 +49,24 @@ test.describe('Homepage', () => {
     expect(currentSrc).toContain(isMobile ? 'hero_halwa_scrub_portrait.mp4' : 'hero_halwa_scrub.mp4')
   })
 
-  test('hero intro completes and reveals content', async ({ page }) => {
-    await page.waitForFunction(() => document.documentElement.classList.contains('hero-intro-active'))
-    await page.waitForFunction(
-      () => document.documentElement.classList.contains('hero-intro-complete'),
-      null,
-      { timeout: 15_000 }
-    )
+  test('hero scrub video advances with scroll', async ({ page }) => {
+    await page.waitForFunction(() => document.documentElement.classList.contains('hero-scrub-active'))
+    await page.waitForFunction(() => {
+      const video = document.querySelector('.hero-scrub-video')
+      return video && Number.isFinite(video.duration) && video.duration > 0 && video.readyState >= 1
+    })
 
-    await expect(page.locator('.hero-brand-title')).toBeVisible()
-    await expect(page.locator('.hero-ctas a').first()).toBeVisible()
+    const video = page.locator('.hero-scrub-video')
+    const before = await video.evaluate((el) => el.currentTime)
+
+    await page.evaluate(() => window.scrollTo(0, window.innerHeight * 1.5))
+    await page.waitForTimeout(1200)
+
+    const after = await video.evaluate((el) => el.currentTime)
+    expect(after).toBeGreaterThan(before + 0.05)
   })
 
   test('hero has CTA button linking to products', async ({ page }) => {
-    await page.waitForFunction(() => document.documentElement.classList.contains('hero-intro-complete'), null, { timeout: 15_000 })
-
     const cta = page.locator('.hero-ctas a').first()
     await expect(cta).toBeVisible()
     const href = await cta.getAttribute('href')
@@ -72,8 +74,6 @@ test.describe('Homepage', () => {
   })
 
   test('Story / origin section is reachable via anchor', async ({ page }) => {
-    await page.waitForFunction(() => document.documentElement.classList.contains('hero-intro-complete'), null, { timeout: 15_000 })
-
     const isMobile = (page.viewportSize()?.width ?? 1280) < 768
     if (isMobile) {
       await page.locator('.mobile-nav-toggle').click()
@@ -118,8 +118,6 @@ test.describe('Homepage', () => {
   })
 
   test('WhatsApp CTA is in hero', async ({ page }) => {
-    await page.waitForFunction(() => document.documentElement.classList.contains('hero-intro-complete'), null, { timeout: 15_000 })
-
     const waBtn = page.locator('.hero-ctas a[href*="whatsapp"]')
     await expect(waBtn).toBeVisible()
     await expect(waBtn).toHaveClass(/btn-whatsapp/)

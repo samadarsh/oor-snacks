@@ -9,8 +9,6 @@ import { initScrollReveals } from './shared/motion.js'
 import { onCartChange, syncCartBadge, updateProductButtons } from './cart.js'
 import { initResponsiveImages } from './shared/responsive-img.js'
 
-const HERO_INTRO_KEY = 'oor-hero-intro-seen'
-
 document.body.classList.add('page-hero')
 initSiteNav()
 syncCartBadge()
@@ -19,8 +17,6 @@ initHomepageCart()
 updateProductButtons()
 
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-const mobileMq = window.matchMedia('(max-width: 768px)')
-const canHeroIntro = !prefersReducedMotion
 let lenis = null
 
 const scrollToSection = (selector) => {
@@ -44,13 +40,16 @@ document.querySelectorAll('.nav-anchor').forEach((link) => {
   })
 })
 
+const mobileScrubMq = window.matchMedia('(max-width: 768px)')
+const canHeroScrub = !prefersReducedMotion
+
 if (!prefersReducedMotion) {
   document.documentElement.classList.add('motion-enhanced')
 
   lenis = new Lenis({
     duration: 1.05,
     smoothWheel: true,
-    smoothTouch: mobileMq.matches,
+    smoothTouch: mobileScrubMq.matches,
   })
 
   gsap.ticker.add((time) => {
@@ -79,10 +78,18 @@ if (!prefersReducedMotion) {
   ScrollTrigger.addEventListener('refresh', () => lenis.resize())
 
   window.addEventListener('load', () => {
-    if (canHeroIntro) {
-      initHeroIntroVideo()
-    } else {
-      revealHeroContentStatic()
+    const heroVisual = canHeroScrub ? '.hero-scrub-video' : '.hero-bg-image'
+
+    gsap.timeline({ defaults: { ease: 'power3.out' } })
+      .from(heroVisual, { scale: 1.06, opacity: 0, duration: 1.4 })
+      .from('.hero-pretitle',    { opacity: 0, y: 8,  duration: 0.65 }, '-=0.9')
+      .from('.hero-brand-title', { opacity: 0, y: 28, duration: 0.85 }, '-=0.5')
+      .from('.hero-tagline',     { opacity: 0, y: 18, duration: 0.75 }, '-=0.55')
+      .from('.hero-subtitle',    { opacity: 0, y: 12, duration: 0.65 }, '-=0.45')
+      .from('.hero-ctas',        { opacity: 0, y: 8,  duration: 0.55 }, '-=0.35')
+
+    if (canHeroScrub) {
+      initHeroScrollScrub()
     }
   })
 
@@ -97,128 +104,157 @@ if (!prefersReducedMotion) {
   })
 }
 
-const heroRevealTargets = [
-  '.hero-pretitle',
-  '.hero-brand-title',
-  '.hero-tagline',
-  '.hero-subtitle',
-  '.hero-ctas',
-  '.scroll-indicator',
-]
+/** Pin hero and scrub halwa video to scroll position on motion-capable devices. */
+function initHeroScrollScrub() {
+  const hero = document.querySelector('#hero')
+  const video = document.querySelector('.hero-scrub-video')
+  if (!hero || !video) return
 
-function revealHeroContentAnimated() {
-  document.documentElement.classList.remove('hero-intro-playing')
-  document.documentElement.classList.add('hero-intro-complete')
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent)
+  let heroScrubTrigger = null
+  let seekThreshold = mobileScrubMq.matches ? 0.06 : 0.034
+  let pendingProgress = 0
+  let seekScheduled = false
 
-  gsap.timeline({ defaults: { ease: 'power3.out' } })
-    .to('.hero-pretitle',    { opacity: 1, y: 0, duration: 0.65 })
-    .to('.hero-brand-title', { opacity: 1, y: 0, duration: 0.85 }, '-=0.45')
-    .to('.hero-tagline',     { opacity: 1, y: 0, duration: 0.75 }, '-=0.55')
-    .to('.hero-subtitle',    { opacity: 1, y: 0, duration: 0.65 }, '-=0.45')
-    .to('.hero-ctas',        { opacity: 1, y: 0, duration: 0.55 }, '-=0.35')
-    .to('.scroll-indicator', { opacity: 0.85, duration: 0.5 }, '-=0.2')
-}
+  const getScrubSettings = () => {
+    const isMobile = mobileScrubMq.matches
+    return {
+      isMobile,
+      pinEnd: isMobile ? '+=200%' : '+=300%',
+      scrub: isMobile ? 0.8 : true,
+      seekThreshold: isMobile ? 0.06 : 0.034,
+      src: isMobile
+        ? video.dataset.mobileSrc || video.dataset.desktopSrc
+        : video.dataset.desktopSrc || video.dataset.mobileSrc,
+      poster: isMobile
+        ? video.dataset.mobilePoster || video.getAttribute('poster')
+        : video.getAttribute('poster'),
+      readyState: isIOS ? 3 : 2,
+      readyEvent: isIOS ? 'canplay' : 'loadeddata',
+    }
+  }
 
-function revealHeroContentStatic() {
-  document.documentElement.classList.add('hero-intro-complete')
-  gsap.set(heroRevealTargets, { opacity: 1, y: 0 })
-  gsap.set('.scroll-indicator', { opacity: 0.85 })
-}
-
-function hideHeroContentForIntro() {
-  gsap.set(heroRevealTargets, { opacity: 0, y: 18 })
-}
-
-/** Autoplay halwa intro on first visit; final frame becomes the hero background. */
-function initHeroIntroVideo() {
-  const video = document.querySelector('.hero-intro-video')
-  if (!video) return
-
-  const isMobile = mobileMq.matches
-  const src = isMobile
-    ? video.dataset.mobileSrc || video.dataset.desktopSrc
-    : video.dataset.desktopSrc || video.dataset.mobileSrc
-  const poster = isMobile
-    ? video.dataset.mobilePoster || video.getAttribute('poster')
-    : video.getAttribute('poster')
-  const hasSeenIntro = localStorage.getItem(HERO_INTRO_KEY) === '1'
-
-  const settleOnFinalFrame = () => {
+  const seekToProgress = (progress) => {
     const duration = video.duration
-    if (duration && Number.isFinite(duration)) {
-      video.currentTime = Math.max(0, duration - 0.05)
+    if (!duration || !Number.isFinite(duration)) return
+    const targetTime = progress * duration
+    if (Math.abs(video.currentTime - targetTime) > seekThreshold) {
+      video.currentTime = targetTime
+      video.pause()
     }
+  }
+
+  const scheduleSeek = (progress) => {
+    pendingProgress = progress
+    if (seekScheduled) return
+
+    seekScheduled = true
+    requestAnimationFrame(() => {
+      seekToProgress(pendingProgress)
+      seekScheduled = false
+    })
+  }
+
+  const killHeroScrub = () => {
+    if (heroScrubTrigger) {
+      heroScrubTrigger.kill()
+      heroScrubTrigger = null
+    }
+  }
+
+  const disableScrub = () => {
+    killHeroScrub()
+    document.documentElement.classList.remove('hero-scrub-active')
+    ScrollTrigger.refresh()
+  }
+
+  const enableScrub = () => {
+    if (heroScrubTrigger) return
+
+    const settings = getScrubSettings()
+    seekThreshold = settings.seekThreshold
     video.pause()
+    seekToProgress(0)
+
+    heroScrubTrigger = ScrollTrigger.create({
+      trigger: hero,
+      start: 'top top',
+      end: settings.pinEnd,
+      pin: true,
+      pinSpacing: true,
+      scrub: settings.scrub,
+      invalidateOnRefresh: true,
+      onUpdate: (self) => scheduleSeek(self.progress),
+    })
+
+    ScrollTrigger.refresh()
   }
 
-  const finishIntro = () => {
-    settleOnFinalFrame()
-    localStorage.setItem(HERO_INTRO_KEY, '1')
-    revealHeroContentAnimated()
-  }
+  const loadVideoForViewport = () => {
+    const settings = getScrubSettings()
+    seekThreshold = settings.seekThreshold
 
-  const showFinalHero = () => {
-    settleOnFinalFrame()
-    document.documentElement.classList.add('hero-intro-complete')
-    revealHeroContentStatic()
-  }
-
-  const failIntro = () => {
-    document.documentElement.classList.remove('hero-intro-active', 'hero-intro-playing')
-    revealHeroContentStatic()
-  }
-
-  if (!src) {
-    failIntro()
-    return
-  }
-
-  if (video.getAttribute('src') !== src) {
-    video.setAttribute('src', src)
-  }
-  if (poster && video.getAttribute('poster') !== poster) {
-    video.setAttribute('poster', poster)
-  }
-
-  document.documentElement.classList.add('hero-intro-active')
-  video.preload = 'auto'
-  video.load()
-
-  const playIntro = async () => {
-    if (hasSeenIntro) {
-      showFinalHero()
+    if (!settings.src) {
+      disableScrub()
       return
     }
 
-    hideHeroContentForIntro()
-    document.documentElement.classList.add('hero-intro-playing')
-
-    try {
-      video.currentTime = 0
-      await video.play()
-    } catch {
-      finishIntro()
-      return
+    if (video.getAttribute('src') !== settings.src) {
+      video.setAttribute('src', settings.src)
     }
 
-    video.addEventListener('ended', finishIntro, { once: true })
-  }
-
-  const onReady = () => {
-    if (video.readyState >= 3) {
-      playIntro()
-      return
+    if (settings.poster && video.getAttribute('poster') !== settings.poster) {
+      video.setAttribute('poster', settings.poster)
     }
-    video.addEventListener('canplay', () => playIntro(), { once: true })
+
+    document.documentElement.classList.add('hero-scrub-active')
+    video.preload = 'auto'
+    video.load()
+
+    if (video.readyState >= 1) {
+      onVideoReady()
+    } else {
+      video.addEventListener('loadedmetadata', onVideoReady, { once: true })
+    }
   }
 
-  video.addEventListener('error', failIntro, { once: true })
+  const onVideoReady = () => {
+    const settings = getScrubSettings()
+    seekThreshold = settings.seekThreshold
 
-  if (video.readyState >= 1) {
-    onReady()
-  } else {
-    video.addEventListener('loadedmetadata', onReady, { once: true })
+    if (video.readyState >= settings.readyState) {
+      enableScrub()
+    } else {
+      video.addEventListener(settings.readyEvent, enableScrub, { once: true })
+    }
   }
+
+  loadVideoForViewport()
+
+  video.addEventListener('error', () => {
+    disableScrub()
+  })
+
+  let resizeTimer
+  let wasMobile = mobileScrubMq.matches
+  const refreshHeroScrub = () => {
+    clearTimeout(resizeTimer)
+    resizeTimer = setTimeout(() => {
+      const isMobile = mobileScrubMq.matches
+
+      if (isMobile !== wasMobile) {
+        wasMobile = isMobile
+        killHeroScrub()
+        loadVideoForViewport()
+        return
+      }
+
+      ScrollTrigger.refresh()
+    }, 180)
+  }
+
+  window.addEventListener('resize', refreshHeroScrub, { passive: true })
+  window.addEventListener('orientationchange', refreshHeroScrub, { passive: true })
 }
 
 /** Play grandma murukku clip only while the craft block is on screen. */
@@ -312,8 +348,10 @@ function initPouchSection() {
     ...features,
   ].filter(Boolean)
 
+  // Set initial hidden state for content children
   gsap.set(contentChildren, { opacity: 0, x: -22 })
 
+  // Stagger content in from the left as section enters viewport
   ScrollTrigger.create({
     trigger: section,
     start: 'top 72%',
@@ -326,6 +364,7 @@ function initPouchSection() {
         ease: 'power3.out',
         stagger: 0.1,
         onComplete: () => {
+          // Light up feature icons after they've slid in
           section.querySelectorAll('.pouch-feature-icon').forEach((icon) => {
             icon.classList.add('icon-lit')
           })
@@ -334,6 +373,7 @@ function initPouchSection() {
     },
   })
 
+  // Pouch image: scale up from slightly small, then float
   if (img) {
     gsap.set(img, { opacity: 0, scale: 0.86 })
 
@@ -348,6 +388,7 @@ function initPouchSection() {
           duration: 1.2,
           ease: 'power3.out',
           onComplete: () => {
+            // Continuous gentle float after entrance
             gsap.to(img, {
               y: -12,
               duration: 2.8,

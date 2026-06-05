@@ -763,11 +763,6 @@ a.cart-trigger-btn {
   flex-wrap: wrap;
 }
 
-.scroll-indicator {
-  text-decoration: none;
-  color: inherit;
-}
-
 .catalog-main,
 .shop-page {
   padding-top: 88px;
@@ -995,7 +990,7 @@ a.cart-trigger-btn {
   z-index: 1;
 }
 
-.hero-intro-video {
+.hero-scrub-video {
   display: none;
   width: 100%;
   height: 100%;
@@ -1013,25 +1008,13 @@ a.cart-trigger-btn {
   will-change: transform;
 }
 
-/* Intro video replaces static fallback whenever motion is allowed */
-html.motion-enhanced.hero-intro-active .hero-intro-video {
+/* Scroll-scrub: video replaces static fallback whenever motion is allowed */
+html.motion-enhanced.hero-scrub-active .hero-scrub-video {
   display: block;
 }
 
-html.motion-enhanced.hero-intro-active .hero-bg-fallback {
+html.motion-enhanced.hero-scrub-active .hero-bg-fallback {
   display: none;
-}
-
-html.motion-enhanced.hero-intro-active:not(.hero-intro-complete) .hero-content,
-html.motion-enhanced.hero-intro-active:not(.hero-intro-complete) .scroll-indicator {
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-}
-
-html.hero-intro-playing .hero-content,
-html.hero-intro-playing .scroll-indicator {
-  pointer-events: none;
 }
 
 /* -------------------------------------------------------------
@@ -1217,50 +1200,6 @@ html.hero-intro-playing .scroll-indicator {
   background-color: rgba(166, 43, 43, 0.14);
   border-color: var(--accent-red-hover);
   color: #fff;
-}
-
-.scroll-indicator {
-  position: absolute;
-  bottom: var(--space-md);
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  color: #f6efe7;
-  font-size: 10px;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  opacity: 0.85;
-}
-
-.scroll-dot {
-  display: none;
-}
-
-.scroll-chevron {
-  display: block;
-  width: 22px;
-  height: 22px;
-  stroke: var(--accent-gold);
-  fill: none;
-  stroke-width: 2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  animation: chevronBounce 2s infinite ease-in-out;
-}
-
-@keyframes chevronBounce {
-  0%, 100% { transform: translateY(0);   opacity: 0.6; }
-  50%       { transform: translateY(6px); opacity: 1;   }
-}
-
-@keyframes scrollDown {
-  0% { transform: translateY(0); opacity: 0; }
-  50% { opacity: 1; }
-  100% { transform: translateY(10px); opacity: 0; }
 }
 
 /* -------------------------------------------------------------
@@ -2909,7 +2848,7 @@ html.hero-intro-playing .scroll-indicator {
   }
 
   /* 9:16 portrait video — less aggressive crop than 16:9 in a tall viewport */
-  .hero-intro-video {
+  .hero-scrub-video {
     object-fit: cover;
     object-position: center center;
     transform: scale(1);
@@ -3076,9 +3015,5 @@ html.hero-intro-playing .scroll-indicator {
   .scroll-reveal {
     transform: none !important;
     opacity: 1 !important;
-  }
-  
-  .scroll-dot {
-    animation: none;
   }
 }
