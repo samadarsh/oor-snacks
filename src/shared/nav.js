@@ -1,17 +1,19 @@
+import { gsap } from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+gsap.registerPlugin(ScrollTrigger)
+
 /** Shared header: scroll state + mobile menu (real page links, no hash scroll). */
 export function initSiteNav() {
   const navbar = document.getElementById('navbar')
   const mobileToggle = document.querySelector('.mobile-nav-toggle')
   const navMenu = document.querySelector('.nav-menu')
 
-  const checkNavbarScroll = () => {
-    if (!navbar) return
-    if (window.scrollY > 50) navbar.classList.add('scrolled')
-    else navbar.classList.remove('scrolled')
-  }
+  const isHeroPage = document.body.classList.contains('page-hero')
 
-  window.addEventListener('scroll', checkNavbarScroll, { passive: true })
-  checkNavbarScroll()
+  if (!isHeroPage) {
+    initDefaultNavScroll(navbar)
+  }
 
   if (!mobileToggle || !navMenu) return
 
@@ -33,4 +35,44 @@ export function initSiteNav() {
       }
     })
   })
+}
+
+/** Homepage: keep hero nav styling for the full pinned hero scroll sequence. */
+export function initHeroPageNavScroll() {
+  const navbar = document.getElementById('navbar')
+  const hero = document.querySelector('#hero')
+  if (!navbar || !document.body.classList.contains('page-hero') || !hero) return
+
+  const setScrolled = (scrolled) => {
+    navbar.classList.toggle('scrolled', scrolled)
+  }
+
+  setScrolled(false)
+
+  const hasMotionScrub = document.documentElement.classList.contains('motion-enhanced')
+  const isMobile = window.matchMedia('(max-width: 768px)').matches
+
+  ScrollTrigger.create({
+    id: 'hero-nav',
+    trigger: hero,
+    start: 'top top',
+    end: hasMotionScrub ? (isMobile ? '+=200%' : '+=300%') : 'bottom top',
+    onLeave: () => setScrolled(true),
+    onEnterBack: () => setScrolled(false),
+  })
+}
+
+function initDefaultNavScroll(navbar) {
+  if (!navbar) return
+
+  const setScrolled = (scrolled) => {
+    navbar.classList.toggle('scrolled', scrolled)
+  }
+
+  const checkNavbarScroll = () => {
+    setScrolled(window.scrollY > 50)
+  }
+
+  window.addEventListener('scroll', checkNavbarScroll, { passive: true })
+  checkNavbarScroll()
 }

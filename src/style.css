@@ -314,7 +314,10 @@ button, input, select {
   width: 100%;
   height: var(--header-height);
   z-index: 1000;
-  transition: background-color var(--transition-fast), border-color var(--transition-fast);
+  transition:
+    background-color var(--transition-medium),
+    border-color var(--transition-medium),
+    backdrop-filter var(--transition-medium);
   border-bottom: 1px solid transparent;
 }
 

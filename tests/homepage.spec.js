@@ -49,6 +49,20 @@ test.describe('Homepage', () => {
     expect(currentSrc).toContain(isMobile ? 'hero_halwa_scrub_portrait.mp4' : 'hero_halwa_scrub.mp4')
   })
 
+  test('navbar stays in hero style until trust strip', async ({ page }) => {
+    await page.waitForFunction(() => document.documentElement.classList.contains('hero-scrub-active'))
+
+    const navbar = page.locator('#navbar')
+
+    await page.evaluate(() => window.scrollTo(0, window.innerHeight * 1.5))
+    await page.waitForTimeout(800)
+    await expect(navbar).not.toHaveClass(/scrolled/)
+
+    await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight))
+    await page.waitForTimeout(800)
+    await expect(navbar).toHaveClass(/scrolled/)
+  })
+
   test('hero scrub video advances with scroll', async ({ page }) => {
     await page.waitForFunction(() => document.documentElement.classList.contains('hero-scrub-active'))
     await page.waitForFunction(() => {

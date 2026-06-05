@@ -4,7 +4,7 @@ import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 gsap.registerPlugin(ScrollTrigger)
-import { initSiteNav } from './shared/nav.js'
+import { initSiteNav, initHeroPageNavScroll } from './shared/nav.js'
 import { initScrollReveals } from './shared/motion.js'
 import { onCartChange, syncCartBadge, updateProductButtons } from './cart.js'
 import { initResponsiveImages } from './shared/responsive-img.js'
@@ -91,6 +91,8 @@ if (!prefersReducedMotion) {
     if (canHeroScrub) {
       initHeroScrollScrub()
     }
+
+    initHeroPageNavScroll()
   })
 
   initScrollReveals()
@@ -101,6 +103,10 @@ if (!prefersReducedMotion) {
   document.querySelectorAll('.scroll-reveal').forEach((el) => {
     el.style.opacity = '1'
     el.style.transform = 'none'
+  })
+
+  window.addEventListener('load', () => {
+    initHeroPageNavScroll()
   })
 }
 
