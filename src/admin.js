@@ -158,6 +158,25 @@ function renderOrders(orders) {
   })
 }
 
+/** RLS hides orders from accounts not in admin_users; say so instead of showing an empty list. */
+async function checkStaffAccess() {
+  const { data: isAdmin, error } = await supabase.rpc('is_admin')
+  if (error) {
+    return {
+      ok: false,
+      message: `Could not verify staff access (${error.message}). Run supabase/fix-rls.sql in the Supabase SQL Editor.`,
+    }
+  }
+  if (!isAdmin) {
+    return {
+      ok: false,
+      message:
+        'This account is not on the staff list. Add it to admin_users in Supabase (see SUPABASE_SETUP.md, Step 2), then refresh.',
+    }
+  }
+  return { ok: true }
+}
+
 async function loadOrders({ quiet = false } = {}) {
   if (!supabase) return
   if (isLoadingOrders) return
@@ -185,6 +204,14 @@ async function loadOrders({ quiet = false } = {}) {
   }
 
   try {
+    const access = await checkStaffAccess()
+    if (!access.ok) {
+      orderCount.textContent = 'No access'
+      ordersList.innerHTML = `<p class="admin-error">${escapeHtml(access.message)}</p>`
+      emptyState.hidden = true
+      return
+    }
+
     const result = await fetchOrdersWithItems()
 
     if (result.error) {

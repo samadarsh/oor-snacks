@@ -18,6 +18,18 @@ You created a Supabase project — follow these steps in order.
 
 If you already created a user without Auto Confirm: open that user in the dashboard and confirm them, or delete and recreate with Auto Confirm on.
 
+5. **Add the user to the staff list.** Only accounts in `admin_users` can see orders — being signed in is not enough. In **SQL Editor**, run (with your email):
+
+   ```sql
+   insert into public.admin_users (user_id)
+     select id from auth.users where email = 'you@example.com'
+     on conflict do nothing;
+   ```
+
+6. **Turn off public sign-ups.** Go to **Authentication** → **Sign In / Providers** and disable **Allow new users to sign up**. Staff accounts are created from the dashboard (step 1), so nobody needs to sign up from the site.
+
+**Upgrading an existing project?** Run [`supabase/fix-rls.sql`](./supabase/fix-rls.sql) once (it creates `admin_users` and tightens the order policies), then do steps 5–6 above. Until your account is in `admin_users`, `/admin.html` shows "not on the staff list".
+
 ## Step 3 — Copy API keys into the project
 
 1. Go to **Project Settings** → **API**.

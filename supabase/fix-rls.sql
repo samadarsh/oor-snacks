@@ -40,25 +40,51 @@ create policy "allow_public_insert_order_items"
   for insert
   with check (true);
 
--- 5. Staff admin: logged-in users can read and update
+-- 5. Staff admin: only accounts listed in admin_users may read or update orders.
+-- Being signed in is not enough — Supabase allows public sign-ups by default, and the
+-- publishable key is public, so anyone could otherwise create an account and read every order.
+create table if not exists public.admin_users (
+  user_id uuid primary key references auth.users (id) on delete cascade,
+  created_at timestamptz not null default now()
+);
+alter table public.admin_users enable row level security;
+revoke all on public.admin_users from anon, authenticated;
+
+create or replace function public.is_admin()
+returns boolean
+language sql
+stable
+security definer
+set search_path = ''
+as $$
+  select exists (select 1 from public.admin_users where user_id = auth.uid());
+$$;
+revoke execute on function public.is_admin() from public, anon;
+grant execute on function public.is_admin() to authenticated;
+
 create policy "allow_staff_select_orders"
   on public.orders
   as permissive
   for select
   to authenticated
-  using (true);
+  using (public.is_admin());
 
 create policy "allow_staff_update_orders"
   on public.orders
   as permissive
   for update
   to authenticated
-  using (true)
-  with check (true);
+  using (public.is_admin())
+  with check (public.is_admin());
 
 create policy "allow_staff_select_order_items"
   on public.order_items
   as permissive
   for select
   to authenticated
-  using (true);
+  using (public.is_admin());
+
+-- 6. Make sure your staff login is on the list (replace the email):
+-- insert into public.admin_users (user_id)
+--   select id from auth.users where email = 'you@example.com'
+--   on conflict do nothing;
