@@ -55,35 +55,38 @@
     </header>
 
     <main id="main-content" class="hero-page-main">
-      <section class="hero-section hero-section--full" id="hero" aria-label="Welcome to Oor Snacks">
-        <div class="hero-bg-container">
-          <video
-            class="hero-scrub-video"
-            data-desktop-src="/videos/hero_halwa_scrub.mp4"
-            data-mobile-src="/videos/hero_halwa_scrub_portrait.mp4"
-            data-mobile-poster="/images/hero_halwa_poster_portrait-960w.jpg"
-            poster="/images/hero_halwa_poster-960w.jpg"
-            muted
-            playsinline
-            webkit-playsinline
-            preload="none"
-            aria-hidden="true"
-          ></video>
-          <img data-responsive="hero_halwa_poster" data-ext="jpg" data-sizes="100vw" alt="Handmade Tamil Nadu snacks and sweets from Chennai" class="hero-bg-image hero-bg-fallback" decoding="async" />
-          <div class="hero-overlay"></div>
-          <div class="hero-vignette"></div>
-        </div>
-        <div class="hero-content hero-content--brand">
-          <p class="hero-pretitle text-reveal">இனிப்பு & காரம் · SWEETS & SAVOURY</p>
-          <h1 class="hero-brand-title text-reveal">Oor Snacks</h1>
-          <p class="hero-tagline text-reveal">Crafted in Tradition.<br>Packed for Freshness.</p>
-          <p class="hero-subtitle text-reveal">Handmade snacks and iconic Tamil sweets from Chennai.</p>
-          <div class="hero-ctas text-reveal">
-            <a href="/products.html" class="btn btn-primary">Explore collection</a>
-            <a href="https://api.whatsapp.com/send?phone=919176661912" class="btn btn-secondary btn-whatsapp" target="_blank" rel="noopener noreferrer">Order on WhatsApp</a>
+      <!-- Pin spacer for the hero scrub: lives in the markup so pinning never moves #hero (which would restart its CSS intro). -->
+      <div class="hero-pin-spacer">
+        <section class="hero-section hero-section--full" id="hero" aria-label="Welcome to Oor Snacks">
+          <div class="hero-bg-container">
+            <video
+              class="hero-scrub-video"
+              data-desktop-src="/videos/hero_halwa_scrub.mp4"
+              data-mobile-src="/videos/hero_halwa_scrub_portrait.mp4"
+              data-desktop-poster="/images/hero_halwa_poster-960w.jpg"
+              data-mobile-poster="/images/hero_halwa_poster_portrait-960w.jpg"
+              muted
+              playsinline
+              webkit-playsinline
+              preload="none"
+              aria-hidden="true"
+            ></video>
+            <img data-fallback-responsive="hero_halwa_poster" data-ext="jpg" data-sizes="100vw" alt="Handmade Tamil Nadu snacks and sweets from Chennai" class="hero-bg-image hero-bg-fallback" decoding="async" />
+            <div class="hero-overlay"></div>
+            <div class="hero-vignette"></div>
           </div>
-        </div>
-      </section>
+          <div class="hero-content hero-content--brand">
+            <p class="hero-pretitle text-reveal">இனிப்பு & காரம் · SWEETS & SAVOURY</p>
+            <h1 class="hero-brand-title text-reveal">Oor Snacks</h1>
+            <p class="hero-tagline text-reveal">Crafted in Tradition.<br>Packed for Freshness.</p>
+            <p class="hero-subtitle text-reveal">Handmade snacks and iconic Tamil sweets from Chennai.</p>
+            <div class="hero-ctas text-reveal">
+              <a href="/products.html" class="btn btn-primary">Explore collection</a>
+              <a href="https://api.whatsapp.com/send?phone=919176661912" class="btn btn-secondary btn-whatsapp" target="_blank" rel="noopener noreferrer">Order on WhatsApp</a>
+            </div>
+          </div>
+        </section>
+      </div>
 
       <section class="hero-trust-strip home-scroll-section" aria-label="Brand promise">
         <div class="section-container hero-trust-inner">

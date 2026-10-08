@@ -1020,6 +1020,40 @@ html.motion-enhanced.hero-scrub-active .hero-bg-fallback {
   display: none;
 }
 
+/* Hero intro — pure CSS so it starts with the first paint (no flash, no wait for JS).
+   The title is the LCP element and Chrome only records LCP once it is fully painted, so it
+   slides in at full opacity instead of fading; the lines around it fade in after it. */
+@media (prefers-reduced-motion: no-preference) {
+  .hero-bg-container {
+    animation: heroSettle 1.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .hero-content .text-reveal {
+    animation: heroRise 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .hero-content .hero-brand-title { --hero-rise: 28px; animation-name: heroSlide; animation-delay: 0s; }
+  .hero-content .hero-pretitle    { --hero-rise: 8px;  animation-delay: 0.15s; }
+  .hero-content .hero-tagline     { --hero-rise: 18px; animation-delay: 0.3s; }
+  .hero-content .hero-subtitle    { --hero-rise: 12px; animation-delay: 0.42s; }
+  .hero-content .hero-ctas        { --hero-rise: 8px;  animation-delay: 0.54s; }
+}
+
+@keyframes heroSettle {
+  from { transform: scale(1.06); }
+  to   { transform: none; }
+}
+
+@keyframes heroSlide {
+  from { transform: translateY(var(--hero-rise, 12px)); }
+  to   { transform: none; }
+}
+
+@keyframes heroRise {
+  from { opacity: 0; transform: translateY(var(--hero-rise, 12px)); }
+  to   { opacity: 1; transform: none; }
+}
+
 /* -------------------------------------------------------------
  * Aroma Lock Pouch Showcase Section
  * ------------------------------------------------------------- */
