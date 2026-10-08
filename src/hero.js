@@ -63,8 +63,8 @@ if (!prefersReducedMotion) {
 
   // Pin first so the page height is final before anything else measures it.
   if (canHeroScrub) initHeroScrollScrub()
+  else showHeroFallback()
   initHeroPageNavScroll()
-  playHeroIntro()
 
   initScrollReveals()
   initCraftCinematicVideo()
@@ -76,25 +76,17 @@ if (!prefersReducedMotion) {
     el.style.transform = 'none'
   })
 
+  showHeroFallback()
   initHeroPageNavScroll()
 }
 
-/** Hero entrance. The hidden start state comes from html.hero-intro-pending (set inline in <head>), so copy never flashes. */
-function playHeroIntro() {
-  const root = document.documentElement
-  // The <head> failsafe already revealed the copy (slow JS) — don't hide it again.
-  if (!root.classList.contains('hero-intro-pending')) return
-
-  gsap.timeline({ defaults: { ease: 'power3.out' } })
-    .fromTo('.hero-bg-container', { scale: 1.06 }, { scale: 1, duration: 1.4, clearProps: 'transform' })
-    .fromTo('.hero-pretitle',    { opacity: 0, y: 8 },  { opacity: 1, y: 0, duration: 0.65 }, '-=0.9')
-    .fromTo('.hero-brand-title', { opacity: 0, y: 28 }, { opacity: 1, y: 0, duration: 0.85 }, '-=0.5')
-    .fromTo('.hero-tagline',     { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.75 }, '-=0.55')
-    .fromTo('.hero-subtitle',    { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.65 }, '-=0.45')
-    .fromTo('.hero-ctas',        { opacity: 0, y: 8 },  { opacity: 1, y: 0, duration: 0.55 }, '-=0.35')
-
-  // fromTo has already written the start state inline, so the CSS gate can go.
-  root.classList.remove('hero-intro-pending')
+/** The still hero image sits behind the scrub video, so it is only fetched when it will be shown. */
+function showHeroFallback() {
+  const img = document.querySelector('.hero-bg-fallback[data-fallback-responsive]')
+  if (!img) return
+  img.dataset.responsive = img.dataset.fallbackResponsive
+  delete img.dataset.fallbackResponsive
+  initResponsiveImages()
 }
 
 /**
@@ -105,13 +97,17 @@ function playHeroIntro() {
 function initHeroScrollScrub() {
   const hero = document.querySelector('#hero')
   const video = document.querySelector('.hero-scrub-video')
-  if (!hero || !video) return
+  if (!hero || !video) {
+    showHeroFallback()
+    return
+  }
 
   const root = document.documentElement
   const isIOS =
     /iPad|iPhone|iPod/.test(navigator.userAgent) ||
     (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)
-  const desktopPoster = video.getAttribute('poster')
+  // Posters live in data attributes so phones never fetch the landscape one.
+  const desktopPoster = video.dataset.desktopPoster
   const blobUrls = new Map()
   let progress = 0
   let ready = false
@@ -149,6 +145,7 @@ function initHeroScrollScrub() {
     end: () => (mobileScrubMq.matches ? '+=200%' : '+=300%'),
     pin: true,
     pinSpacing: true,
+    pinSpacer: '.hero-pin-spacer',
     invalidateOnRefresh: true,
     onUpdate: (self) => {
       progress = self.progress
@@ -161,6 +158,7 @@ function initHeroScrollScrub() {
     ready = false
     scrubTrigger.kill()
     root.classList.remove('hero-scrub-active')
+    showHeroFallback()
     ScrollTrigger.refresh()
   }
 
