@@ -49,14 +49,12 @@ export function initHeroPageNavScroll() {
 
   setScrolled(false)
 
-  const hasMotionScrub = document.documentElement.classList.contains('motion-enhanced')
-  const isMobile = window.matchMedia('(max-width: 768px)').matches
-
   ScrollTrigger.create({
     id: 'hero-nav',
-    trigger: hero,
-    start: 'top top',
-    end: hasMotionScrub ? (isMobile ? '+=200%' : '+=300%') : 'bottom top',
+    // Absolute positions, no trigger element: the hero is pinned by 'hero-scrub', and a trigger on a
+    // pinned element gets offset by the pin length. Flip exactly when the pin releases (or at hero bottom).
+    start: 0,
+    end: () => ScrollTrigger.getById('hero-scrub')?.end ?? hero.offsetTop + hero.offsetHeight,
     onLeave: () => setScrolled(true),
     onEnterBack: () => setScrolled(false),
   })

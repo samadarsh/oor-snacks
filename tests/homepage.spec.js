@@ -44,7 +44,9 @@ test.describe('Homepage', () => {
     const video = page.locator('.hero-scrub-video')
     await expect(video).toBeVisible()
 
-    const currentSrc = await video.evaluate((el) => el.currentSrc || el.getAttribute('src') || '')
+    // The clip is played from a blob: URL, so read which file was fetched from data-loaded-src.
+    await page.waitForFunction(() => document.querySelector('.hero-scrub-video')?.dataset.loadedSrc)
+    const currentSrc = await video.evaluate((el) => el.dataset.loadedSrc || '')
     const isMobile = (page.viewportSize()?.width ?? 1280) <= 768
     expect(currentSrc).toContain(isMobile ? 'hero_halwa_scrub_portrait.mp4' : 'hero_halwa_scrub.mp4')
   })

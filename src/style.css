@@ -1020,6 +1020,15 @@ html.motion-enhanced.hero-scrub-active .hero-bg-fallback {
   display: none;
 }
 
+/* Hero intro start state — cleared by hero.js once GSAP owns the animation */
+html.hero-intro-pending .hero-content .text-reveal {
+  opacity: 0;
+}
+
+html.hero-intro-pending .hero-bg-container {
+  transform: scale(1.06);
+}
+
 /* -------------------------------------------------------------
  * Aroma Lock Pouch Showcase Section
  * ------------------------------------------------------------- */

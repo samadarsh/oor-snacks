@@ -41,59 +41,30 @@ document.querySelectorAll('.nav-anchor').forEach((link) => {
 })
 
 const mobileScrubMq = window.matchMedia('(max-width: 768px)')
-const canHeroScrub = !prefersReducedMotion
+const saveData = Boolean(navigator.connection?.saveData)
+const canHeroScrub = !prefersReducedMotion && !saveData
 
 if (!prefersReducedMotion) {
   document.documentElement.classList.add('motion-enhanced')
 
+  // Lenis scrolls the window itself, so ScrollTrigger only needs to be told when it moves.
+  // Touch keeps native scrolling (Lenis default) — it is already smooth on phones.
   lenis = new Lenis({
     duration: 1.05,
     smoothWheel: true,
-    smoothTouch: mobileScrubMq.matches,
   })
 
+  lenis.on('scroll', ScrollTrigger.update)
   gsap.ticker.add((time) => {
     lenis.raf(time * 1000)
   })
   gsap.ticker.lagSmoothing(0)
-
-  ScrollTrigger.scrollerProxy(document.documentElement, {
-    scrollTop(value) {
-      if (arguments.length) {
-        lenis.scrollTo(value, { immediate: true })
-      }
-      return lenis.scroll
-    },
-    getBoundingClientRect() {
-      return {
-        top: 0,
-        left: 0,
-        width: window.innerWidth,
-        height: window.innerHeight,
-      }
-    },
-  })
-
-  lenis.on('scroll', ScrollTrigger.update)
   ScrollTrigger.addEventListener('refresh', () => lenis.resize())
 
-  window.addEventListener('load', () => {
-    const heroVisual = canHeroScrub ? '.hero-scrub-video' : '.hero-bg-image'
-
-    gsap.timeline({ defaults: { ease: 'power3.out' } })
-      .from(heroVisual, { scale: 1.06, opacity: 0, duration: 1.4 })
-      .from('.hero-pretitle',    { opacity: 0, y: 8,  duration: 0.65 }, '-=0.9')
-      .from('.hero-brand-title', { opacity: 0, y: 28, duration: 0.85 }, '-=0.5')
-      .from('.hero-tagline',     { opacity: 0, y: 18, duration: 0.75 }, '-=0.55')
-      .from('.hero-subtitle',    { opacity: 0, y: 12, duration: 0.65 }, '-=0.45')
-      .from('.hero-ctas',        { opacity: 0, y: 8,  duration: 0.55 }, '-=0.35')
-
-    if (canHeroScrub) {
-      initHeroScrollScrub()
-    }
-
-    initHeroPageNavScroll()
-  })
+  // Pin first so the page height is final before anything else measures it.
+  if (canHeroScrub) initHeroScrollScrub()
+  initHeroPageNavScroll()
+  playHeroIntro()
 
   initScrollReveals()
   initCraftCinematicVideo()
@@ -105,162 +76,166 @@ if (!prefersReducedMotion) {
     el.style.transform = 'none'
   })
 
-  window.addEventListener('load', () => {
-    initHeroPageNavScroll()
-  })
+  initHeroPageNavScroll()
 }
 
-/** Pin hero and scrub halwa video to scroll position on motion-capable devices. */
+/** Hero entrance. The hidden start state comes from html.hero-intro-pending (set inline in <head>), so copy never flashes. */
+function playHeroIntro() {
+  const root = document.documentElement
+  // The <head> failsafe already revealed the copy (slow JS) — don't hide it again.
+  if (!root.classList.contains('hero-intro-pending')) return
+
+  gsap.timeline({ defaults: { ease: 'power3.out' } })
+    .fromTo('.hero-bg-container', { scale: 1.06 }, { scale: 1, duration: 1.4, clearProps: 'transform' })
+    .fromTo('.hero-pretitle',    { opacity: 0, y: 8 },  { opacity: 1, y: 0, duration: 0.65 }, '-=0.9')
+    .fromTo('.hero-brand-title', { opacity: 0, y: 28 }, { opacity: 1, y: 0, duration: 0.85 }, '-=0.5')
+    .fromTo('.hero-tagline',     { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.75 }, '-=0.55')
+    .fromTo('.hero-subtitle',    { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.65 }, '-=0.45')
+    .fromTo('.hero-ctas',        { opacity: 0, y: 8 },  { opacity: 1, y: 0, duration: 0.55 }, '-=0.35')
+
+  // fromTo has already written the start state inline, so the CSS gate can go.
+  root.classList.remove('hero-intro-pending')
+}
+
+/**
+ * Pin hero and scrub the halwa video with scroll.
+ * The clips are encoded all-intra (every frame a keyframe, no B-frames) so any seek decodes a single
+ * frame, and each clip is fetched whole into a blob so seeks never wait on the network.
+ */
 function initHeroScrollScrub() {
   const hero = document.querySelector('#hero')
   const video = document.querySelector('.hero-scrub-video')
   if (!hero || !video) return
 
-  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent)
-  let heroScrubTrigger = null
-  let seekThreshold = mobileScrubMq.matches ? 0.06 : 0.034
-  let pendingProgress = 0
-  let seekScheduled = false
+  const root = document.documentElement
+  const isIOS =
+    /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)
+  const desktopPoster = video.getAttribute('poster')
+  const blobUrls = new Map()
+  let progress = 0
+  let ready = false
+  let loadId = 0
 
-  const getScrubSettings = () => {
+  const getSource = () => {
     const isMobile = mobileScrubMq.matches
+    const { desktopSrc, mobileSrc, mobilePoster } = video.dataset
     return {
-      isMobile,
-      pinEnd: isMobile ? '+=200%' : '+=300%',
-      scrub: isMobile ? 0.8 : true,
-      seekThreshold: isMobile ? 0.06 : 0.034,
-      src: isMobile
-        ? video.dataset.mobileSrc || video.dataset.desktopSrc
-        : video.dataset.desktopSrc || video.dataset.mobileSrc,
-      poster: isMobile
-        ? video.dataset.mobilePoster || video.getAttribute('poster')
-        : video.getAttribute('poster'),
-      readyState: isIOS ? 3 : 2,
-      readyEvent: isIOS ? 'canplay' : 'loadeddata',
+      src: isMobile ? mobileSrc || desktopSrc : desktopSrc || mobileSrc,
+      poster: isMobile ? mobilePoster || desktopPoster : desktopPoster,
     }
   }
 
-  const seekToProgress = (progress) => {
+  // One seek in flight at a time: setting currentTime mid-seek aborts the pending decode, so during
+  // continuous scroll no frame would ever paint. 'seeked' re-runs this with the latest progress.
+  const seekToProgress = () => {
+    if (!ready || video.seeking) return
     const duration = video.duration
-    if (!duration || !Number.isFinite(duration)) return
-    const targetTime = progress * duration
-    if (Math.abs(video.currentTime - targetTime) > seekThreshold) {
-      video.currentTime = targetTime
-      video.pause()
+    if (!Number.isFinite(duration) || duration <= 0) return
+
+    if (!video.paused) video.pause()
+    const target = Math.min(progress * duration, duration - 0.04)
+    if (Math.abs(video.currentTime - target) > 0.02) {
+      video.currentTime = target
     }
   }
 
-  const scheduleSeek = (progress) => {
-    pendingProgress = progress
-    if (seekScheduled) return
+  video.addEventListener('seeked', seekToProgress)
 
-    seekScheduled = true
-    requestAnimationFrame(() => {
-      seekToProgress(pendingProgress)
-      seekScheduled = false
-    })
-  }
-
-  const killHeroScrub = () => {
-    if (heroScrubTrigger) {
-      heroScrubTrigger.kill()
-      heroScrubTrigger = null
-    }
-  }
+  const scrubTrigger = ScrollTrigger.create({
+    id: 'hero-scrub',
+    trigger: hero,
+    start: 'top top',
+    end: () => (mobileScrubMq.matches ? '+=200%' : '+=300%'),
+    pin: true,
+    pinSpacing: true,
+    invalidateOnRefresh: true,
+    onUpdate: (self) => {
+      progress = self.progress
+      seekToProgress()
+    },
+  })
 
   const disableScrub = () => {
-    killHeroScrub()
-    document.documentElement.classList.remove('hero-scrub-active')
+    loadId += 1
+    ready = false
+    scrubTrigger.kill()
+    root.classList.remove('hero-scrub-active')
     ScrollTrigger.refresh()
   }
 
-  const enableScrub = () => {
-    if (heroScrubTrigger) return
-
-    const settings = getScrubSettings()
-    seekThreshold = settings.seekThreshold
-    video.pause()
-    seekToProgress(0)
-
-    heroScrubTrigger = ScrollTrigger.create({
-      trigger: hero,
-      start: 'top top',
-      end: settings.pinEnd,
-      pin: true,
-      pinSpacing: true,
-      scrub: settings.scrub,
-      invalidateOnRefresh: true,
-      onUpdate: (self) => scheduleSeek(self.progress),
+  const waitForFirstFrame = () =>
+    new Promise((resolve, reject) => {
+      if (video.readyState >= 2) {
+        resolve()
+        return
+      }
+      const cleanup = () => {
+        video.removeEventListener('loadeddata', onLoaded)
+        video.removeEventListener('error', onError)
+      }
+      const onLoaded = () => {
+        cleanup()
+        resolve()
+      }
+      const onError = () => {
+        cleanup()
+        reject(video.error || new Error('Hero video failed to decode'))
+      }
+      video.addEventListener('loadeddata', onLoaded)
+      video.addEventListener('error', onError)
+      // iOS won't paint seeked frames until the element has played once.
+      if (isIOS) video.play().then(() => video.pause()).catch(() => {})
     })
 
-    ScrollTrigger.refresh()
-  }
+  const loadSource = async () => {
+    const id = ++loadId
+    ready = false
 
-  const loadVideoForViewport = () => {
-    const settings = getScrubSettings()
-    seekThreshold = settings.seekThreshold
-
-    if (!settings.src) {
+    const { src, poster } = getSource()
+    if (poster && video.getAttribute('poster') !== poster) video.setAttribute('poster', poster)
+    if (!src) {
       disableScrub()
       return
     }
 
-    if (video.getAttribute('src') !== settings.src) {
-      video.setAttribute('src', settings.src)
-    }
-
-    if (settings.poster && video.getAttribute('poster') !== settings.poster) {
-      video.setAttribute('poster', settings.poster)
-    }
-
-    document.documentElement.classList.add('hero-scrub-active')
-    video.preload = 'auto'
-    video.load()
-
-    if (video.readyState >= 1) {
-      onVideoReady()
-    } else {
-      video.addEventListener('loadedmetadata', onVideoReady, { once: true })
-    }
-  }
-
-  const onVideoReady = () => {
-    const settings = getScrubSettings()
-    seekThreshold = settings.seekThreshold
-
-    if (video.readyState >= settings.readyState) {
-      enableScrub()
-    } else {
-      video.addEventListener(settings.readyEvent, enableScrub, { once: true })
-    }
-  }
-
-  loadVideoForViewport()
-
-  video.addEventListener('error', () => {
-    disableScrub()
-  })
-
-  let resizeTimer
-  let wasMobile = mobileScrubMq.matches
-  const refreshHeroScrub = () => {
-    clearTimeout(resizeTimer)
-    resizeTimer = setTimeout(() => {
-      const isMobile = mobileScrubMq.matches
-
-      if (isMobile !== wasMobile) {
-        wasMobile = isMobile
-        killHeroScrub()
-        loadVideoForViewport()
-        return
+    try {
+      let url = blobUrls.get(src)
+      if (!url) {
+        // Low priority so the poster and page images win the bandwidth race.
+        const res = await fetch(src, { priority: 'low' })
+        if (!res.ok) throw new Error(`Hero video request failed (${res.status})`)
+        url = URL.createObjectURL(await res.blob())
+        blobUrls.set(src, url)
       }
+      if (id !== loadId) return
 
-      ScrollTrigger.refresh()
-    }, 180)
+      video.dataset.loadedSrc = src
+      video.src = url
+      await waitForFirstFrame()
+      if (id !== loadId) return
+
+      ready = true
+      seekToProgress()
+    } catch (err) {
+      if (id !== loadId) return
+      console.warn('[Oor] Hero scroll video unavailable, showing still image.', err)
+      disableScrub()
+    }
   }
 
-  window.addEventListener('resize', refreshHeroScrub, { passive: true })
-  window.addEventListener('orientationchange', refreshHeroScrub, { passive: true })
+  // Poster shows while the clip downloads; the pin is already in place so nothing shifts later.
+  root.classList.add('hero-scrub-active')
+  video.preload = 'auto'
+  loadSource()
+
+  // ScrollTrigger refreshes on resize by itself (ignoring mobile address-bar height changes) and the
+  // function-based end follows the breakpoint, so only the source swap needs handling here.
+  const onBreakpointChange = () => {
+    if (root.classList.contains('hero-scrub-active')) loadSource()
+  }
+  if (mobileScrubMq.addEventListener) mobileScrubMq.addEventListener('change', onBreakpointChange)
+  else mobileScrubMq.addListener(onBreakpointChange)
 }
 
 /** Play grandma murukku clip only while the craft block is on screen. */
