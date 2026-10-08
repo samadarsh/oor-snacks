@@ -2,9 +2,11 @@ const DEFAULT_WIDTHS = [480, 960]
 
 /**
  * Set srcset/sizes on images with data-responsive="filename_without_ext" and optional data-ext="jpg|webp".
+ * Most images carry static src/srcset in the HTML (so the browser finds them before JS runs);
+ * this is for images that should only load once script decides they are needed.
  */
 export function initResponsiveImages() {
-  document.querySelectorAll('img[data-responsive]').forEach((img) => {
+  document.querySelectorAll('img[data-responsive]:not([srcset])').forEach((img) => {
     const stem = img.dataset.responsive
     const ext = img.dataset.ext || 'jpg'
     const variantExt = img.dataset.variantExt || (ext === 'webp' ? 'jpg' : ext)
