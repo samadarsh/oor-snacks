@@ -6,14 +6,13 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 gsap.registerPlugin(ScrollTrigger)
 import { initSiteNav, initHeroPageNavScroll } from './shared/nav.js'
 import { initScrollReveals } from './shared/motion.js'
-import { onCartChange, syncCartBadge, updateProductButtons } from './cart.js'
+import { syncCartBadge, updateProductButtons } from './cart.js'
 import { initResponsiveImages } from './shared/responsive-img.js'
 
 document.body.classList.add('page-hero')
 initSiteNav()
 syncCartBadge()
 initResponsiveImages()
-initHomepageCart()
 updateProductButtons()
 
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -380,12 +379,4 @@ function initPouchSection() {
       },
     })
   }
-}
-
-/** Homepage featured product cards add-to-cart logic. */
-function initHomepageCart() {
-  onCartChange(() => {
-    syncCartBadge()
-    updateProductButtons()
-  })
 }
