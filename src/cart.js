@@ -155,9 +155,9 @@ export const renderCartItemsHtml = () =>
         <span class="cart-item-meta">${escapeHtml(item.weight)} &bull; ₹${item.price}</span>
         <div class="cart-item-qty-row">
           <div class="qty-control">
-            <button type="button" class="qty-btn dec-btn" data-id="${item.id}" data-weight="${escapeHtml(item.weight)}">&minus;</button>
+            <button type="button" class="qty-btn dec-btn" data-id="${escapeHtml(item.id)}" data-weight="${escapeHtml(item.weight)}">&minus;</button>
             <span class="qty-number">${item.qty}</span>
-            <button type="button" class="qty-btn inc-btn" data-id="${item.id}" data-weight="${escapeHtml(item.weight)}">+</button>
+            <button type="button" class="qty-btn inc-btn" data-id="${escapeHtml(item.id)}" data-weight="${escapeHtml(item.weight)}">+</button>
           </div>
         </div>
       </div>
@@ -287,6 +287,7 @@ export const updateProductButtons = () => {
   })
 }
 
+// The one place that keeps the badge and product buttons in sync — pages should not re-register this.
 onCartChange(() => {
   syncCartBadge()
   updateProductButtons()

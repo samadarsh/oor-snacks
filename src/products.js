@@ -1,7 +1,7 @@
 import './style.css'
 import { initSiteNav } from './shared/nav.js'
 import { initScrollReveals } from './shared/motion.js'
-import { addToCart, initMobileStickyCart, onCartChange, syncCartBadge, updateProductButtons } from './cart.js'
+import { initMobileStickyCart, updateProductButtons } from './cart.js'
 import { initResponsiveImages } from './shared/responsive-img.js'
 
 initSiteNav()
@@ -41,10 +41,5 @@ function initCatalogAnchors() {
   }
 }
 
-
-onCartChange(() => {
-  syncCartBadge()
-  updateProductButtons()
-})
 
 updateProductButtons()
