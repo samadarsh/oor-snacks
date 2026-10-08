@@ -35,18 +35,17 @@ alter table public.order_items enable row level security;
 
 -- Permissions + policies (see supabase/fix-rls.sql for the full repair script)
 grant usage on schema public to anon, authenticated, service_role;
-grant insert on public.orders to anon, authenticated, service_role;
-grant insert on public.order_items to anon, authenticated, service_role;
+-- Browsers never insert orders directly — checkout goes through public.place_order()
+-- (supabase/place-order.sql), which prices every line server-side.
+revoke insert on public.orders from anon, authenticated;
+revoke insert on public.order_items from anon, authenticated;
+grant insert on public.orders to service_role;
+grant insert on public.order_items to service_role;
 grant select, update on public.orders to authenticated, service_role;
 grant select on public.order_items to authenticated, service_role;
 
 drop policy if exists "allow_public_insert_orders" on public.orders;
-create policy "allow_public_insert_orders"
-  on public.orders for insert with check (true);
-
 drop policy if exists "allow_public_insert_order_items" on public.order_items;
-create policy "allow_public_insert_order_items"
-  on public.order_items for insert with check (true);
 
 drop policy if exists "allow_staff_select_orders" on public.orders;
 create policy "allow_staff_select_orders"

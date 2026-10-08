@@ -5,8 +5,11 @@
 
 -- 1. Table permissions (required in addition to policies)
 grant usage on schema public to anon, authenticated, service_role;
-grant insert on public.orders to anon, authenticated, service_role;
-grant insert on public.order_items to anon, authenticated, service_role;
+-- No direct inserts from the browser: checkout uses public.place_order() (supabase/place-order.sql)
+revoke insert on public.orders from anon, authenticated;
+revoke insert on public.order_items from anon, authenticated;
+grant insert on public.orders to service_role;
+grant insert on public.order_items to service_role;
 grant select, update on public.orders to authenticated, service_role;
 grant select on public.order_items to authenticated, service_role;
 
@@ -26,19 +29,9 @@ drop policy if exists "allow_staff_select_orders" on public.orders;
 drop policy if exists "allow_staff_update_orders" on public.orders;
 drop policy if exists "allow_staff_select_order_items" on public.order_items;
 
--- 4. Website checkout: anyone can INSERT (publishable + anon keys)
---    No TO clause = applies to all roles
-create policy "allow_public_insert_orders"
-  on public.orders
-  as permissive
-  for insert
-  with check (true);
-
-create policy "allow_public_insert_order_items"
-  on public.order_items
-  as permissive
-  for insert
-  with check (true);
+-- 4. Website checkout: no insert policies — orders are created only by
+--    public.place_order(). If checkout fails with "Could not find the function
+--    public.place_order", run supabase/place-order.sql.
 
 -- 5. Staff admin: logged-in users can read and update
 create policy "allow_staff_select_orders"

@@ -7,7 +7,12 @@ You created a Supabase project — follow these steps in order.
 1. Open [Supabase Dashboard](https://supabase.com/dashboard) → your project.
 2. Go to **SQL Editor** → **New query**.
 3. Copy the full contents of [`supabase/schema.sql`](./supabase/schema.sql) and click **Run**.
-4. Confirm under **Table Editor** you see `orders` and `order_items`.
+4. In a new query, run [`supabase/place-order.sql`](./supabase/place-order.sql). This adds the price list (`product_prices`) and the `place_order` function that checkout uses — the browser only sends product ids and quantities, and the database computes every price and total.
+5. Confirm under **Table Editor** you see `orders`, `order_items` and `product_prices`.
+
+**Changing a price?** Update it in `product_prices` (Table Editor) **and** on `products.html` / `index.html`. `npm run test:e2e` fails if the two lists drift apart.
+
+**Upgrading an existing project?** Run `supabase/place-order.sql` once, then `supabase/fix-rls.sql`, and deploy the new site right after. Between the SQL and the deploy, website checkout is refused (the old site still writes orders directly) — WhatsApp ordering keeps working.
 
 ## Step 2 — Create a staff login
 

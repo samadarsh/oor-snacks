@@ -73,6 +73,12 @@ const syncShopUI = () => {
 onCartChange(syncShopUI)
 syncShopUI()
 
+// Reused across retries of the same basket, so a request that saved but timed out is not saved twice.
+let pendingOrderId = null
+onCartChange(() => {
+  pendingOrderId = null
+})
+
 const websiteOrderForm = document.getElementById('cart-website-order-form')
 const whatsappOrderBtn = document.getElementById('cart-whatsapp-order')
 const orderSuccessModal = document.getElementById('order-success-modal')
@@ -106,11 +112,12 @@ const setSubmitButtonBusy = (busy) => {
   else websiteOrderSubmit.removeAttribute('aria-busy')
 }
 
-const openOrderSuccessModal = (mobileDigits) => {
+const openOrderSuccessModal = (mobileDigits, total) => {
   if (!orderSuccessModal) return
   const msgEl = document.getElementById('order-success-message')
   if (msgEl) {
-    msgEl.textContent = `Thank you. We have received your order and will contact you on ${formatMobileDisplay(mobileDigits)} shortly.`
+    const totalText = Number.isFinite(total) ? ` (total ₹${total})` : ''
+    msgEl.textContent = `Thank you. We have received your order${totalText} and will contact you on ${formatMobileDisplay(mobileDigits)} shortly.`
   }
   orderSuccessModal.classList.add('open')
   orderSuccessModal.setAttribute('aria-hidden', 'false')
@@ -147,25 +154,25 @@ if (websiteOrderForm) {
       return
     }
 
-    const { subtotal, shipping, total } = getOrderTotals()
     const cartSnapshot = getCart().map((item) => ({ ...item }))
+    pendingOrderId ||= crypto.randomUUID()
 
     setSubmitButtonBusy(true)
     let saved = false
+    let savedTotal
 
     try {
       const { configured } = await initSupabase()
       if (configured) {
         const result = await saveOrderToSupabase({
+          orderId: pendingOrderId,
           customerName: name,
           customerAddress: address,
           customerPhone: mobileDigits,
-          subtotal,
-          shipping,
-          total,
           cartItems: cartSnapshot,
         })
         saved = result.ok
+        savedTotal = result.total
         if (!saved && websiteOrderError) {
           websiteOrderError.textContent = result.skipped
             ? 'Checkout is unavailable right now. Please use WhatsApp below.'
@@ -186,7 +193,7 @@ if (websiteOrderForm) {
       clearCart()
       websiteOrderForm.reset()
       setSubmitButtonBusy(false)
-      openOrderSuccessModal(mobileDigits)
+      openOrderSuccessModal(mobileDigits, savedTotal)
       syncShopUI()
     } catch (err) {
       console.error('[Oor] checkout failed:', err)

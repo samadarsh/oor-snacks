@@ -11,6 +11,10 @@ export function formatCheckoutError(err) {
       'or use Order via WhatsApp below.'
     )
   }
+  if (/could not find the function|PGRST202/i.test(msg)) {
+    // place_order() is missing — supabase/place-order.sql has not been run on this project.
+    return 'Online checkout is temporarily unavailable. Please use Order via WhatsApp below.'
+  }
   if (/row-level security|42501/i.test(msg)) {
     return 'Order could not be saved (database permissions). Run supabase/fix-rls.sql in Supabase, then try again.'
   }
@@ -27,15 +31,16 @@ function withTimeout(promise, ms = CHECKOUT_TIMEOUT_MS) {
 }
 
 /**
- * Persist checkout to Supabase. Returns { ok, id?, error?, skipped? }.
+ * Place the order through the place_order() database function, which prices every line
+ * from product_prices and saves the order + items in one transaction.
+ * Only ids and quantities are sent; client-side prices are never trusted.
+ * Returns { ok, id?, subtotal?, shipping?, total?, error?, skipped? }.
  */
 export async function saveOrderToSupabase({
+  orderId,
   customerName,
   customerAddress,
   customerPhone,
-  subtotal,
-  shipping,
-  total,
   cartItems,
 }) {
   const { configured, supabaseStore } = await initSupabase()
@@ -43,47 +48,33 @@ export async function saveOrderToSupabase({
     return { ok: false, skipped: true }
   }
 
-  const orderId = crypto.randomUUID()
-
   try {
-    const { error: orderError } = await withTimeout(
-      supabaseStore.from('orders').insert({
-        id: orderId,
-        customer_name: customerName.trim(),
-        customer_address: customerAddress.trim(),
-        customer_phone: customerPhone?.trim() || null,
-        subtotal,
-        shipping,
-        total,
-        status: 'pending',
+    const { data, error } = await withTimeout(
+      supabaseStore.rpc('place_order', {
+        p_order_id: orderId,
+        p_customer_name: customerName.trim(),
+        p_customer_address: customerAddress.trim(),
+        p_customer_phone: customerPhone?.trim() || '',
+        p_items: cartItems.map((item) => ({
+          product_id: item.id,
+          weight: item.weight,
+          qty: item.qty,
+        })),
       })
     )
 
-    if (orderError) {
-      console.error('[Oor] order insert failed:', orderError)
-      return { ok: false, error: formatCheckoutError(orderError) }
+    if (error) {
+      console.error('[Oor] place_order failed:', error)
+      return { ok: false, error: formatCheckoutError(error) }
     }
 
-    const lineRows = cartItems.map((item) => ({
-      order_id: orderId,
-      product_id: item.id || null,
-      product_name: item.name,
-      weight: item.weight,
-      unit_price: item.price,
-      qty: item.qty,
-      line_total: item.price * item.qty,
-    }))
-
-    const { error: itemsError } = await withTimeout(
-      supabaseStore.from('order_items').insert(lineRows)
-    )
-
-    if (itemsError) {
-      console.error('[Oor] order_items insert failed:', itemsError)
-      return { ok: false, error: formatCheckoutError(itemsError), id: orderId }
+    return {
+      ok: true,
+      id: data.id,
+      subtotal: data.subtotal,
+      shipping: data.shipping,
+      total: data.total,
     }
-
-    return { ok: true, id: orderId }
   } catch (err) {
     console.error('[Oor] order save threw:', err)
     return { ok: false, error: formatCheckoutError(err) }
